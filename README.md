@@ -53,6 +53,28 @@ In a world where economic shifts impact our daily lives, most people remain conf
 - [ ] Add support for user progress tracking
 - [ ] Complete quiz generation for all topics
 
+## Future Phases
+
+### 📈 Phase 2: Live Market Data
+- Real-time market data integration
+- Visual data representations
+- Current market context for topics
+
+### 💬 Phase 3: Ask-Me-Anything
+- Chat interface for questions
+- Contextual topic suggestions
+- Dynamic examples
+
+### 🧪 Phase 4: Personalized Learning
+- Progress tracking
+- Customized learning paths
+- Bookmarking system
+
+### 🚀 Phase 5: Scenario Playground
+- Interactive market simulations
+- Economic impact analysis
+- Real-world application testing
+
 ## Technical Stack
 
 - **Frontend**: React + TypeScript
@@ -78,43 +100,6 @@ In a world where economic shifts impact our daily lives, most people remain conf
     └── shared/              # Shared code
         └── schema.ts        # Database schema
 ```
-
-## Getting Started
-
-1. Clone the repository on Replit
-2. Install dependencies: `npm install`
-3. Start the development server: Click the Run button
-
-The application will be available at the Replit preview URL.
-
-## Deployment
-
-Deploy directly on Replit:
-1. Click the "Deploy" button in your Repl
-2. Configure environment variables if needed
-3. Your app will be live at your Replit deployment URL
-
-## Future Phases
-
-### 📈 Phase 2: Live Market Data
-- Real-time market data integration
-- Visual data representations
-- Current market context for topics
-
-### 💬 Phase 3: Ask-Me-Anything
-- Chat interface for questions
-- Contextual topic suggestions
-- Dynamic examples
-
-### 🧪 Phase 4: Personalized Learning
-- Progress tracking
-- Customized learning paths
-- Bookmarking system
-
-### 🚀 Phase 5: Scenario Playground
-- Interactive market simulations
-- Economic impact analysis
-- Real-world application testing
 
 ## Legal Notice
 
