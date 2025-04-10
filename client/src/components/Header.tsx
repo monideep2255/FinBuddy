@@ -14,7 +14,7 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* App Logo and Brand */}
         <Link href="/">
-          <a className="flex items-center cursor-pointer">
+          <div className="flex items-center cursor-pointer">
             {/* App Logo - Blue gradient background with coin icon */}
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white shadow-md">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -25,18 +25,18 @@ export default function Header() {
             </div>
             {/* Brand Name */}
             <h1 className="ml-3 text-xl font-semibold text-neutral-800 dark:text-neutral-100">FinBuddy</h1>
-          </a>
+          </div>
         </Link>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <Link href="/">
-            <a className="font-medium text-primary-600 dark:text-primary-400 flex items-center">
+            <div className="font-medium text-primary-600 dark:text-primary-400 flex items-center cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1.5">
                 <path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A8.237 8.237 0 016 18.75c1.995 0 3.823.707 5.25 1.886V4.533zM12.75 20.636A8.214 8.214 0 0118 18.75c.966 0 1.89.166 2.75.47a.75.75 0 001-.708V4.262a.75.75 0 00-.5-.707A9.735 9.735 0 0018 3a9.707 9.707 0 00-5.25 1.533v16.103z" />
               </svg>
               <span>Topics</span>
-            </a>
+            </div>
           </Link>
           <div className="font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 flex items-center cursor-pointer transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1.5">

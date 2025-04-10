@@ -74,9 +74,9 @@ export default function TopicDetail() {
               <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100 mb-4">Topic Not Found</h2>
               <p className="text-neutral-600 dark:text-neutral-400 mb-6">The topic you're looking for could not be found.</p>
               <Link href="/">
-                <a className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+                <div className="inline-block px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors cursor-pointer">
                   Return to Topics
-                </a>
+                </div>
               </Link>
             </div>
           </section>
@@ -96,11 +96,11 @@ export default function TopicDetail() {
             <div>
               <div className="flex items-center mb-4">
                 <Link href="/">
-                  <a className="mr-3 text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors">
+                  <div className="mr-3 text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                       <path fillRule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clipRule="evenodd" />
                     </svg>
-                  </a>
+                  </div>
                 </Link>
                 <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100">{topic?.title}</h2>
                 <span className="ml-3 px-2 py-1 text-xs font-medium rounded-full bg-secondary-50 dark:bg-secondary-900 text-secondary-700 dark:text-secondary-300">
