@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Moon, Sun } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 /**
  * ThemeToggle Component
@@ -13,39 +14,65 @@ import { Moon, Sun } from 'lucide-react';
  */
 export default function ThemeToggle() {
   // State to track current theme
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
+  const { toast } = useToast();
 
   // Effect to initialize theme from localStorage or system preference
   useEffect(() => {
     // Check if user has previously set a theme preference
     const storedTheme = localStorage.getItem('theme');
     
-    if (storedTheme === 'dark' || storedTheme === 'light') {
+    if (storedTheme === 'dark' || storedTheme === 'light' || storedTheme === 'system') {
       // Use stored preference if available
-      setTheme(storedTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      // Otherwise use system preference if available
-      setTheme('dark');
+      setTheme(storedTheme as 'light' | 'dark' | 'system');
     }
     
-    // Apply theme to document
-    applyTheme(storedTheme as 'light' | 'dark' || 
-      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-  }, []);
+    // Add listener for system preference changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      if (theme === 'system') {
+        applyTheme('system');
+      }
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [theme]);
 
   // Function to toggle between light and dark themes
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    applyTheme(newTheme);
+    const nextTheme = getNextTheme();
+    setTheme(nextTheme);
+    localStorage.setItem('theme', nextTheme);
+    applyTheme(nextTheme);
+    
+    // Show toast notification
+    toast({
+      title: `${nextTheme.charAt(0).toUpperCase() + nextTheme.slice(1)} theme activated`,
+      description: nextTheme === 'system' 
+        ? "Following your system preference" 
+        : `Switched to ${nextTheme} mode`,
+      duration: 2000,
+    });
+  };
+  
+  // Function to get the next theme in the cycle
+  const getNextTheme = (): 'light' | 'dark' | 'system' => {
+    if (theme === 'light') return 'dark';
+    if (theme === 'dark') return 'system';
+    return 'light';
   };
 
   // Function to apply theme to HTML document
-  const applyTheme = (theme: 'light' | 'dark') => {
+  const applyTheme = (newTheme: 'light' | 'dark' | 'system') => {
     const root = window.document.documentElement;
     
-    if (theme === 'dark') {
+    // Logic for system preference
+    const isDark = 
+      newTheme === 'dark' || 
+      (newTheme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    
+    if (isDark) {
       root.classList.add('dark');
       root.style.colorScheme = 'dark';
     } else {
@@ -54,15 +81,25 @@ export default function ThemeToggle() {
     }
   };
 
+  // Get current effective theme (accounting for system setting)
+  const effectiveTheme = 
+    theme === 'system'
+      ? window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
+      : theme;
+
   return (
     <Button 
       variant="ghost" 
       size="icon" 
       onClick={toggleTheme}
-      title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      title={`Theme: ${theme} (click to change)`}
+      aria-label="Toggle theme"
+      className="text-neutral-700 dark:text-neutral-300"
     >
-      {theme === 'light' ? (
+      {/* Show icon based on effective theme */}
+      {effectiveTheme === 'dark' ? (
         <Moon className="h-5 w-5" />
       ) : (
         <Sun className="h-5 w-5" />
