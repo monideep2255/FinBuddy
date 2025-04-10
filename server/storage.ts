@@ -11,6 +11,8 @@ import {
   type QuizQuestion,
   type TopicContent
 } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc, asc } from "drizzle-orm";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -342,4 +344,76 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+/**
+ * Database Storage Implementation
+ * 
+ * This class implements the IStorage interface using a PostgreSQL database
+ * with Drizzle ORM for data persistence.
+ */
+export class DatabaseStorage implements IStorage {
+  /**
+   * Get a user by ID
+   */
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+  
+  /**
+   * Get a user by username
+   */
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
+  }
+  
+  /**
+   * Create a new user
+   */
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db.insert(users).values(insertUser).returning();
+    return user;
+  }
+  
+  /**
+   * Get all topics
+   */
+  async getAllTopics(): Promise<Topic[]> {
+    return db.select().from(topics).orderBy(asc(topics.id));
+  }
+  
+  /**
+   * Get a topic by ID
+   */
+  async getTopicById(id: number): Promise<Topic | undefined> {
+    const [topic] = await db.select().from(topics).where(eq(topics.id, id));
+    return topic;
+  }
+  
+  /**
+   * Create a new topic
+   */
+  async createTopic(insertTopic: InsertTopic): Promise<Topic> {
+    const [topic] = await db.insert(topics).values(insertTopic).returning();
+    return topic;
+  }
+  
+  /**
+   * Get quiz by topic ID
+   */
+  async getQuizByTopicId(topicId: number): Promise<Quiz | undefined> {
+    const [quiz] = await db.select().from(quizzes).where(eq(quizzes.topicId, topicId));
+    return quiz;
+  }
+  
+  /**
+   * Create a new quiz
+   */
+  async createQuiz(insertQuiz: InsertQuiz): Promise<Quiz> {
+    const [quiz] = await db.insert(quizzes).values(insertQuiz).returning();
+    return quiz;
+  }
+}
+
+// Export the database storage instance
+export const storage = new DatabaseStorage();

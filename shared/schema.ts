@@ -1,6 +1,10 @@
-import { pgTable, text, serial, integer, boolean, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+
+/**
+ * Database Tables
+ */
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -20,7 +24,7 @@ export const topics = pgTable("topics", {
 
 export const quizzes = pgTable("quizzes", {
   id: serial("id").primaryKey(),
-  topicId: integer("topic_id").notNull(),
+  topicId: integer("topic_id").references(() => topics.id).notNull(),
   questions: jsonb("questions").notNull(),
 });
 
