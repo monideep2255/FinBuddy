@@ -8,6 +8,7 @@ import RealWorldExampleTab from '@/components/RealWorldExampleTab';
 import QuizTab from '@/components/QuizTab';
 import Disclaimer from '@/components/Disclaimer';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Topic, Quiz } from '@/lib/types';
 
 type TabType = 'explanation' | 'example' | 'quiz' | 'liveData';
 
@@ -16,11 +17,11 @@ export default function TopicDetail() {
   const topicId = params?.id ? parseInt(params.id) : 0;
   const [activeTab, setActiveTab] = useState<TabType>('explanation');
 
-  const { data: topic, isLoading: isTopicLoading } = useQuery({
+  const { data: topic, isLoading: isTopicLoading } = useQuery<Topic>({
     queryKey: [`/api/topics/${topicId}`],
   });
 
-  const { data: quiz, isLoading: isQuizLoading } = useQuery({
+  const { data: quiz, isLoading: isQuizLoading } = useQuery<Quiz>({
     queryKey: [`/api/topics/${topicId}/quiz`],
   });
 
@@ -33,7 +34,7 @@ export default function TopicDetail() {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow">
-          <section className="container mx-auto px-4 py-8 bg-white rounded-xl shadow-sm border border-neutral-100 mb-8">
+          <section className="container mx-auto px-4 py-8 bg-white dark:bg-neutral-900 rounded-xl shadow-sm border border-neutral-100 dark:border-neutral-800 mb-8">
             <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
               <div>
                 <div className="flex items-center mb-4">
@@ -70,10 +71,10 @@ export default function TopicDetail() {
         <main className="flex-grow">
           <section className="container mx-auto px-4 py-8">
             <div className="text-center py-10">
-              <h2 className="text-2xl font-semibold text-neutral-800 mb-4">Topic Not Found</h2>
-              <p className="text-neutral-600 mb-6">The topic you're looking for could not be found.</p>
+              <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100 mb-4">Topic Not Found</h2>
+              <p className="text-neutral-600 dark:text-neutral-400 mb-6">The topic you're looking for could not be found.</p>
               <Link href="/">
-                <a className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium">
+                <a className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
                   Return to Topics
                 </a>
               </Link>
@@ -101,12 +102,12 @@ export default function TopicDetail() {
                     </svg>
                   </a>
                 </Link>
-                <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100">{topic.title}</h2>
+                <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100">{topic?.title}</h2>
                 <span className="ml-3 px-2 py-1 text-xs font-medium rounded-full bg-secondary-50 dark:bg-secondary-900 text-secondary-700 dark:text-secondary-300">
-                  {topic.category}
+                  {topic?.category}
                 </span>
               </div>
-              <p className="text-neutral-600 dark:text-neutral-400 max-w-3xl">{topic.description}</p>
+              <p className="text-neutral-600 dark:text-neutral-400 max-w-3xl">{topic?.description}</p>
             </div>
             <div className="mt-4 md:mt-0 flex space-x-2">
               <button className="px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center">
@@ -171,11 +172,11 @@ export default function TopicDetail() {
           </div>
 
           {/* Tab Content */}
-          {activeTab === 'explanation' && (
+          {activeTab === 'explanation' && topic?.content && (
             <ExplanationTab explanation={topic.content.explanation} title={topic.title} />
           )}
           
-          {activeTab === 'example' && (
+          {activeTab === 'example' && topic?.content && (
             <RealWorldExampleTab example={topic.content.realWorldExample} title={topic.title} />
           )}
           
@@ -187,7 +188,7 @@ export default function TopicDetail() {
             <div className="py-6 font-serif">
               <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100 mb-4">Live Market Data</h3>
               <p className="text-neutral-700 dark:text-neutral-300 mb-4">
-                This feature will be available in Phase 2. Stay tuned for real-time market data related to {topic.title}.
+                This feature will be available in Phase 2. Stay tuned for real-time market data related to {topic?.title}.
               </p>
               <div className="p-8 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 text-neutral-400 dark:text-neutral-600 mx-auto mb-2">
