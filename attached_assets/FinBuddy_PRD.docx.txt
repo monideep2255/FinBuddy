@@ -1,0 +1,206 @@
+﻿📏 PRD: FinBuddy – Your AI-Powered Finance Learning Companion
+ Version: Initial Prototype
+________________
+
+
+1. 🧚‍♂️ Background / Context
+In a world where economic shifts like inflation, interest rates, bond yields, and tariffs impact our daily lives, most people remain confused about how these forces actually work. Advice like "buy the dip" or "watch treasury yields" is everywhere, yet few feel confident making financial decisions.
+Educational resources are either too technical (e.g., Investopedia), too fragmented (e.g., YouTube), or too passive (e.g., textbooks). There's no interactive, example-driven system that breaks down financial and economic concepts in a way real people can understand and apply.
+FinBuddy aims to change that. It’s a friendly, interactive finance learning tool that explains key concepts in simple language, shows real-life examples, and ties learning to live market data.
+The tool also draws inspiration from the philosophies of legendary investors like Warren Buffett and Ray Dalio. These thinkers emphasize:
+* The importance of understanding fundamentals (e.g., how businesses and economies actually work)
+
+* Avoiding speculation and focusing on long-term thinking
+
+* Having a clear understanding of risk vs reward
+
+* Staying rational in emotional markets
+
+* Learning how the economic machine works (Dalio)
+
+"The most important investment you can make is in yourself." – Warren Buffett
+"If you understand what the economy is and how it works, you can navigate it better." – Ray Dalio
+FinBuddy incorporates these lessons into its learning model, helping users think like disciplined, well-informed investors.
+________________
+
+
+2. ❗ Problem Statement
+   * Financial concepts are intimidating and full of jargon.
+
+   * Users lack context for what market events (e.g., rate hikes, inflation) actually mean.
+
+   * Existing learning tools are either passive or too generic.
+
+   * No app links finance education to real-time events in the market.
+
+________________
+
+
+3. ✅ Solution Overview
+FinBuddy provides:
+      * Modular Learning Topics: Clear, simple breakdowns of key financial concepts.
+
+      * Real-World Examples: Everyday analogies and market-based storytelling.
+
+      * Live Market Integration: Up-to-date stock data, yields, indices, and inflation.
+
+      * Interactive Learning: Optional quizzes, short answers, and personalized feedback.
+
+      * Ask-Me-Anything Chat Mode: Personalized help for confusing topics.
+
+________________
+
+
+4. 🔧 Feature Development Phases
+✨ Phase 1: Topic Explorer + Concept Cards (MVP Core)
+         * Selectable topic list with 10-15 foundational concepts
+
+            * e.g., Inflation, Bonds, Interest Rates, Stocks, Mutual Funds, Options, Yields, ETFs, Tariffs
+
+               * Each topic includes:
+
+                  * A plain-English explanation
+
+                  * A relatable real-world example
+
+                  * Optional user-written summary or answer
+
+                  * Quiz with multiple choice or fill-in-the-blank
+
+                     * UI: Tabbed layout with Topic View and Progress Tracker
+
+📈 Phase 2: Live Market Data + Concept Integration
+                        * Integrate with free market data APIs (Alpha Vantage, Twelve Data, or Finnhub)
+
+                        * Display real-time data on:
+
+                           * S&P 500 / Nasdaq
+
+                           * Treasury yields (10Y, 2Y)
+
+                           * Interest rates (Fed Funds)
+
+                           * Inflation index (CPI)
+
+                           * Commodities (Gold, Oil)
+
+                              * Concept cards include "See Live Data" modules
+
+💬 Phase 3: Ask-Me-Anything (Q&A Chat Mode)
+                                 * Chat-style interface
+
+                                 * Pre-tuned for explaining finance topics in plain language
+
+                                 * User inputs:
+
+                                    * "Explain how interest rates affect stocks"
+
+                                    * "Give an example of a bond"
+
+                                    * "Why do tariffs increase prices?"
+
+                                       * Returns answer + example + link to relevant topic card
+
+🧪 Phase 4: Personalized Learning Path
+                                          * Track completed topics
+
+                                          * Bookmark confusing ones
+
+                                          * Store quiz scores and retry attempts
+
+                                          * Recommend "what to learn next"
+
+🚀 Phase 5: Scenario Playground
+                                             * Simulate economic changes:
+
+                                                * "Tariffs rise by 20%"
+
+                                                * "Interest rates cut by Fed"
+
+                                                * "Inflation spikes to 6%"
+
+                                                   * Show expected impact on:
+
+                                                      * Bonds, Stocks, Yields
+
+                                                      * Prices, Employment, Investment
+
+                                                         * Gamified learning outcomes
+
+________________
+
+
+5. 👥 User Personas / Stories
+📉 "As a new investor, I want to understand terms like 'yields' and 'the Fed' so I can make smart financial decisions."
+👨‍🎓 "As a student, I want to learn with examples that are easy to remember and tied to current events."
+🤝 "As someone who reads the news, I want to understand how the stories affect my money."
+🙋 "As a lifelong learner, I want to track my learning and revisit hard topics later."
+________________
+
+
+6. 🧠 AI Strategy
+                                                            * GPT-4 for answering questions, generating examples, and simplifying explanations
+
+                                                            * Prompt templates structured per topic card:
+
+                                                               * "Explain X like I’m 12 years old, with a real-world analogy"
+
+                                                               * "Give a 3-sentence summary of Y"
+
+                                                               * "Create a multiple-choice quiz for Z with one correct answer and 3 distractors"
+
+                                                               * "Simulate a user misunderstanding and provide a correction"
+
+                                                                  * Additional prompts inspired by investing principles:
+
+                                                                     * "What would Warren Buffett think about this financial behavior?"
+
+                                                                     * "How does this economic event fit into Ray Dalio’s economic machine framework?"
+
+                                                                        * Later: Fine-tuned agent for financial education and economic modeling
+
+________________
+
+
+7. 📈 Success Metrics
+                                                                           * Quiz performance (avg score, retry rate)
+
+                                                                           * Concept retention (revisit rate per user)
+
+                                                                           * Time-to-understand (time on topic)
+
+                                                                           * Repeat usage
+
+                                                                           * % of users who ask follow-up questions
+
+________________
+
+
+8. 🔗 Dependencies / Stack
+                                                                              * Frontend: React (for Replit Core) or Svelte (for Bolt.new)
+
+                                                                              * Backend: FastAPI or Flask
+
+                                                                              * AI: OpenAI GPT-4 API
+
+                                                                              * Market Data: Alpha Vantage, Twelve Data, or Finnhub (Free Tiers)
+
+                                                                              * Database: PostgreSQL (Replit Core) or Firebase (Bolt.new)
+
+________________
+
+
+9. 🚣 Next Steps / Roadmap
+                                                                                 1. Finalize prompt templates per topic
+
+                                                                                 2. Build core Topic Explorer UI (Phase 1)
+
+                                                                                 3. Add quiz logic and topic tracker
+
+                                                                                 4. Integrate real-time data APIs (Phase 2)
+
+                                                                                 5. Build Q&A Chat UI (Phase 3)
+
+                                                                                 6. Launch to beta users for feedback
+
+________________
