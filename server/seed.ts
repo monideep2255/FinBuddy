@@ -117,6 +117,50 @@ export async function seedDatabase() {
           realWorldExample: "When a 25% tariff is placed on imported steel, foreign steel becomes more expensive, leading domestic steel producers to raise their prices as well. This benefits domestic steel producers but increases costs for industries that use steel, like construction and automotive, potentially leading to higher prices for consumers."
         },
         createdAt: new Date().toISOString()
+      },
+      {
+        title: "Credit Scores",
+        description: "A numerical representation of creditworthiness. Learn how credit scores are calculated and impact financial opportunities.",
+        category: "Personal Finance",
+        readingTime: "6 min read",
+        content: {
+          explanation: "Credit scores are numerical assessments of a person's creditworthiness, typically ranging from 300 to 850. They're calculated based on payment history, credit utilization, length of credit history, credit mix, and new credit applications.",
+          realWorldExample: "Someone with a credit score of 750 might qualify for a 3.5% mortgage rate, while someone with a 600 score might pay 5.5% or be denied altogether. On a $300,000 mortgage, this difference could mean paying hundreds more per month."
+        },
+        createdAt: new Date().toISOString()
+      },
+      {
+        title: "Diversification",
+        description: "The strategy of spreading investments across different assets to reduce risk. Learn why not putting all eggs in one basket matters.",
+        category: "Investments",
+        readingTime: "7 min read",
+        content: {
+          explanation: "Diversification is a risk management strategy that mixes different investments within a portfolio. The principle is that a portfolio constructed of different kinds of assets will pose a lower risk than any individual asset.",
+          realWorldExample: "If you invested $10,000 only in airline stocks in 2020, you might have lost 60% during the pandemic. But if you had split that money between airlines, technology, healthcare, and government bonds, your losses would have been significantly reduced."
+        },
+        createdAt: new Date().toISOString()
+      },
+      {
+        title: "Risk Management",
+        description: "Strategies to identify, assess and protect against financial risks. Learn how to protect your financial future.",
+        category: "Personal Finance",
+        readingTime: "8 min read",
+        content: {
+          explanation: "Risk management involves identifying potential financial risks and taking steps to minimize their impact. This includes insurance, emergency funds, and investment diversification.",
+          realWorldExample: "A family maintains a 6-month emergency fund, has life and disability insurance, and diversifies investments between stocks and bonds. When the breadwinner loses their job, the emergency fund keeps them afloat until new employment is found."
+        },
+        createdAt: new Date().toISOString()
+      },
+      {
+        title: "Tax Planning",
+        description: "Strategies to efficiently manage tax obligations. Learn about deductions, credits, and tax-advantaged accounts.",
+        category: "Personal Finance",
+        readingTime: "7 min read",
+        content: {
+          explanation: "Tax planning involves organizing your financial affairs to legally minimize tax liability. This includes understanding tax brackets, deductions, credits, and timing of income and expenses.",
+          realWorldExample: "By contributing $6,000 to a traditional IRA, someone in the 24% tax bracket saves $1,440 in taxes that year. Over 30 years, these tax-deferred savings can grow substantially through compound interest."
+        },
+        createdAt: new Date().toISOString()
       }
     ];
     
