@@ -51,6 +51,72 @@ export async function seedDatabase() {
           realWorldExample: "Let's say you purchase a 10-year corporate bond with a face value of $1,000 and a 5% annual coupon rate. Each year, you receive $50 in interest payments (5% of $1,000). After 10 years, when the bond matures, you receive back your original $1,000 investment.\n\nBut what if two years after you buy this bond, interest rates rise and new bonds with similar risk are being issued with a 7% coupon? Your 5% bond becomes less attractive in the secondary market, and if you tried to sell it before maturity, you might have to do so at a discount—perhaps $900 instead of $1,000.\n\nConversely, if interest rates fall to 3%, your 5% bond becomes more valuable, and you might be able to sell it for a premium—perhaps $1,100.\n\nThis is why understanding the relationship between interest rates and bond prices is crucial for bond investors. Many retirees rely on bonds for income, and corporations and governments depend on bond markets to finance their operations and projects."
         },
         createdAt: new Date().toISOString()
+      },
+      {
+        title: "Stocks",
+        description: "Ownership shares in companies that can be bought and sold on stock exchanges. Learn the basics of stock investing and market analysis.",
+        category: "Investments",
+        readingTime: "6 min read",
+        content: {
+          explanation: "Stocks represent ownership in a company. When you buy a stock, you're purchasing a small piece of that company and become a shareholder. The value of your shares can increase or decrease based on the company's performance, market conditions, and investor sentiment.\n\nCompanies issue stocks to raise capital for growth, operations, or other business needs. Investors can profit from stocks in two ways: through price appreciation (buying low and selling high) and through dividends (regular payments some companies make to shareholders from their profits).",
+          realWorldExample: "Let's say you invested $1,000 in Apple stock in 2010 when it was trading at around $10 per share (adjusted for splits). By 2023, with the stock trading above $150, your investment would be worth over $15,000. This example shows the potential for significant returns from long-term stock investing in successful companies."
+        },
+        createdAt: new Date().toISOString()
+      },
+      {
+        title: "Mutual Funds",
+        description: "Investment vehicles that pool money from multiple investors to purchase a diversified portfolio of stocks, bonds, or other securities.",
+        category: "Investments",
+        readingTime: "7 min read",
+        content: {
+          explanation: "Mutual funds allow investors to pool their money together to invest in a diversified portfolio of securities. Professional fund managers make investment decisions on behalf of investors, choosing which securities to buy and sell based on the fund's objectives.\n\nMutual funds offer instant diversification and professional management, making them suitable for investors who don't have the time, knowledge, or resources to manage their own portfolio of individual securities.",
+          realWorldExample: "Consider a $1,000 investment in a total stock market index fund. This would give you ownership in thousands of companies across different sectors and sizes, rather than being concentrated in just a few stocks. If one company performs poorly, its impact on your overall investment is minimal due to diversification."
+        },
+        createdAt: new Date().toISOString()
+      },
+      {
+        title: "ETFs",
+        description: "Exchange-traded funds that combine features of mutual funds and stocks. Learn how ETFs offer diversification with trading flexibility.",
+        category: "Investments",
+        readingTime: "6 min read",
+        content: {
+          explanation: "Exchange-Traded Funds (ETFs) are investment funds that trade on stock exchanges like individual stocks. They typically track an index, sector, commodity, or other asset, but can be bought and sold throughout the day like stocks.\n\nETFs often have lower fees than mutual funds and offer greater trading flexibility. They can be an efficient way to invest in a broad market index or specific sector while maintaining liquidity.",
+          realWorldExample: "An S&P 500 ETF lets you invest in 500 of America's largest companies with a single purchase. If you invest $1,000 in such an ETF, you effectively own a small piece of companies like Apple, Microsoft, Amazon, and others, proportional to their weight in the index."
+        },
+        createdAt: new Date().toISOString()
+      },
+      {
+        title: "Options",
+        description: "Financial contracts that give buyers the right, but not obligation, to buy or sell assets at specified prices within a set time period.",
+        category: "Investments",
+        readingTime: "8 min read",
+        content: {
+          explanation: "Options are contracts that give the holder the right, but not the obligation, to buy (call option) or sell (put option) an asset at a predetermined price within a specific time period. They can be used for speculation, hedging, or generating income.\n\nOptions are considered advanced investment instruments due to their complexity and potential for significant gains or losses.",
+          realWorldExample: "Imagine you buy a call option on Apple stock with a strike price of $150 expiring in 3 months. If Apple's stock price rises to $170, you can exercise your option to buy at $150 and immediately sell at $170, profiting from the difference (minus the cost of the option)."
+        },
+        createdAt: new Date().toISOString()
+      },
+      {
+        title: "Yields",
+        description: "The income return on investments, typically expressed as a percentage. Understand how different types of yields affect investment decisions.",
+        category: "Investments",
+        readingTime: "5 min read",
+        content: {
+          explanation: "Yield represents the income generated by an investment relative to its price. Common types include dividend yield for stocks, coupon yield for bonds, and yield to maturity for bonds held to maturity.\n\nYields help investors compare different investments and understand the income they can expect from each. Higher yields often indicate higher risk.",
+          realWorldExample: "If a stock pays $2 in annual dividends and trades at $50 per share, its dividend yield is 4% ($2/$50). If interest rates rise and similar investments start offering 5% yields, the stock's price might fall to $40 to make its yield more competitive (now $2/$40 = 5%)."
+        },
+        createdAt: new Date().toISOString()
+      },
+      {
+        title: "Tariffs",
+        description: "Taxes on imported goods that affect international trade and domestic prices. Learn how tariffs impact the global economy and consumer costs.",
+        category: "Economics",
+        readingTime: "5 min read",
+        content: {
+          explanation: "Tariffs are taxes imposed on imported goods and services. Governments use them to protect domestic industries, raise revenue, or achieve political objectives. When a tariff is imposed, it typically increases the price of imported goods, which can affect both businesses and consumers.\n\nTariffs can lead to trade disputes, retaliation from other countries, and changes in global supply chains.",
+          realWorldExample: "When a 25% tariff is placed on imported steel, foreign steel becomes more expensive, leading domestic steel producers to raise their prices as well. This benefits domestic steel producers but increases costs for industries that use steel, like construction and automotive, potentially leading to higher prices for consumers."
+        },
+        createdAt: new Date().toISOString()
       }
     ];
     
