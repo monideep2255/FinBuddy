@@ -90,72 +90,78 @@ export default function TopicDetail() {
       <Header />
       
       <main className="flex-grow">
-        <section className="container mx-auto px-4 py-8 bg-white rounded-xl shadow-sm border border-neutral-100 mb-8">
+        <section className="container mx-auto px-4 py-8 bg-white dark:bg-neutral-900 rounded-xl shadow-sm border border-neutral-100 dark:border-neutral-800 mb-8">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
             <div>
               <div className="flex items-center mb-4">
                 <Link href="/">
-                  <a className="mr-3 text-neutral-500 hover:text-neutral-700">
-                    <span className="material-icons">arrow_back</span>
+                  <a className="mr-3 text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                      <path fillRule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clipRule="evenodd" />
+                    </svg>
                   </a>
                 </Link>
-                <h2 className="text-2xl font-semibold text-neutral-800">{topic.title}</h2>
-                <span className="ml-3 px-2 py-1 text-xs font-medium rounded-full bg-secondary-50 text-secondary-700">
+                <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100">{topic.title}</h2>
+                <span className="ml-3 px-2 py-1 text-xs font-medium rounded-full bg-secondary-50 dark:bg-secondary-900 text-secondary-700 dark:text-secondary-300">
                   {topic.category}
                 </span>
               </div>
-              <p className="text-neutral-600 max-w-3xl">{topic.description}</p>
+              <p className="text-neutral-600 dark:text-neutral-400 max-w-3xl">{topic.description}</p>
             </div>
             <div className="mt-4 md:mt-0 flex space-x-2">
-              <button className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 rounded-lg text-neutral-700 text-sm font-medium transition-colors duration-200 flex items-center">
-                <span className="material-icons text-sm mr-1">bookmark</span>
+              <button className="px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-1.5">
+                  <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
+                </svg>
                 Save
               </button>
-              <button className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 rounded-lg text-neutral-700 text-sm font-medium transition-colors duration-200 flex items-center">
-                <span className="material-icons text-sm mr-1">share</span>
+              <button className="px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-1.5">
+                  <path fillRule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clipRule="evenodd" />
+                </svg>
                 Share
               </button>
             </div>
           </div>
 
           {/* Topic Content Tabs */}
-          <div className="border-b border-neutral-200">
+          <div className="border-b border-neutral-200 dark:border-neutral-700">
             <div className="flex -mb-px">
               <button 
-                className={`px-4 py-3 border-b-2 font-medium ${
+                className={`px-4 py-3 border-b-2 font-medium transition-colors ${
                   activeTab === 'explanation' 
-                    ? 'border-primary-500 text-primary-600' 
-                    : 'border-transparent text-neutral-500 hover:text-neutral-700'
+                    ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                    : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
                 }`}
                 onClick={() => handleTabChange('explanation')}
               >
                 Explanation
               </button>
               <button 
-                className={`px-4 py-3 border-b-2 font-medium ${
+                className={`px-4 py-3 border-b-2 font-medium transition-colors ${
                   activeTab === 'example' 
-                    ? 'border-primary-500 text-primary-600' 
-                    : 'border-transparent text-neutral-500 hover:text-neutral-700'
+                    ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                    : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
                 }`}
                 onClick={() => handleTabChange('example')}
               >
                 Real-world Example
               </button>
               <button 
-                className={`px-4 py-3 border-b-2 font-medium ${
+                className={`px-4 py-3 border-b-2 font-medium transition-colors ${
                   activeTab === 'quiz' 
-                    ? 'border-primary-500 text-primary-600' 
-                    : 'border-transparent text-neutral-500 hover:text-neutral-700'
+                    ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                    : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
                 }`}
                 onClick={() => handleTabChange('quiz')}
               >
                 Quiz
               </button>
               <button 
-                className={`px-4 py-3 border-b-2 font-medium ${
+                className={`px-4 py-3 border-b-2 font-medium transition-colors ${
                   activeTab === 'liveData' 
-                    ? 'border-primary-500 text-primary-600' 
-                    : 'border-transparent text-neutral-500 hover:text-neutral-700'
+                    ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                    : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
                 }`}
                 onClick={() => handleTabChange('liveData')}
               >
@@ -179,13 +185,15 @@ export default function TopicDetail() {
           
           {activeTab === 'liveData' && (
             <div className="py-6 font-serif">
-              <h3 className="text-xl font-semibold text-neutral-800 mb-4">Live Market Data</h3>
-              <p className="text-neutral-700 mb-4">
+              <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100 mb-4">Live Market Data</h3>
+              <p className="text-neutral-700 dark:text-neutral-300 mb-4">
                 This feature will be available in Phase 2. Stay tuned for real-time market data related to {topic.title}.
               </p>
-              <div className="p-8 border border-dashed border-neutral-300 rounded-lg text-center">
-                <span className="material-icons text-4xl text-neutral-400 mb-2">insights</span>
-                <p className="text-neutral-500">Live data integration coming soon</p>
+              <div className="p-8 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 text-neutral-400 dark:text-neutral-600 mx-auto mb-2">
+                  <path fillRule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm4.5 7.5a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75zm3.75-1.5a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0V12zm2.25-3a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0V9.75A.75.75 0 0113.5 9zm3.75-1.5a.75.75 0 00-1.5 0v9a.75.75 0 001.5 0v-9z" clipRule="evenodd" />
+                </svg>
+                <p className="text-neutral-500 dark:text-neutral-400">Live data integration coming soon</p>
               </div>
             </div>
           )}
