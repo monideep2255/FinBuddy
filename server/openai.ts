@@ -2,7 +2,14 @@ import OpenAI from "openai";
 import { QuizQuestion, TopicContent } from "@shared/schema";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || "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" });
+const isApiKeyMissing = !process.env.OPENAI_API_KEY;
+
+if (isApiKeyMissing) {
+  console.warn("Warning: OPENAI_API_KEY environment variable not set. Using fallback content for AI-generated responses.");
+}
+
+// Create OpenAI instance only if API key is available
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 
 // Generate explanation and real-world example for a topic
 export async function generateTopicExplanation(topic: string): Promise<TopicContent> {
