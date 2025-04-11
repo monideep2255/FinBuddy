@@ -13,6 +13,14 @@ const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPE
 
 // Generate explanation and real-world example for a topic
 export async function generateTopicExplanation(topic: string): Promise<TopicContent> {
+  // If OpenAI client is not available, return fallback content
+  if (!openai) {
+    return {
+      explanation: `This is a placeholder explanation for ${topic}. The OpenAI API is not configured. Please add your API key to the .env file.`,
+      realWorldExample: `This is a placeholder real-world example for ${topic}. The OpenAI API is not configured. Please add your API key to the .env file.`
+    };
+  }
+  
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
@@ -50,6 +58,34 @@ export async function generateTopicExplanation(topic: string): Promise<TopicCont
 
 // Generate quiz questions for a topic
 export async function generateQuizQuestions(topic: string): Promise<QuizQuestion[]> {
+  // Default fallback questions
+  const fallbackQuestions = [
+    {
+      question: `What is ${topic}?`,
+      options: [
+        { text: "The correct definition", isCorrect: true },
+        { text: "An incorrect definition", isCorrect: false },
+        { text: "Another incorrect definition", isCorrect: false },
+        { text: "Yet another incorrect definition", isCorrect: false }
+      ]
+    },
+    {
+      question: `How does ${topic} impact the economy?`,
+      options: [
+        { text: "The correct impact", isCorrect: true },
+        { text: "An incorrect impact", isCorrect: false },
+        { text: "Another incorrect impact", isCorrect: false },
+        { text: "Yet another incorrect impact", isCorrect: false }
+      ]
+    }
+  ];
+
+  // If OpenAI client is not available, return fallback questions
+  if (!openai) {
+    console.log(`Using fallback quiz questions for ${topic} (OpenAI API not configured)`);
+    return fallbackQuestions;
+  }
+  
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
@@ -78,47 +114,9 @@ export async function generateQuizQuestions(topic: string): Promise<QuizQuestion
     }
     
     // Fallback questions if format is incorrect
-    return [
-      {
-        question: `What is ${topic}?`,
-        options: [
-          { text: "The correct definition", isCorrect: true },
-          { text: "An incorrect definition", isCorrect: false },
-          { text: "Another incorrect definition", isCorrect: false },
-          { text: "Yet another incorrect definition", isCorrect: false }
-        ]
-      },
-      {
-        question: `How does ${topic} impact the economy?`,
-        options: [
-          { text: "The correct impact", isCorrect: true },
-          { text: "An incorrect impact", isCorrect: false },
-          { text: "Another incorrect impact", isCorrect: false },
-          { text: "Yet another incorrect impact", isCorrect: false }
-        ]
-      }
-    ];
+    return fallbackQuestions;
   } catch (error) {
     console.error("Error generating quiz questions:", error);
-    return [
-      {
-        question: `What is ${topic}?`,
-        options: [
-          { text: "The correct definition", isCorrect: true },
-          { text: "An incorrect definition", isCorrect: false },
-          { text: "Another incorrect definition", isCorrect: false },
-          { text: "Yet another incorrect definition", isCorrect: false }
-        ]
-      },
-      {
-        question: `How does ${topic} impact the economy?`,
-        options: [
-          { text: "The correct impact", isCorrect: true },
-          { text: "An incorrect impact", isCorrect: false },
-          { text: "Another incorrect impact", isCorrect: false },
-          { text: "Yet another incorrect impact", isCorrect: false }
-        ]
-      }
-    ];
+    return fallbackQuestions;
   }
 }
