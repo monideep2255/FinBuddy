@@ -42,14 +42,8 @@ export default function TopicCard({ topic }: TopicCardProps) {
           {topic.description}
         </p>
         
-        {/* Footer with reading time and explore button */}
-        <div className="flex items-center justify-between">
-          {/* Reading time indicator */}
-          <div className="flex items-center text-xs text-neutral-500 dark:text-neutral-500">
-            <span className="material-icons text-sm mr-1">schedule</span>
-            <span>{topic.readingTime}</span>
-          </div>
-          
+        {/* Footer with explore button */}
+        <div className="flex items-center justify-end mt-4">
           {/* Explore button - links to topic detail page */}
           <Link href={`/topics/${topic.id}`}>
             <div className="px-4 py-1.5 bg-primary-50 dark:bg-primary-950 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-lg text-primary-700 dark:text-primary-400 text-sm font-medium transition-colors duration-200 cursor-pointer">

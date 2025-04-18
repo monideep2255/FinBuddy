@@ -8,6 +8,9 @@ import { useQuery } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
 import { Topic } from '@/lib/types';
 
+// Temporary simulated auth state - in a real app this would come from an auth context
+const demoIsLoggedIn = true; // Change to false to simulate logged out state
+
 /**
  * Home Page Component
  * 
@@ -83,7 +86,7 @@ export default function Home() {
       <main className="flex-grow">
         <section className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-            <div className="lg:col-span-3">
+            <div className={`${demoIsLoggedIn ? 'lg:col-span-3' : 'lg:col-span-4'}`}>
               {/* Page Title and Description */}
               <div className="mb-8">
                 <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100 mb-2">
@@ -95,10 +98,12 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Progress Tracker - For logged in users */}
-            <div className="lg:col-span-1">
-              <ProgressTracker userId={1} />
-            </div>
+            {/* Progress Tracker - Only shown for logged in users */}
+            {demoIsLoggedIn && (
+              <div className="lg:col-span-1">
+                <ProgressTracker userId={1} />
+              </div>
+            )}
           </div>
 
           {/* Search and Filter Bar */}
@@ -136,7 +141,7 @@ export default function Home() {
                 <option>All Topics</option>
                 <option>Economics</option>
                 <option>Investments</option>
-                <option>Markets</option>
+                <option>Personal Finance</option>
               </select>
               
               {/* Sort Order */}
