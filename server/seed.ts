@@ -21,8 +21,9 @@ export async function seedDatabase(force = false) {
         log("Failed to reset database, aborting seed operation.");
         return;
       }
-    } else if (existingTopics.length > 0) {
-      log("Database already seeded, skipping...");
+    } else if (existingTopics.length > 0 && existingTopics.length >= 10) {
+      // Only skip if we have at least 10 topics to ensure all topics are added
+      log("Database already fully seeded, skipping...");
       return;
     }
     
@@ -67,7 +68,7 @@ export async function seedDatabase(force = false) {
         title: "Stocks",
         description: "Ownership shares in companies that can be bought and sold on stock exchanges. Learn the basics of stock investing and market analysis.",
         category: "Investments",
-        readingTime: "6 min read",
+        readingTime: "",
         content: {
           explanation: "Stocks represent ownership in a company. When you buy a stock, you're purchasing a small piece of that company and become a shareholder. The value of your shares can increase or decrease based on the company's performance, market conditions, and investor sentiment.\n\nCompanies issue stocks to raise capital for growth, operations, or other business needs. Investors can profit from stocks in two ways: through price appreciation (buying low and selling high) and through dividends (regular payments some companies make to shareholders from their profits).",
           realWorldExample: "Let's say you invested $1,000 in Apple stock in 2010 when it was trading at around $10 per share (adjusted for splits). By 2023, with the stock trading above $150, your investment would be worth over $15,000. This example shows the potential for significant returns from long-term stock investing in successful companies."
@@ -78,7 +79,7 @@ export async function seedDatabase(force = false) {
         title: "Mutual Funds",
         description: "Investment vehicles that pool money from multiple investors to purchase a diversified portfolio of stocks, bonds, or other securities.",
         category: "Investments",
-        readingTime: "7 min read",
+        readingTime: "",
         content: {
           explanation: "Mutual funds allow investors to pool their money together to invest in a diversified portfolio of securities. Professional fund managers make investment decisions on behalf of investors, choosing which securities to buy and sell based on the fund's objectives.\n\nMutual funds offer instant diversification and professional management, making them suitable for investors who don't have the time, knowledge, or resources to manage their own portfolio of individual securities.",
           realWorldExample: "Consider a $1,000 investment in a total stock market index fund. This would give you ownership in thousands of companies across different sectors and sizes, rather than being concentrated in just a few stocks. If one company performs poorly, its impact on your overall investment is minimal due to diversification."
