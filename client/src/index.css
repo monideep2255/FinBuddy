@@ -3,15 +3,32 @@
 @tailwind utilities;
 
 /* Override to ensure consistent light/dark theme across all components */
+:root {
+  --background-light: #ffffff;
+  --background-dark: #121212;
+}
+
 .dark {
   color-scheme: dark;
+  background-color: var(--background-dark);
 }
 
 .light {
   color-scheme: light;
+  background-color: var(--background-light);
 }
 
-/* Ensure shadcn Card components respect theme */
+/* Ensure consistent background colors */
+html {
+  @apply bg-white dark:bg-neutral-950;
+}
+
+body {
+  @apply bg-white dark:bg-neutral-950;
+  min-height: 100vh;
+}
+
+/* Ensure consistent card backgrounds */
 .dark .bg-card {
   background-color: hsl(var(--card));
   color: hsl(var(--card-foreground));
@@ -22,12 +39,18 @@
   color: hsl(var(--card-foreground));
 }
 
+/* Consistent background for all pages */
+#root {
+  @apply bg-white dark:bg-neutral-950;
+  min-height: 100vh;
+}
+
 @layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased text-foreground;
   }
 }

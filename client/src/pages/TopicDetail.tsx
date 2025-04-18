@@ -128,7 +128,7 @@ export default function TopicDetail() {
 
   if (isTopicLoading) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-white dark:bg-neutral-950">
         <Header />
         <main className="flex-grow">
           <section className="container mx-auto px-4 py-8 bg-white dark:bg-neutral-900 rounded-xl shadow-sm border border-neutral-100 dark:border-neutral-800 mb-8">
@@ -184,7 +184,7 @@ export default function TopicDetail() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-neutral-950">
       <Header />
       
       <main className="flex-grow">
