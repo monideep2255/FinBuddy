@@ -2,8 +2,12 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generateTopicExplanation, generateQuizQuestions } from "./openai";
+import { setupAuth } from "./auth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup authentication
+  setupAuth(app);
+  
   // Get all topics
   app.get("/api/topics", async (req, res) => {
     try {
@@ -84,10 +88,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get user progress
-  app.get("/api/users/:userId/progress", async (req, res) => {
+  // Middleware to check if user is authenticated
+  const isAuthenticated = (req: any, res: any, next: any) => {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.status(401).json({ message: "You must be logged in to access this resource" });
+  };
+
+  // Get user progress - requires authentication
+  app.get("/api/users/:userId/progress", isAuthenticated, async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
+      
+      // Make sure the user can only access their own progress
+      if (req.user.id !== userId) {
+        return res.status(403).json({ message: "You can only access your own progress" });
+      }
       
       // Get all progress entries for this user
       const progressEntries = await storage.getUserProgress(userId);
@@ -107,11 +124,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Update topic progress
-  app.post("/api/users/:userId/topics/:topicId/progress", async (req, res) => {
+  // Update topic progress - requires authentication
+  app.post("/api/users/:userId/topics/:topicId/progress", isAuthenticated, async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
       const topicId = parseInt(req.params.topicId);
+      
+      // Make sure the user can only update their own progress
+      if (req.user.id !== userId) {
+        return res.status(403).json({ message: "You can only update your own progress" });
+      }
       
       // Check if the topic exists
       const topic = await storage.getTopicById(topicId);
