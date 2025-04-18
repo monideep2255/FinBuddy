@@ -6,18 +6,23 @@ import { useEffect } from 'react';
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import TopicDetail from "@/pages/TopicDetail";
+import AuthPage from "@/pages/auth-page";
+import { AuthProvider } from "@/hooks/use-auth";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 /**
  * Router Component
  * 
  * Defines the application's routes and maps them to their respective components.
  * Uses wouter for lightweight routing.
+ * Protected routes are only accessible to authenticated users.
  */
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/topics/:id" component={TopicDetail} />
+      <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -49,8 +54,10 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Router />
-      <Toaster />
+      <AuthProvider>
+        <Router />
+        <Toaster />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

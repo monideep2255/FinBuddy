@@ -5,11 +5,11 @@ import TopicGrid from '@/components/TopicGrid';
 import Disclaimer from '@/components/Disclaimer';
 import ProgressTracker from '@/components/ProgressTracker';
 import { useQuery } from '@tanstack/react-query';
-import { Search } from 'lucide-react';
+import { Search, LogIn } from 'lucide-react';
 import { Topic } from '@/lib/types';
-
-// Temporary simulated auth state - in a real app this would come from an auth context
-const demoIsLoggedIn = true; // Change to false to simulate logged out state
+import { Link } from 'wouter';
+import { useAuth } from '@/hooks/use-auth';
+import { Button } from '@/components/ui/button';
 
 /**
  * Home Page Component
@@ -18,6 +18,9 @@ const demoIsLoggedIn = true; // Change to false to simulate logged out state
  * with search and filtering capabilities.
  */
 export default function Home() {
+  // Get authentication state
+  const { user, isLoading: authLoading, logoutMutation } = useAuth();
+  
   // State for search and filtering options
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All Topics');
@@ -86,7 +89,7 @@ export default function Home() {
       <main className="flex-grow">
         <section className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-            <div className={`${demoIsLoggedIn ? 'lg:col-span-3' : 'lg:col-span-4'}`}>
+            <div className={`${user ? 'lg:col-span-3' : 'lg:col-span-4'}`}>
               {/* Page Title and Description */}
               <div className="mb-8">
                 <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100 mb-2">
@@ -95,13 +98,39 @@ export default function Home() {
                 <p className="text-neutral-600 dark:text-neutral-400 max-w-3xl">
                   Learn key financial concepts through simple explanations, real-world examples, and interactive quizzes.
                 </p>
+                
+                {/* Auth actions */}
+                <div className="mt-4">
+                  {user ? (
+                    <div className="flex items-center space-x-4">
+                      <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                        Logged in as <span className="font-semibold">{user.username}</span>
+                      </span>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => logoutMutation.mutate()}
+                        disabled={logoutMutation.isPending}
+                      >
+                        {logoutMutation.isPending ? 'Logging out...' : 'Logout'}
+                      </Button>
+                    </div>
+                  ) : (
+                    <Link href="/auth">
+                      <Button className="flex items-center" size="sm">
+                        <LogIn className="mr-2 h-4 w-4" />
+                        Sign in to track progress
+                      </Button>
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
             
             {/* Progress Tracker - Only shown for logged in users */}
-            {demoIsLoggedIn && (
+            {user && (
               <div className="lg:col-span-1">
-                <ProgressTracker userId={1} />
+                <ProgressTracker userId={user.id} />
               </div>
             )}
           </div>

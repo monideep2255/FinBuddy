@@ -102,7 +102,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.params.userId);
       
       // Make sure the user can only access their own progress
-      if (req.user.id !== userId) {
+      if (req.user && req.user.id !== userId) {
         return res.status(403).json({ message: "You can only access your own progress" });
       }
       
@@ -131,7 +131,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const topicId = parseInt(req.params.topicId);
       
       // Make sure the user can only update their own progress
-      if (req.user.id !== userId) {
+      if (req.user && req.user.id !== userId) {
         return res.status(403).json({ message: "You can only update your own progress" });
       }
       
