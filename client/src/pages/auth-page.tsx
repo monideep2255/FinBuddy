@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Redirect } from "wouter";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useToast } from "@/hooks/use-toast";
 
 /**
  * AuthPage Component
@@ -20,9 +21,27 @@ import Footer from "@/components/Footer";
 export default function AuthPage() {
   // Get auth context
   const { user, isLoading, loginMutation, registerMutation } = useAuth();
+  const { toast } = useToast();
   
   // Track which form is active
   const [isLogin, setIsLogin] = useState(true);
+  
+  // Show success toast when login or registration succeeds
+  useEffect(() => {
+    if (loginMutation.isSuccess) {
+      toast({
+        title: "Login successful",
+        description: `Welcome back, ${loginMutation.data?.username}!`,
+      });
+    }
+    
+    if (registerMutation.isSuccess) {
+      toast({
+        title: "Registration successful",
+        description: `Welcome, ${registerMutation.data?.username}!`,
+      });
+    }
+  }, [loginMutation.isSuccess, registerMutation.isSuccess, toast]);
   
   // Setup form validation with react-hook-form and zod
   const { 
