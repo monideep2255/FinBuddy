@@ -41,8 +41,21 @@ export default function QuizTab({ quiz, isLoading, onQuizComplete }: QuizTabProp
       }
     });
     
+    // Calculate percentage score
+    const percentageScore = Math.round((correctCount / quiz.questions.length) * 100);
+    
+    // Set state
     setScore(correctCount);
     setSubmitted(true);
+    
+    // Check if quiz is passed (70% or higher is passing)
+    const isPassed = percentageScore >= 70;
+    setQuizPassed(isPassed);
+    
+    // If there's a callback, call it with the score
+    if (onQuizComplete) {
+      onQuizComplete(percentageScore);
+    }
   };
 
   const handleRetry = () => {
@@ -108,18 +121,36 @@ export default function QuizTab({ quiz, isLoading, onQuizComplete }: QuizTabProp
       
       {submitted && score !== null && (
         <div className={`mb-6 p-4 rounded-lg ${
-          score === quiz.questions.length 
+          quizPassed
             ? 'bg-green-50 dark:bg-green-950 border border-green-100 dark:border-green-900' 
             : 'bg-blue-50 dark:bg-blue-950 border border-blue-100 dark:border-blue-900'
         }`}>
-          <p className={`font-medium ${
-            score === quiz.questions.length 
-              ? 'text-green-800 dark:text-green-300' 
-              : 'text-blue-800 dark:text-blue-300'
-          }`}>
-            You scored {score} out of {quiz.questions.length}!
-            {score === quiz.questions.length && ' Great job!'}
-          </p>
+          <div className="flex items-center">
+            {quizPassed && (
+              <div className="mr-3 bg-green-100 dark:bg-green-800 p-2 rounded-full">
+                <Award className="h-5 w-5 text-green-600 dark:text-green-300" />
+              </div>
+            )}
+            <div>
+              <p className={`font-medium ${
+                quizPassed
+                  ? 'text-green-800 dark:text-green-300' 
+                  : 'text-blue-800 dark:text-blue-300'
+              }`}>
+                You scored {score} out of {quiz.questions.length}!
+                {score === quiz.questions.length && ' Perfect score!'}
+              </p>
+              {quizPassed ? (
+                <p className="text-sm text-green-600 dark:text-green-400 mt-1">
+                  Congratulations! You've passed this quiz.
+                </p>
+              ) : (
+                <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">
+                  You need to score at least 70% to pass. Try again!
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       )}
       

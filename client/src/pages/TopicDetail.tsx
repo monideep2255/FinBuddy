@@ -288,7 +288,11 @@ export default function TopicDetail() {
           )}
           
           {activeTab === 'quiz' && (
-            <QuizTab quiz={quiz} isLoading={isQuizLoading} />
+            <QuizTab 
+              quiz={quiz} 
+              isLoading={isQuizLoading} 
+              onQuizComplete={handleQuizComplete} 
+            />
           )}
           
           {activeTab === 'liveData' && (
