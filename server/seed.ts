@@ -1,16 +1,27 @@
 import { db } from "./db";
 import { topics, quizzes, insertTopicSchema, insertQuizSchema, type QuizQuestion } from "@shared/schema";
 import { log } from "./vite";
+import { resetDatabase } from "./resetDb";
+// Import OpenAI functions with alias to avoid naming conflicts
+import { generateQuizQuestions as openAIGenerateQuizQuestions } from "./openai";
 
 /**
  * Seeds the database with initial data
+ * @param force If true, will reset the database before seeding
  */
-export async function seedDatabase() {
+export async function seedDatabase(force = false) {
   try {
     // Check if database already has data
     const existingTopics = await db.select().from(topics);
     
-    if (existingTopics.length > 0) {
+    // If force is true, reset the database even if it has data
+    if (force && existingTopics.length > 0) {
+      const reset = await resetDatabase();
+      if (!reset) {
+        log("Failed to reset database, aborting seed operation.");
+        return;
+      }
+    } else if (existingTopics.length > 0) {
       log("Database already seeded, skipping...");
       return;
     }

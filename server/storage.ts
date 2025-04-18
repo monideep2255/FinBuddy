@@ -2,17 +2,20 @@ import {
   users, 
   topics, 
   quizzes, 
+  userProgress,
   type User, 
   type InsertUser, 
   type Topic, 
   type InsertTopic, 
   type Quiz,
   type InsertQuiz,
+  type UserProgress,
+  type InsertUserProgress,
   type QuizQuestion,
   type TopicContent
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, asc } from "drizzle-orm";
+import { eq, desc, asc, and } from "drizzle-orm";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -29,25 +32,35 @@ export interface IStorage {
   // Quiz operations
   getQuizByTopicId(topicId: number): Promise<Quiz | undefined>;
   createQuiz(quiz: InsertQuiz): Promise<Quiz>;
+  
+  // User Progress operations
+  getUserProgress(userId: number): Promise<UserProgress[]>;
+  getTopicProgress(userId: number, topicId: number): Promise<UserProgress | undefined>;
+  updateTopicProgress(userId: number, topicId: number, progress: Partial<InsertUserProgress>): Promise<UserProgress>;
+  getCompletedTopics(userId: number): Promise<number[]>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
   private topics: Map<number, Topic>;
   private quizzes: Map<number, Quiz>;
+  private userProgress: Map<string, UserProgress>; // key is userId:topicId
   
   currentUserId: number;
   currentTopicId: number;
   currentQuizId: number;
+  currentProgressId: number;
 
   constructor() {
     this.users = new Map();
     this.topics = new Map();
     this.quizzes = new Map();
+    this.userProgress = new Map();
     
     this.currentUserId = 1;
     this.currentTopicId = 1;
     this.currentQuizId = 1;
+    this.currentProgressId = 1;
     
     // Initialize with some topics
     this.seedInitialTopics();
@@ -96,6 +109,52 @@ export class MemStorage implements IStorage {
     const quiz: Quiz = { ...insertQuiz, id };
     this.quizzes.set(id, quiz);
     return quiz;
+  }
+  
+  // User Progress Methods
+  async getUserProgress(userId: number): Promise<UserProgress[]> {
+    return Array.from(this.userProgress.values()).filter(
+      progress => progress.userId === userId
+    );
+  }
+  
+  async getTopicProgress(userId: number, topicId: number): Promise<UserProgress | undefined> {
+    const key = `${userId}:${topicId}`;
+    return this.userProgress.get(key);
+  }
+  
+  async updateTopicProgress(userId: number, topicId: number, progressData: Partial<InsertUserProgress>): Promise<UserProgress> {
+    const key = `${userId}:${topicId}`;
+    let progress = this.userProgress.get(key);
+    
+    if (progress) {
+      // Update existing progress
+      progress = { ...progress, ...progressData };
+      this.userProgress.set(key, progress);
+      return progress;
+    } else {
+      // Create new progress entry
+      const id = this.currentProgressId++;
+      const newProgress: UserProgress = {
+        id,
+        userId,
+        topicId,
+        completed: progressData.completed || false,
+        quizScore: progressData.quizScore || null,
+        quizAttempts: progressData.quizAttempts || 0,
+        lastAccessed: progressData.lastAccessed || new Date(),
+        notes: progressData.notes || null
+      };
+      this.userProgress.set(key, newProgress);
+      return newProgress;
+    }
+  }
+  
+  async getCompletedTopics(userId: number): Promise<number[]> {
+    const userProgress = Array.from(this.userProgress.values()).filter(
+      progress => progress.userId === userId && progress.completed
+    );
+    return userProgress.map(progress => progress.topicId);
   }
   
   private seedInitialTopics() {
@@ -412,6 +471,76 @@ export class DatabaseStorage implements IStorage {
   async createQuiz(insertQuiz: InsertQuiz): Promise<Quiz> {
     const [quiz] = await db.insert(quizzes).values(insertQuiz).returning();
     return quiz;
+  }
+  
+  /**
+   * Get all progress entries for a user
+   */
+  async getUserProgress(userId: number): Promise<UserProgress[]> {
+    return db.select().from(userProgress).where(eq(userProgress.userId, userId));
+  }
+  
+  /**
+   * Get progress for a specific topic and user
+   */
+  async getTopicProgress(userId: number, topicId: number): Promise<UserProgress | undefined> {
+    const [progress] = await db.select().from(userProgress).where(
+      and(
+        eq(userProgress.userId, userId),
+        eq(userProgress.topicId, topicId)
+      )
+    );
+    return progress;
+  }
+  
+  /**
+   * Update or create progress for a topic
+   */
+  async updateTopicProgress(userId: number, topicId: number, progressData: Partial<InsertUserProgress>): Promise<UserProgress> {
+    // Check if progress already exists
+    const existingProgress = await this.getTopicProgress(userId, topicId);
+    
+    if (existingProgress) {
+      // Update existing progress
+      const [updated] = await db.update(userProgress)
+        .set({
+          ...progressData,
+          // Always update the lastAccessed timestamp unless explicitly provided
+          lastAccessed: progressData.lastAccessed || new Date()
+        })
+        .where(eq(userProgress.id, existingProgress.id))
+        .returning();
+      return updated;
+    } else {
+      // Create new progress
+      const [created] = await db.insert(userProgress)
+        .values({
+          userId,
+          topicId,
+          ...progressData,
+          // Default values if not provided
+          completed: progressData.completed !== undefined ? progressData.completed : false,
+          quizAttempts: progressData.quizAttempts || 0,
+          lastAccessed: progressData.lastAccessed || new Date()
+        })
+        .returning();
+      return created;
+    }
+  }
+  
+  /**
+   * Get list of topic IDs that the user has completed
+   */
+  async getCompletedTopics(userId: number): Promise<number[]> {
+    const completed = await db.select({ topicId: userProgress.topicId })
+      .from(userProgress)
+      .where(
+        and(
+          eq(userProgress.userId, userId),
+          eq(userProgress.completed, true)
+        )
+      );
+    return completed.map(record => record.topicId);
   }
 }
 
