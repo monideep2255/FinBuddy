@@ -84,6 +84,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get user progress
+  app.get("/api/users/:userId/progress", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      // Get all progress entries for this user
+      const progressEntries = await storage.getUserProgress(userId);
+      
+      // Get completed topics
+      const completedTopics = await storage.getCompletedTopics(userId);
+      
+      res.json({
+        userId,
+        progressEntries,
+        completedTopics,
+        totalComplete: completedTopics.length
+      });
+    } catch (error) {
+      console.error(`Error getting progress for user ${req.params.userId}:`, error);
+      res.status(500).json({ message: "Failed to fetch user progress" });
+    }
+  });
+  
+  // Update topic progress
+  app.post("/api/users/:userId/topics/:topicId/progress", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const topicId = parseInt(req.params.topicId);
+      
+      // Check if the topic exists
+      const topic = await storage.getTopicById(topicId);
+      if (!topic) {
+        return res.status(404).json({ message: "Topic not found" });
+      }
+      
+      // Update the progress
+      const progress = await storage.updateTopicProgress(userId, topicId, req.body);
+      
+      res.json(progress);
+    } catch (error) {
+      console.error(`Error updating progress for user ${req.params.userId} on topic ${req.params.topicId}:`, error);
+      res.status(500).json({ message: "Failed to update progress" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

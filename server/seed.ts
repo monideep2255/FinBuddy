@@ -182,7 +182,7 @@ export async function seedDatabase(force = false) {
       const [insertedTopic] = await db.insert(topics).values(validatedTopic).returning();
       
       // Create and insert quiz for this topic
-      const quizQuestions = generateQuizQuestions(insertedTopic.title);
+      const quizQuestions = generateSampleQuestions(insertedTopic.title);
       const quizData = {
         topicId: insertedTopic.id,
         questions: quizQuestions
@@ -200,9 +200,10 @@ export async function seedDatabase(force = false) {
 }
 
 /**
- * Generates quiz questions based on topic
+ * Generates sample quiz questions based on topic
+ * Used as a fallback when OpenAI generation fails
  */
-function generateQuizQuestions(topicTitle: string): QuizQuestion[] {
+function generateSampleQuestions(topicTitle: string): QuizQuestion[] {
   // Generate topic-specific questions
   switch (topicTitle) {
     case "Inflation":

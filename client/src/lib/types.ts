@@ -24,3 +24,21 @@ export interface Quiz {
   topicId: number;
   questions: QuizQuestion[];
 }
+
+export interface UserProgress {
+  id: number;
+  userId: number;
+  topicId: number;
+  completed: boolean;
+  quizScore: number | null;
+  quizAttempts: number;
+  lastAccessed: string;
+  notes: string | null;
+}
+
+export interface UserProgressResponse {
+  userId: number;
+  progressEntries: UserProgress[];
+  completedTopics: number[];
+  totalComplete: number;
+}
