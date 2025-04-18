@@ -59,21 +59,21 @@ export default function ProgressTracker({ userId }: ProgressTrackerProps) {
   const progressPercentage = totalTopics > 0 ? Math.round((completedCount / totalTopics) * 100) : 0;
 
   return (
-    <Card>
+    <Card className="bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800">
       <CardHeader>
-        <CardTitle className="flex items-center">
+        <CardTitle className="flex items-center text-neutral-800 dark:text-neutral-100">
           <Award className="mr-2 h-5 w-5 text-primary" />
           Your Learning Progress
         </CardTitle>
-        <CardDescription>Track your journey through financial topics</CardDescription>
+        <CardDescription className="text-neutral-500 dark:text-neutral-400">Track your journey through financial topics</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col space-y-4">
           {/* Overall progress bar */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm font-medium">Overall Progress</span>
-              <span className="text-sm text-muted-foreground">{progressPercentage}%</span>
+              <span className="text-sm font-medium text-neutral-800 dark:text-neutral-100">Overall Progress</span>
+              <span className="text-sm text-neutral-500 dark:text-neutral-400">{progressPercentage}%</span>
             </div>
             <Progress value={progressPercentage} className="h-2" />
           </div>
@@ -83,15 +83,15 @@ export default function ProgressTracker({ userId }: ProgressTrackerProps) {
             <div className="flex items-center">
               <BookOpen className="mr-2 h-5 w-5 text-primary" />
               <div>
-                <p className="text-sm text-muted-foreground">Completed</p>
-                <p className="text-lg font-bold">{completedCount} Topics</p>
+                <p className="text-sm text-neutral-500 dark:text-neutral-400">Completed</p>
+                <p className="text-lg font-bold text-neutral-800 dark:text-neutral-100">{completedCount} Topics</p>
               </div>
             </div>
             <div className="flex items-center">
               <Clock className="mr-2 h-5 w-5 text-primary" />
               <div>
-                <p className="text-sm text-muted-foreground">Remaining</p>
-                <p className="text-lg font-bold">{totalTopics - completedCount} Topics</p>
+                <p className="text-sm text-neutral-500 dark:text-neutral-400">Remaining</p>
+                <p className="text-lg font-bold text-neutral-800 dark:text-neutral-100">{totalTopics - completedCount} Topics</p>
               </div>
             </div>
           </div>
@@ -99,7 +99,7 @@ export default function ProgressTracker({ userId }: ProgressTrackerProps) {
           {/* Recent achievements */}
           {completedTopics.length > 0 && (
             <div>
-              <h4 className="text-sm font-medium mb-2">Recently Completed</h4>
+              <h4 className="text-sm font-medium mb-2 text-neutral-800 dark:text-neutral-100">Recently Completed</h4>
               <div className="flex flex-wrap gap-2">
                 {completedTopics.slice(0, 3).map((topicId: number) => {
                   const topic = topics.find((t: Topic) => t.id === topicId);
@@ -115,7 +115,7 @@ export default function ProgressTracker({ userId }: ProgressTrackerProps) {
 
           {/* Encouragement message */}
           {progressPercentage < 100 && (
-            <p className="text-sm text-muted-foreground mt-4">
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-4">
               {progressPercentage === 0
                 ? "Start your financial education journey today!"
                 : progressPercentage < 30
