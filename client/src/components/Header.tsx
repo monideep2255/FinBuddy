@@ -66,11 +66,8 @@ export default function Header() {
           </div>
         </nav>
         
-        {/* Right side controls - Theme toggle and mobile menu */}
+        {/* Right side controls - Mobile menu and Theme toggle */}
         <div className="flex items-center space-x-2">
-          {/* Theme Toggle Button */}
-          <ThemeToggle />
-          
           {/* Mobile Menu Button - only visible on small screens */}
           <button 
             className="md:hidden text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 p-2"
@@ -83,6 +80,9 @@ export default function Header() {
               <Menu className="h-5 w-5" />
             )}
           </button>
+          
+          {/* Theme Toggle Button */}
+          <ThemeToggle />
         </div>
       </div>
 

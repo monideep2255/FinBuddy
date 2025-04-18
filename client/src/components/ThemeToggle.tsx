@@ -46,14 +46,7 @@ export default function ThemeToggle() {
     localStorage.setItem('theme', nextTheme);
     applyTheme(nextTheme);
     
-    // Show toast notification
-    toast({
-      title: `${nextTheme.charAt(0).toUpperCase() + nextTheme.slice(1)} theme activated`,
-      description: nextTheme === 'system' 
-        ? "Following your system preference" 
-        : `Switched to ${nextTheme} mode`,
-      duration: 2000,
-    });
+    // No toast notification as per user request
   };
   
   // Function to get the next theme in the cycle
