@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Override to ensure consistent light/dark theme across all components */
+.dark {
+  color-scheme: dark;
+}
+
+.light {
+  color-scheme: light;
+}
+
+/* Ensure shadcn Card components respect theme */
+.dark .bg-card {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+}
+
+.light .bg-card {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+}
+
 @layer base {
   * {
     @apply border-border;
