@@ -117,7 +117,11 @@ export default function Home() {
                     </div>
                   ) : (
                     <Link href="/auth">
-                      <Button className="flex items-center" size="sm">
+                      <Button 
+                        variant="default" 
+                        size="sm" 
+                        className="flex items-center bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-600 text-white"
+                      >
                         <LogIn className="mr-2 h-4 w-4" />
                         Sign in to track progress
                       </Button>

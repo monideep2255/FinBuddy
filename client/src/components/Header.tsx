@@ -86,22 +86,27 @@ export default function Header() {
             </div>
           ) : (
             <Link href="/auth" className="hidden md:block">
-              <Button variant="outline" size="sm" className="flex items-center">
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="flex items-center bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-600 text-white"
+              >
                 <LogIn className="h-4 w-4 mr-2" />
                 <span>Login</span>
               </Button>
             </Link>
           )}
 
-          {/* Auth Button - Mobile (Icon only) */}
+          {/* Auth Button - Mobile (More visible) */}
           {!user ? (
             <Link href="/auth" className="md:hidden">
               <Button 
-                variant="outline" 
+                variant="default" 
                 size="sm" 
-                className="h-9 w-9 p-0 rounded-full bg-white dark:bg-neutral-800 border-neutral-300 dark:border-neutral-700"
+                className="h-8 px-3 py-1 rounded-lg bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-600 text-white"
               >
-                <LogIn className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+                <LogIn className="h-4 w-4 mr-1.5" />
+                <span>Login</span>
               </Button>
             </Link>
           ) : (
