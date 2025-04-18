@@ -45,8 +45,8 @@ export default function TopicCard({ topic }: TopicCardProps) {
         {/* Footer with explore button */}
         <div className="flex items-center justify-end mt-4">
           {/* Explore button - links to topic detail page */}
-          <Link href={`/topics/${topic.id}`}>
-            <div className="px-4 py-1.5 bg-primary-50 dark:bg-primary-950 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-lg text-primary-700 dark:text-primary-400 text-sm font-medium transition-colors duration-200 cursor-pointer">
+          <Link href={`/topics/${topic.id}`} className="w-full sm:w-auto">
+            <div className="px-4 py-2 bg-primary-50 dark:bg-primary-950 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-lg text-primary-700 dark:text-primary-400 text-sm font-medium transition-colors duration-200 cursor-pointer text-center w-full">
               Explore
             </div>
           </Link>
