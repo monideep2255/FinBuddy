@@ -85,7 +85,7 @@ export default function Header() {
               </Button>
             </div>
           ) : (
-            <Link href="/auth" className="hidden md:block">
+            <Link href="/auth">
               <Button 
                 variant="default" 
                 size="sm" 
