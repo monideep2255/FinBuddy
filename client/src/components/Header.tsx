@@ -89,7 +89,7 @@ export default function Header() {
               <Button 
                 variant="default" 
                 size="sm" 
-                className="flex items-center bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-600 text-white"
+                className="flex items-center bg-blue-600 hover:bg-blue-700 text-white"
               >
                 <LogIn className="h-4 w-4 mr-2" />
                 <span>Login</span>
