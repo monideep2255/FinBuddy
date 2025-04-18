@@ -48,13 +48,12 @@ In a world where economic shifts impact our daily lives, most people remain conf
    - Personal Finance: Credit Scores, Risk Management, Tax Planning
    - Additional topics: Diversification
 
-### Known Issues & To-Do
-- [ ] Fix display of cards for all foundational topics (currently showing limited cards)
-- [ ] Implement remaining topic cards from initial list
-- [ ] Add support for user progress tracking
-- [ ] Complete quiz generation for all topics
-
 ## Future Phases
+
+### Known Issues & To-Do
+- Adjust the display of text on smaller screens to ensure the login button is visible and text is properly legible.
+   - Home page login button
+   - Cards text (Quiz, Explanation etc.)
 
 ### 📈 Phase 2: Live Market Data
 - Real-time market data integration
