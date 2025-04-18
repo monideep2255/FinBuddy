@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Quiz } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Award } from 'lucide-react';
+import { Award, AlertCircle, Check, Loader2, FileCheck } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface QuizTabProps {
   quiz?: Quiz;
@@ -14,6 +15,7 @@ export default function QuizTab({ quiz, isLoading, onQuizComplete }: QuizTabProp
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState<number | null>(null);
   const [quizPassed, setQuizPassed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleOptionSelect = (questionIndex: number, optionIndex: number) => {
     if (submitted) return;
@@ -27,42 +29,58 @@ export default function QuizTab({ quiz, isLoading, onQuizComplete }: QuizTabProp
   const handleSubmit = () => {
     if (!quiz) return;
     
-    let correctCount = 0;
+    setIsSubmitting(true);
     
-    // Check answers
-    quiz.questions.forEach((question, questionIndex) => {
-      const selectedOptionIndex = selectedAnswers[questionIndex];
+    // Add a small delay to show submission is processing
+    setTimeout(() => {
+      let correctCount = 0;
       
-      if (selectedOptionIndex !== undefined) {
-        const isCorrect = question.options[selectedOptionIndex].isCorrect;
-        if (isCorrect) {
-          correctCount++;
+      // Check answers
+      quiz.questions.forEach((question, questionIndex) => {
+        const selectedOptionIndex = selectedAnswers[questionIndex];
+        
+        if (selectedOptionIndex !== undefined) {
+          const isCorrect = question.options[selectedOptionIndex].isCorrect;
+          if (isCorrect) {
+            correctCount++;
+          }
         }
+      });
+      
+      // Calculate percentage score
+      const percentageScore = Math.round((correctCount / quiz.questions.length) * 100);
+      
+      // Set state
+      setScore(correctCount);
+      setSubmitted(true);
+      setIsSubmitting(false);
+      
+      // Check if quiz is passed (70% or higher is passing)
+      const isPassed = percentageScore >= 70;
+      setQuizPassed(isPassed);
+      
+      // If there's a callback, call it with the score
+      if (onQuizComplete) {
+        onQuizComplete(percentageScore);
       }
-    });
-    
-    // Calculate percentage score
-    const percentageScore = Math.round((correctCount / quiz.questions.length) * 100);
-    
-    // Set state
-    setScore(correctCount);
-    setSubmitted(true);
-    
-    // Check if quiz is passed (70% or higher is passing)
-    const isPassed = percentageScore >= 70;
-    setQuizPassed(isPassed);
-    
-    // If there's a callback, call it with the score
-    if (onQuizComplete) {
-      onQuizComplete(percentageScore);
-    }
+      
+      // Scroll to the top of quiz results
+      const quizElement = document.getElementById('quiz-results');
+      if (quizElement) {
+        quizElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 600);
   };
 
   const handleRetry = () => {
     setSelectedAnswers({});
     setSubmitted(false);
     setScore(null);
+    setQuizPassed(false);
   };
+
+  // Count unanswered questions
+  const unansweredCount = quiz ? quiz.questions.length - Object.keys(selectedAnswers).length : 0;
 
   if (isLoading) {
     return (
@@ -119,18 +137,24 @@ export default function QuizTab({ quiz, isLoading, onQuizComplete }: QuizTabProp
     <div className="py-6">
       <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100 mb-4">Test Your Knowledge</h3>
       
+      {/* Quiz Results Section */}
       {submitted && score !== null && (
-        <div className={`mb-6 p-4 rounded-lg ${
+        <div id="quiz-results" className={`mb-6 p-4 rounded-lg ${
           quizPassed
             ? 'bg-green-50 dark:bg-green-950 border border-green-100 dark:border-green-900' 
             : 'bg-blue-50 dark:bg-blue-950 border border-blue-100 dark:border-blue-900'
         }`}>
           <div className="flex items-center">
-            {quizPassed && (
-              <div className="mr-3 bg-green-100 dark:bg-green-800 p-2 rounded-full">
-                <Award className="h-5 w-5 text-green-600 dark:text-green-300" />
-              </div>
-            )}
+            <div className={`mr-3 p-2 rounded-full ${
+              quizPassed 
+                ? 'bg-green-100 dark:bg-green-800' 
+                : 'bg-blue-100 dark:bg-blue-800'
+            }`}>
+              {quizPassed 
+                ? <Award className="h-5 w-5 text-green-600 dark:text-green-300" />
+                : <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-300" />
+              }
+            </div>
             <div>
               <p className={`font-medium ${
                 quizPassed
@@ -154,9 +178,12 @@ export default function QuizTab({ quiz, isLoading, onQuizComplete }: QuizTabProp
         </div>
       )}
       
+      {/* Quiz Questions */}
       {quiz.questions.map((question, questionIndex) => (
-        <div key={questionIndex} className="mb-8">
-          <p className="font-medium text-neutral-800 dark:text-neutral-200 mb-3">{questionIndex + 1}. {question.question}</p>
+        <div key={questionIndex} className="mb-8 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <p className="font-medium text-neutral-800 dark:text-neutral-200 mb-3">
+            {questionIndex + 1}. {question.question}
+          </p>
           
           <div className="space-y-3">
             {question.options.map((option, optionIndex) => {
@@ -197,16 +224,14 @@ export default function QuizTab({ quiz, isLoading, onQuizComplete }: QuizTabProp
                     onChange={() => handleOptionSelect(questionIndex, optionIndex)}
                     disabled={submitted}
                   />
-                  <label htmlFor={`q${questionIndex}o${optionIndex}`} className="ml-3 cursor-pointer">
+                  <label htmlFor={`q${questionIndex}o${optionIndex}`} className="ml-3 cursor-pointer flex-grow">
                     <span className="block font-medium text-neutral-800 dark:text-neutral-200">{option.text}</span>
                   </label>
                   {submitted && isCorrect && (
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-auto text-green-600 dark:text-green-500">
-                      <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
-                    </svg>
+                    <Check className="w-5 h-5 flex-shrink-0 text-green-600 dark:text-green-500" />
                   )}
                   {submitted && isIncorrect && (
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-auto text-red-600 dark:text-red-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 flex-shrink-0 text-red-600 dark:text-red-500">
                       <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clipRule="evenodd" />
                     </svg>
                   )}
@@ -217,22 +242,61 @@ export default function QuizTab({ quiz, isLoading, onQuizComplete }: QuizTabProp
         </div>
       ))}
       
-      <div className="mt-8">
+      {/* Quiz Status and Actions */}
+      <div className="mt-8 border-t border-neutral-200 dark:border-neutral-800 pt-6">
         {!submitted ? (
-          <button 
-            className="px-4 py-2 bg-primary-600 hover:bg-primary-700 rounded-lg text-white font-medium transition-colors duration-200"
-            onClick={handleSubmit}
-            disabled={Object.keys(selectedAnswers).length !== quiz.questions.length}
-          >
-            Submit Answers
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="w-full sm:w-auto order-2 sm:order-1">
+              <Button 
+                className="w-full sm:w-auto px-6 py-3 sm:py-2 flex items-center justify-center gap-2"
+                onClick={handleSubmit}
+                disabled={Object.keys(selectedAnswers).length !== quiz.questions.length || isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Submitting...</span>
+                  </>
+                ) : (
+                  <>
+                    <FileCheck className="h-4 w-4" />
+                    <span>Submit Quiz</span>
+                  </>
+                )}
+              </Button>
+            </div>
+            
+            {/* Questions Status */}
+            <div className="text-sm text-neutral-600 dark:text-neutral-400 order-1 sm:order-2 w-full sm:w-auto text-center sm:text-right mb-3 sm:mb-0">
+              {unansweredCount === 0 ? (
+                <span className="text-green-600 dark:text-green-400">
+                  All questions answered! Ready to submit.
+                </span>
+              ) : (
+                <span>
+                  {unansweredCount} {unansweredCount === 1 ? 'question' : 'questions'} left to answer
+                </span>
+              )}
+            </div>
+          </div>
         ) : (
-          <button 
-            className="px-4 py-2 bg-neutral-600 hover:bg-neutral-700 rounded-lg text-white font-medium transition-colors duration-200"
-            onClick={handleRetry}
-          >
-            Try Again
-          </button>
+          <div className="flex justify-between items-center">
+            <Button 
+              variant="secondary"
+              className="px-6"
+              onClick={handleRetry}
+            >
+              Try Again
+            </Button>
+            
+            <div className="text-sm text-neutral-600 dark:text-neutral-400 text-right">
+              {quizPassed && (
+                <span className="text-green-600 dark:text-green-400 font-medium">
+                  Quiz completed successfully!
+                </span>
+              )}
+            </div>
+          </div>
         )}
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import { Topic } from '@/lib/types';
+import { ArrowRight } from 'lucide-react';
 
 /**
  * Props for the TopicCard component
@@ -16,6 +17,11 @@ interface TopicCardProps {
  * 
  * @param {TopicCardProps} props - Component props
  * @returns {JSX.Element} A card component with topic details
+ * 
+ * Enhanced for mobile devices:
+ * - The entire card is wrapped in Link
+ * - Clear visual cues for interaction
+ * - Proper hover states
  */
 export default function TopicCard({ topic }: TopicCardProps) {
   // Determine the category badge styling based on the topic category
@@ -24,34 +30,36 @@ export default function TopicCard({ topic }: TopicCardProps) {
     : 'bg-secondary-50 dark:bg-secondary-950 text-secondary-700 dark:text-secondary-400';
 
   return (
-    <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-sm border border-neutral-100 dark:border-neutral-800 overflow-hidden hover:shadow-md transition-shadow duration-200">
-      {/* Colored top accent bar */}
-      <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-600"></div>
-      
-      <div className="p-6">
-        {/* Topic header with title and category badge */}
-        <div className="flex items-start justify-between mb-4">
-          <h3 className="text-lg font-semibold text-neutral-800 dark:text-neutral-100">{topic.title}</h3>
-          <span className={`px-2 py-1 text-xs font-medium rounded-full ${categoryColorClass}`}>
-            {topic.category}
-          </span>
-        </div>
+    <Link href={`/topics/${topic.id}`} className="block group">
+      <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-sm border border-neutral-100 dark:border-neutral-800 overflow-hidden hover:shadow-md transition-all duration-200 group-hover:border-primary-200 dark:group-hover:border-primary-800 h-full flex flex-col">
+        {/* Colored top accent bar */}
+        <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-600"></div>
         
-        {/* Topic description with line clamping for consistent card height */}
-        <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-4 line-clamp-3">
-          {topic.description}
-        </p>
-        
-        {/* Footer with explore button */}
-        <div className="flex items-center justify-end mt-4">
-          {/* Explore button - links to topic detail page */}
-          <Link href={`/topics/${topic.id}`} className="w-full sm:w-auto">
-            <div className="px-4 py-2 bg-primary-50 dark:bg-primary-950 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-lg text-primary-700 dark:text-primary-400 text-sm font-medium transition-colors duration-200 cursor-pointer text-center w-full">
-              Explore
+        <div className="p-6 flex flex-col flex-grow">
+          {/* Topic header with title and category badge */}
+          <div className="flex items-start justify-between mb-4">
+            <h3 className="text-lg font-semibold text-neutral-800 dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+              {topic.title}
+            </h3>
+            <span className={`px-2 py-1 text-xs font-medium rounded-full ${categoryColorClass} flex-shrink-0 ml-2`}>
+              {topic.category}
+            </span>
+          </div>
+          
+          {/* Topic description with line clamping for consistent card height */}
+          <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-4 line-clamp-3 flex-grow">
+            {topic.description}
+          </p>
+          
+          {/* Footer with explore button (enhanced visibility on mobile) */}
+          <div className="flex items-center justify-center sm:justify-end mt-auto pt-2">
+            <div className="px-4 py-3 sm:py-2 bg-primary-50 dark:bg-primary-900/30 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 rounded-lg text-primary-700 dark:text-primary-400 text-sm font-medium transition-all duration-200 w-full flex items-center justify-center">
+              <span>Explore Topic</span>
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </div>
-          </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

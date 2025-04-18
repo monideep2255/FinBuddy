@@ -11,6 +11,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
  * 
  * Main navigation header for the FinBuddy application.
  * Contains the app logo, navigation links, and theme toggle.
+ * Responsive design for both mobile and desktop views.
  */
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,7 +22,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white dark:bg-neutral-900 shadow-sm relative">
+    <header className="bg-white dark:bg-neutral-900 shadow-sm relative z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* App Logo and Brand */}
         <Link href="/">
@@ -40,7 +41,7 @@ export default function Header() {
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-6">
           <Link href="/">
             <div className="font-medium text-primary-600 dark:text-primary-400 flex items-center cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1.5">
@@ -61,42 +62,28 @@ export default function Header() {
             </svg>
             <span>Ask FinBuddy</span>
           </div>
-          <div className="font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 flex items-center cursor-pointer transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1.5">
-              <path fillRule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0118 9.375v9.375a3 3 0 003-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 00-.673-.05A3 3 0 0015 1.5h-1.5a3 3 0 00-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6zM13.5 3A1.5 1.5 0 0012 4.5h4.5A1.5 1.5 0 0015 3h-1.5z" clipRule="evenodd" />
-              <path fillRule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V9.375zM6 12a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V12zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM6 15a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V15zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM6 18a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V18zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75z" clipRule="evenodd" />
-            </svg>
-            <span>My Progress</span>
-          </div>
         </nav>
         
         {/* Right side controls - Auth buttons, Mobile menu, and Theme toggle */}
         <div className="flex items-center space-x-3">
-          {/* Auth Buttons - Login/Logout */}
+          {/* Auth Buttons - Desktop */}
           {user ? (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="hidden md:flex items-center space-x-2">
-                    <div className="text-sm text-neutral-600 dark:text-neutral-400">
-                      <User className="h-4 w-4 inline mr-1" />
-                      <span className="hidden lg:inline">{user.username}</span>
-                    </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => logoutMutation.mutate()}
-                      disabled={logoutMutation.isPending}
-                    >
-                      {logoutMutation.isPending ? '...' : <LogOut className="h-4 w-4" />}
-                    </Button>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Logout</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="hidden md:flex items-center space-x-2">
+              <div className="text-sm text-neutral-600 dark:text-neutral-400">
+                <User className="h-4 w-4 inline mr-1" />
+                <span className="hidden lg:inline">{user.username}</span>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => logoutMutation.mutate()}
+                disabled={logoutMutation.isPending}
+              >
+                {logoutMutation.isPending ? 
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-500 border-t-transparent"></span> : 
+                  <LogOut className="h-4 w-4" />}
+              </Button>
+            </div>
           ) : (
             <Link href="/auth" className="hidden md:block">
               <Button variant="outline" size="sm" className="flex items-center">
@@ -105,6 +92,34 @@ export default function Header() {
               </Button>
             </Link>
           )}
+
+          {/* Auth Button - Mobile (Icon only) */}
+          {!user ? (
+            <Link href="/auth" className="md:hidden">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="h-9 w-9 p-0 rounded-full"
+              >
+                <LogIn className="h-5 w-5" />
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden h-9 w-9 p-0 rounded-full"
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
+            >
+              {logoutMutation.isPending ? 
+                <span className="h-5 w-5 animate-spin rounded-full border-2 border-primary-500 border-t-transparent"></span> : 
+                <User className="h-5 w-5" />}
+            </Button>
+          )}
+          
+          {/* Theme Toggle Button */}
+          <ThemeToggle />
           
           {/* Mobile Menu Button - only visible on small screens */}
           <button 
@@ -118,16 +133,13 @@ export default function Header() {
               <Menu className="h-5 w-5" />
             )}
           </button>
-          
-          {/* Theme Toggle Button */}
-          <ThemeToggle />
         </div>
       </div>
 
-      {/* Mobile Navigation Menu */}
+      {/* Mobile Navigation Menu - Overlay Style */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 absolute w-full z-50">
-          <div className="container mx-auto px-4 py-2">
+        <div className="md:hidden bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm border-t border-neutral-200 dark:border-neutral-800 absolute w-full z-50 shadow-md">
+          <div className="container mx-auto px-4 py-3">
             <nav className="flex flex-col space-y-3 py-3">
               <Link href="/" onClick={() => setMobileMenuOpen(false)}>
                 <div className="font-medium text-primary-600 dark:text-primary-400 flex items-center p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800">
@@ -162,19 +174,19 @@ export default function Header() {
               {/* Mobile Auth Options */}
               {user ? (
                 <div
-                  className="font-medium text-neutral-500 dark:text-neutral-400 flex items-center p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                  className="font-medium text-neutral-600 dark:text-neutral-300 flex items-center p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800"
                   onClick={() => {
                     logoutMutation.mutate();
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <LogOut className="w-5 h-5 mr-3" />
+                  <LogOut className="w-5 h-5 mr-3 text-primary-500 dark:text-primary-400" />
                   <span>Logout ({user.username})</span>
                 </div>
               ) : (
                 <Link href="/auth" onClick={() => setMobileMenuOpen(false)}>
-                  <div className="font-medium text-primary-600 dark:text-primary-400 flex items-center p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800">
-                    <LogIn className="w-5 h-5 mr-3" />
+                  <div className="font-medium text-neutral-600 dark:text-neutral-300 flex items-center p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800">
+                    <LogIn className="w-5 h-5 mr-3 text-primary-500 dark:text-primary-400" />
                     <span>Login / Register</span>
                   </div>
                 </Link>
