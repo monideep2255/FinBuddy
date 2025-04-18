@@ -10,8 +10,9 @@ import Disclaimer from '@/components/Disclaimer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, LogIn } from 'lucide-react';
 import { Topic, Quiz, UserProgress } from '@/lib/types';
+import { useAuth } from '@/hooks/use-auth';
 
 type TabType = 'explanation' | 'example' | 'quiz' | 'liveData';
 
@@ -22,9 +23,10 @@ export default function TopicDetail() {
   const [quizScore, setQuizScore] = useState<number | null>(null);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
   
-  // For demo purposes, we'll use user ID 1
-  const userId = 1;
+  // Use the authenticated user's ID
+  const userId = user?.id || 0;
 
   const { data: topic, isLoading: isTopicLoading } = useQuery<Topic>({
     queryKey: [`/api/topics/${topicId}`],
@@ -34,10 +36,13 @@ export default function TopicDetail() {
     queryKey: [`/api/topics/${topicId}/quiz`],
   });
   
-  // Fetch the user's progress for this topic
+  // Fetch the user's progress for this topic (only if logged in)
   const { data: progress, isLoading: isProgressLoading } = useQuery<UserProgress>({
     queryKey: [`/api/users/${userId}/topics/${topicId}/progress`],
     queryFn: async () => {
+      // Don't try to fetch progress if no user is logged in
+      if (!user) return null;
+      
       try {
         const res = await fetch(`/api/users/${userId}/topics/${topicId}/progress`);
         if (!res.ok) {
@@ -53,6 +58,8 @@ export default function TopicDetail() {
         return null;
       }
     },
+    // Only run this query if the user is logged in and has an ID
+    enabled: !!user?.id && !!topicId,
   });
   
   // Mutation to update progress
@@ -85,14 +92,14 @@ export default function TopicDetail() {
     },
   });
   
-  // Mark the topic as accessed when the user views it
+  // Mark the topic as accessed when the user views it (only if logged in)
   useEffect(() => {
-    if (topicId && !isProgressLoading) {
+    if (topicId && !isProgressLoading && user) {
       updateProgressMutation.mutate({
         lastAccessed: new Date().toISOString(),
       });
     }
-  }, [topicId]);
+  }, [topicId, user]);
   
   // Handle quiz completion
   const handleQuizComplete = (score: number) => {
@@ -200,21 +207,32 @@ export default function TopicDetail() {
               <p className="text-neutral-600 dark:text-neutral-400 max-w-3xl">{topic?.description}</p>
             </div>
             <div className="mt-4 md:mt-0 flex space-x-2">
-              {/* Mark as Completed Button - Show only if not already completed */}
-              {!progress?.completed ? (
-                <button 
-                  onClick={markAsCompleted}
-                  disabled={updateProgressMutation.isPending}
-                  className="px-3 py-1.5 bg-primary-100 dark:bg-primary-900 hover:bg-primary-200 dark:hover:bg-primary-800 rounded-lg text-primary-700 dark:text-primary-300 text-sm font-medium transition-colors duration-200 flex items-center"
-                >
-                  <CheckCircle2 className="w-4 h-4 mr-1.5" />
-                  Mark as Completed
-                </button>
+              {/* Progress Tracking - Only shown for logged in users */}
+              {user ? (
+                <>
+                  {!progress?.completed ? (
+                    <button 
+                      onClick={markAsCompleted}
+                      disabled={updateProgressMutation.isPending}
+                      className="px-3 py-1.5 bg-primary-100 dark:bg-primary-900 hover:bg-primary-200 dark:hover:bg-primary-800 rounded-lg text-primary-700 dark:text-primary-300 text-sm font-medium transition-colors duration-200 flex items-center"
+                    >
+                      <CheckCircle2 className="w-4 h-4 mr-1.5" />
+                      Mark as Completed
+                    </button>
+                  ) : (
+                    <div className="px-3 py-1.5 bg-green-100 dark:bg-green-900 rounded-lg text-green-700 dark:text-green-300 text-sm font-medium flex items-center">
+                      <CheckCircle2 className="w-4 h-4 mr-1.5" />
+                      Completed
+                    </div>
+                  )}
+                </>
               ) : (
-                <div className="px-3 py-1.5 bg-green-100 dark:bg-green-900 rounded-lg text-green-700 dark:text-green-300 text-sm font-medium flex items-center">
-                  <CheckCircle2 className="w-4 h-4 mr-1.5" />
-                  Completed
-                </div>
+                <Link href="/auth">
+                  <button className="px-3 py-1.5 bg-primary-50 dark:bg-primary-900/50 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-lg text-primary-700 dark:text-primary-400 text-sm font-medium transition-colors duration-200 flex items-center">
+                    <LogIn className="w-4 h-4 mr-1.5" />
+                    Login to track progress
+                  </button>
+                </Link>
               )}
               
               <button className="px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center">
