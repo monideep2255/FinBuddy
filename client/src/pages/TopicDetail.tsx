@@ -115,10 +115,10 @@ export default function TopicDetail() {
     });
   };
   
-  // Mark topic as completed
-  const markAsCompleted = () => {
+  // Mark topic as completed or undo completion
+  const toggleCompleted = () => {
     updateProgressMutation.mutate({
-      completed: true,
+      completed: !progress?.completed,
     });
   };
 
@@ -206,47 +206,55 @@ export default function TopicDetail() {
               </div>
               <p className="text-neutral-600 dark:text-neutral-400 max-w-3xl">{topic?.description}</p>
             </div>
-            <div className="mt-4 md:mt-0 flex space-x-2">
+            <div className="mt-4 md:mt-0 flex flex-wrap gap-2">
               {/* Progress Tracking - Only shown for logged in users */}
               {user ? (
                 <>
                   {!progress?.completed ? (
                     <button 
-                      onClick={markAsCompleted}
+                      onClick={toggleCompleted}
                       disabled={updateProgressMutation.isPending}
-                      className="px-3 py-1.5 bg-primary-100 dark:bg-primary-900 hover:bg-primary-200 dark:hover:bg-primary-800 rounded-lg text-primary-700 dark:text-primary-300 text-sm font-medium transition-colors duration-200 flex items-center"
+                      className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 bg-primary-100 dark:bg-primary-900 hover:bg-primary-200 dark:hover:bg-primary-800 rounded-lg text-primary-700 dark:text-primary-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center"
                     >
                       <CheckCircle2 className="w-4 h-4 mr-1.5" />
-                      Mark as Completed
+                      <span>Mark as Completed</span>
                     </button>
                   ) : (
-                    <div className="px-3 py-1.5 bg-green-100 dark:bg-green-900 rounded-lg text-green-700 dark:text-green-300 text-sm font-medium flex items-center">
+                    <button 
+                      onClick={toggleCompleted}
+                      disabled={updateProgressMutation.isPending}
+                      className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 bg-green-100 dark:bg-green-900 hover:bg-green-200 dark:hover:bg-green-800 rounded-lg text-green-700 dark:text-green-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center"
+                    >
                       <CheckCircle2 className="w-4 h-4 mr-1.5" />
-                      Completed
-                    </div>
+                      <span className="flex-grow text-center">
+                        Completed (Click to Undo)
+                      </span>
+                    </button>
                   )}
                 </>
               ) : (
-                <Link href="/auth">
-                  <button className="px-3 py-1.5 bg-primary-50 dark:bg-primary-900/50 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-lg text-primary-700 dark:text-primary-400 text-sm font-medium transition-colors duration-200 flex items-center">
+                <Link href="/auth" className="w-full sm:w-auto">
+                  <button className="w-full px-3 py-2.5 sm:py-1.5 bg-primary-50 dark:bg-primary-900/50 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-lg text-primary-700 dark:text-primary-400 text-sm font-medium transition-colors duration-200 flex items-center justify-center">
                     <LogIn className="w-4 h-4 mr-1.5" />
-                    Login to track progress
+                    <span>Login to track progress</span>
                   </button>
                 </Link>
               )}
               
-              <button className="px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-1.5">
-                  <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
-                </svg>
-                Save
-              </button>
-              <button className="px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-1.5">
-                  <path fillRule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clipRule="evenodd" />
-                </svg>
-                Share
-              </button>
+              <div className="w-full sm:w-auto flex gap-2">
+                <button className="flex-1 px-3 py-2.5 sm:py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-1.5">
+                    <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
+                  </svg>
+                  <span>Save</span>
+                </button>
+                <button className="flex-1 px-3 py-2.5 sm:py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-1.5">
+                    <path fillRule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clipRule="evenodd" />
+                  </svg>
+                  <span>Share</span>
+                </button>
+              </div>
             </div>
           </div>
 
