@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Quiz } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Award } from 'lucide-react';
 
 interface QuizTabProps {
   quiz?: Quiz;
   isLoading: boolean;
+  onQuizComplete?: (score: number) => void;
 }
 
-export default function QuizTab({ quiz, isLoading }: QuizTabProps) {
+export default function QuizTab({ quiz, isLoading, onQuizComplete }: QuizTabProps) {
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState<number | null>(null);
+  const [quizPassed, setQuizPassed] = useState(false);
 
   const handleOptionSelect = (questionIndex: number, optionIndex: number) => {
     if (submitted) return;

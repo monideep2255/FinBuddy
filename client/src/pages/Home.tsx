@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TopicGrid from '@/components/TopicGrid';
 import Disclaimer from '@/components/Disclaimer';
+import ProgressTracker from '@/components/ProgressTracker';
 import { useQuery } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
 import { Topic } from '@/lib/types';
@@ -81,14 +82,23 @@ export default function Home() {
       
       <main className="flex-grow">
         <section className="container mx-auto px-4 py-8">
-          {/* Page Title and Description */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100 mb-2">
-              Financial Topic Explorer
-            </h2>
-            <p className="text-neutral-600 dark:text-neutral-400 max-w-3xl">
-              Learn key financial concepts through simple explanations, real-world examples, and interactive quizzes.
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+            <div className="lg:col-span-3">
+              {/* Page Title and Description */}
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100 mb-2">
+                  Financial Topic Explorer
+                </h2>
+                <p className="text-neutral-600 dark:text-neutral-400 max-w-3xl">
+                  Learn key financial concepts through simple explanations, real-world examples, and interactive quizzes.
+                </p>
+              </div>
+            </div>
+            
+            {/* Progress Tracker - For logged in users */}
+            <div className="lg:col-span-1">
+              <ProgressTracker userId={1} />
+            </div>
           </div>
 
           {/* Search and Filter Bar */}
