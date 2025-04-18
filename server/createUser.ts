@@ -3,6 +3,7 @@ import { users } from "@shared/schema";
 import { log } from "./vite";
 import { scrypt, randomBytes } from "crypto";
 import { promisify } from "util";
+import { eq } from "drizzle-orm";
 
 const scryptAsync = promisify(scrypt);
 
@@ -15,7 +16,7 @@ async function hashPassword(password: string) {
 async function createDemoUser() {
   try {
     // Check if user already exists
-    const existingUser = await db.select().from(users).where(({ id }) => id.equals(1));
+    const existingUser = await db.select().from(users).where(eq(users.username, "demo"));
     
     if (existingUser.length > 0) {
       log("Demo user already exists, skipping creation");
@@ -26,12 +27,8 @@ async function createDemoUser() {
     const hashedPassword = await hashPassword("demo123");
     
     await db.insert(users).values({
-      id: 1,
       username: "demo",
-      password: hashedPassword,
-      email: "demo@example.com",
-      name: "Demo User",
-      created_at: new Date()
+      password: hashedPassword
     });
     
     log("Demo user created successfully");
@@ -40,14 +37,11 @@ async function createDemoUser() {
   }
 }
 
-// Run the function if this file is executed directly
-if (require.main === module) {
-  createDemoUser()
-    .then(() => process.exit(0))
-    .catch(err => {
-      console.error(err);
-      process.exit(1);
-    });
-}
+// Run the function
+createDemoUser()
+  .then(() => console.log("Demo user creation complete"))
+  .catch(err => {
+    console.error(err);
+  });
 
 export { createDemoUser };
