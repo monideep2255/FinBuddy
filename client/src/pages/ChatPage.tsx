@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { ChatMessage } from "../../../shared/schema";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 // Extend the ChatMessage interface for frontend usage
@@ -174,6 +175,7 @@ export default function ChatPage() {
   
   return (
     <>
+      <Header />
       <div className="container py-6 max-w-4xl mx-auto min-h-[calc(100vh-250px)]">
         <Card className="flex flex-col shadow-lg" style={{ height: "75vh" }}>
           <CardHeader className="bg-primary/5">
@@ -231,8 +233,8 @@ export default function ChatPage() {
                               {user ? user.username.charAt(0).toUpperCase() : 'U'}
                             </AvatarFallback>
                           </Avatar>
-                          <div className="rounded-lg bg-muted p-3 max-w-[85%]">
-                            {message.question}
+                          <div className="rounded-lg bg-muted p-3 max-w-[85%] break-words">
+                            <div className="whitespace-pre-wrap">{message.question}</div>
                           </div>
                         </div>
                         
@@ -254,13 +256,13 @@ export default function ChatPage() {
                               <AvatarFallback className="bg-primary text-primary-foreground">FB</AvatarFallback>
                               <AvatarImage src="/logo.png" alt="FinBuddy" />
                             </Avatar>
-                            <div className="rounded-lg bg-primary/5 p-3 max-w-[85%] space-y-3">
-                              <div>{message.answer}</div>
+                            <div className="rounded-lg bg-primary/5 p-3 max-w-[85%] space-y-3 break-words">
+                              <div className="whitespace-pre-wrap">{message.answer}</div>
                               
                               {message.example && (
                                 <div className="mt-3">
                                   <h4 className="font-medium text-sm text-muted-foreground mb-1">Example:</h4>
-                                  <div className="text-muted-foreground text-sm bg-background p-2 rounded-md">
+                                  <div className="text-muted-foreground text-sm bg-background p-2 rounded-md whitespace-pre-wrap break-words">
                                     {message.example}
                                   </div>
                                 </div>
@@ -268,8 +270,8 @@ export default function ChatPage() {
                               
                               {message.relatedTopicId && (
                                 <div className="mt-2 pt-2 border-t border-border">
-                                  <div className="flex items-center gap-1 text-sm">
-                                    <Link className="h-4 w-4" />
+                                  <div className="flex items-center flex-wrap gap-1 text-sm">
+                                    <Link className="h-4 w-4 flex-shrink-0" />
                                     <span>Related Topic: </span>
                                     <RouterLink to={`/topics/${message.relatedTopicId}`}>
                                       <Badge variant="outline" className="cursor-pointer hover:bg-primary/10">
@@ -318,14 +320,14 @@ export default function ChatPage() {
         
         {/* OpenAI Status Alert */}
         {openaiStatus && !openaiStatus.apiKeyConfigured && (
-          <Alert className="mt-4 bg-yellow-50 dark:bg-yellow-950 text-yellow-800 dark:text-yellow-300 border-yellow-300">
+          <Alert className="mt-4 bg-yellow-50 dark:bg-yellow-900/60 text-yellow-800 dark:text-yellow-300 border-yellow-300 dark:border-yellow-800">
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription className="flex items-center justify-between">
               <span>OpenAI API key is not configured. Responses will use fallback content.</span>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="text-xs border-yellow-300 hover:bg-yellow-100 dark:hover:bg-yellow-900"
+                className="text-xs dark:text-yellow-300 border-yellow-300 dark:border-yellow-600 hover:bg-yellow-100 dark:hover:bg-yellow-800/50"
                 onClick={() => {
                   queryClient.invalidateQueries({ queryKey: ["/api/openai/status"] });
                   toast({
@@ -341,14 +343,14 @@ export default function ChatPage() {
         )}
         
         {openaiStatus && openaiStatus.apiKeyConfigured && openaiStatus.status !== "connected" && (
-          <Alert className="mt-4 bg-orange-50 dark:bg-orange-950 text-orange-800 dark:text-orange-300 border-orange-300">
+          <Alert className="mt-4 bg-orange-50 dark:bg-orange-900/60 text-orange-800 dark:text-orange-300 border-orange-300 dark:border-orange-800">
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription className="flex items-center justify-between">
               <span>OpenAI connection failed. Chat responses may be limited.</span>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="text-xs border-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900"
+                className="text-xs dark:text-orange-300 border-orange-300 dark:border-orange-600 hover:bg-orange-100 dark:hover:bg-orange-800/50"
                 onClick={() => {
                   queryClient.invalidateQueries({ queryKey: ["/api/openai/status"] });
                   toast({
@@ -364,14 +366,14 @@ export default function ChatPage() {
         )}
         
         {openaiStatus && openaiStatus.apiKeyConfigured && openaiStatus.status === "connected" && (
-          <Alert className="mt-4 bg-green-50 dark:bg-green-950 text-green-800 dark:text-green-300 border-green-300">
+          <Alert className="mt-4 bg-green-50 dark:bg-green-900/60 text-green-800 dark:text-green-300 border-green-300 dark:border-green-800">
             <CheckCircle className="h-4 w-4" />
             <AlertDescription className="flex items-center justify-between">
               <span>OpenAI connection is active and working properly.</span>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="text-xs border-green-300 hover:bg-green-100 dark:hover:bg-green-900"
+                className="text-xs dark:text-green-300 border-green-300 dark:border-green-600 hover:bg-green-100 dark:hover:bg-green-800/50"
                 onClick={() => {
                   queryClient.invalidateQueries({ queryKey: ["/api/openai/status"] });
                   toast({

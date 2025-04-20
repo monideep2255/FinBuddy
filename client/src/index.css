@@ -6,16 +6,11 @@
 :root {
   --background-light: #ffffff;
   --background-dark: #121212;
-}
-
-.dark {
-  color-scheme: dark;
-  background-color: var(--background-dark);
-}
-
-.light {
   color-scheme: light;
-  background-color: var(--background-light);
+}
+
+:root.dark {
+  color-scheme: dark;
 }
 
 /* Ensure consistent background colors */
@@ -28,15 +23,28 @@ body {
   min-height: 100vh;
 }
 
-/* Ensure consistent card backgrounds */
-.dark .bg-card {
-  background-color: hsl(var(--card));
-  color: hsl(var(--card-foreground));
+/* Force consistent chat bubbles in dark mode */
+.dark .rounded-lg.bg-muted {
+  @apply bg-neutral-800 text-neutral-200;
 }
 
-.light .bg-card {
-  background-color: hsl(var(--card));
-  color: hsl(var(--card-foreground));
+.dark .rounded-lg.bg-primary\/5 {
+  @apply bg-neutral-800/50 text-neutral-200;
+}
+
+.dark .text-muted-foreground.bg-background {
+  @apply bg-neutral-900 text-neutral-400;
+}
+
+/* Ensure consistent card backgrounds */
+.dark .bg-card,
+.dark .card {
+  @apply bg-neutral-900 border-neutral-800;
+}
+
+.light .bg-card,
+.light .card {
+  @apply bg-white border-neutral-200;
 }
 
 /* Consistent background for all pages */
