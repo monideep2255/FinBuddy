@@ -264,7 +264,7 @@ export default function TopicDetail() {
               <button 
                 className={`px-3 sm:px-4 py-3 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                   activeTab === 'explanation' 
-                    ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                    ? 'border-primary-500 text-blue-700 dark:text-blue-300 font-bold' 
                     : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
                 }`}
                 onClick={() => handleTabChange('explanation')}
@@ -274,7 +274,7 @@ export default function TopicDetail() {
               <button 
                 className={`px-3 sm:px-4 py-3 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                   activeTab === 'example' 
-                    ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                    ? 'border-primary-500 text-blue-700 dark:text-blue-300 font-bold' 
                     : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
                 }`}
                 onClick={() => handleTabChange('example')}
@@ -284,7 +284,7 @@ export default function TopicDetail() {
               <button 
                 className={`px-3 sm:px-4 py-3 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                   activeTab === 'quiz' 
-                    ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                    ? 'border-primary-500 text-blue-700 dark:text-blue-300 font-bold' 
                     : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
                 }`}
                 onClick={() => handleTabChange('quiz')}
@@ -294,7 +294,7 @@ export default function TopicDetail() {
               <button 
                 className={`px-3 sm:px-4 py-3 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                   activeTab === 'liveData' 
-                    ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                    ? 'border-primary-500 text-blue-700 dark:text-blue-300 font-bold' 
                     : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
                 }`}
                 onClick={() => handleTabChange('liveData')}
