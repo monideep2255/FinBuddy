@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { QuizQuestion, TopicContent } from "@shared/schema";
+import { log } from "./vite";
 
 // Define the chat response interface
 export interface ChatResponse {
@@ -20,6 +21,33 @@ if (isApiKeyMissing) {
 
 // Create OpenAI instance only if API key is available
 const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
+
+// Check if OpenAI integration is working properly
+export async function verifyOpenAIConnection(): Promise<boolean> {
+  if (!openai) return false;
+  
+  try {
+    log("Verifying OpenAI connection...");
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "user", content: "This is a test message to verify the connection. Please respond with 'Connection successful'." }
+      ],
+      max_tokens: 10
+    });
+    
+    const success = response.choices[0].message.content?.includes("successful");
+    if (success) {
+      log("OpenAI connection verified successfully.");
+    } else {
+      log("OpenAI connection verification failed: Unexpected response");
+    }
+    return success;
+  } catch (error) {
+    log(`OpenAI connection verification failed: ${error.message}`);
+    return false;
+  }
+}
 
 // Generate explanation and real-world example for a topic
 export async function generateTopicExplanation(topic: string): Promise<TopicContent> {

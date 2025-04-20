@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { generateTopicExplanation, generateQuizQuestions, generateChatResponse } from "./openai";
+import { generateTopicExplanation, generateQuizQuestions, generateChatResponse, verifyOpenAIConnection } from "./openai";
 import { setupAuth } from "./auth";
 import * as marketData from "./marketData";
 
@@ -248,6 +248,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Chat API Routes
+  
+  // Check if OpenAI connection is working
+  app.get("/api/openai/status", async (req, res) => {
+    try {
+      const isConnected = await verifyOpenAIConnection();
+      res.json({ 
+        status: isConnected ? "connected" : "disconnected",
+        apiKeyConfigured: !!process.env.OPENAI_API_KEY
+      });
+    } catch (error) {
+      console.error("Error checking OpenAI status:", error);
+      res.status(500).json({ 
+        status: "error", 
+        message: "Failed to check OpenAI connection status",
+        apiKeyConfigured: !!process.env.OPENAI_API_KEY
+      });
+    }
+  });
   
   // Submit a question to the chat (Ask-Me-Anything)
   app.post("/api/chat", async (req, res) => {
