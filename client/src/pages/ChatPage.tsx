@@ -177,7 +177,7 @@ export default function ChatPage() {
     <>
       <Header />
       <div className="container py-6 max-w-4xl mx-auto min-h-[calc(100vh-250px)]">
-        <Card className="flex flex-col shadow-lg" style={{ height: "75vh" }}>
+        <Card className="flex flex-col shadow-lg h-[75vh] sm:h-[70vh] md:h-[75vh]">
           <CardHeader className="bg-primary/5">
             <CardTitle className="flex items-center gap-2">
               <Info className="h-5 w-5" />
@@ -193,7 +193,7 @@ export default function ChatPage() {
                   <p className="max-w-md mb-4">
                     Ask me any financial question, and I'll provide a helpful explanation with real-world examples.
                   </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-lg">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-lg mx-auto px-2">
                     {[
                       "Explain how inflation affects my savings",
                       "What are treasury yields?",
@@ -203,7 +203,7 @@ export default function ChatPage() {
                       <Button 
                         key={i} 
                         variant="outline" 
-                        className="justify-start text-left h-auto py-2"
+                        className="justify-start text-left h-auto py-2 text-sm sm:text-base w-full overflow-hidden text-ellipsis"
                         onClick={() => {
                           setQuestion(suggestion);
                           chatMutation.mutate({
@@ -212,7 +212,7 @@ export default function ChatPage() {
                           });
                         }}
                       >
-                        {suggestion}
+                        <span className="truncate">{suggestion}</span>
                       </Button>
                     ))}
                   </div>

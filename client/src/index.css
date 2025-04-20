@@ -23,27 +23,45 @@ body {
   min-height: 100vh;
 }
 
-/* Force consistent chat bubbles in dark mode */
+/* Force consistent chat bubbles in dark mode, especially on mobile */
+html.dark .rounded-lg.bg-muted,
 .dark .rounded-lg.bg-muted {
-  @apply bg-neutral-800 text-neutral-200;
+  @apply bg-neutral-800 text-neutral-200 !important;
 }
 
+html.dark .rounded-lg.bg-primary\/5,
 .dark .rounded-lg.bg-primary\/5 {
-  @apply bg-neutral-800/50 text-neutral-200;
+  @apply bg-neutral-800/50 text-neutral-200 !important;
 }
 
+html.dark .text-muted-foreground.bg-background,
 .dark .text-muted-foreground.bg-background {
-  @apply bg-neutral-900 text-neutral-400;
+  @apply bg-neutral-900 text-neutral-400 !important;
+}
+
+/* Ensure consistent card background on small screens */
+html.dark .card, 
+.dark .card {
+  @apply bg-neutral-900 border-neutral-800 !important;
+}
+
+/* Force darker body and html */
+html.dark, 
+.dark {
+  @apply bg-neutral-950 text-neutral-200 !important;
+}
+
+html.dark body, 
+.dark body {
+  @apply bg-neutral-950 text-neutral-200 !important;
 }
 
 /* Ensure consistent card backgrounds */
-.dark .bg-card,
-.dark .card {
+.dark .bg-card {
   @apply bg-neutral-900 border-neutral-800;
 }
 
-.light .bg-card,
-.light .card {
+.light .bg-card {
   @apply bg-white border-neutral-200;
 }
 
