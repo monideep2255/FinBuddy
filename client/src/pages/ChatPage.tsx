@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { ChatMessage } from "../../../shared/schema";
 import Footer from "@/components/Footer";
 
@@ -17,10 +17,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Send, Link, Info } from "lucide-react";
+import { Loader2, Send, Link, Info, AlertTriangle, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Link as RouterLink } from "wouter";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ChatHistory extends Omit<ChatMessage, 'timestamp'> {
   timestamp: string;
@@ -47,6 +48,18 @@ export default function ChatPage() {
   const [question, setQuestion] = useState("");
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const chatBottomRef = useRef<HTMLDivElement>(null);
+  
+  // Check OpenAI connection status
+  const { data: openaiStatus, isLoading: isOpenAIStatusLoading } = useQuery({
+    queryKey: ["/api/openai/status"],
+    queryFn: async ({ signal }) => {
+      const res = await fetch("/api/openai/status", { signal });
+      if (!res.ok) throw new Error("Failed to check OpenAI status");
+      return res.json();
+    },
+    refetchOnWindowFocus: false,
+    retry: 1
+  });
   
   // Fetch chat history
   const { data: history, isLoading: isHistoryLoading } = useQuery<ChatMessage[]>({
@@ -302,6 +315,76 @@ export default function ChatPage() {
             </form>
           </CardFooter>
         </Card>
+        
+        {/* OpenAI Status Alert */}
+        {openaiStatus && !openaiStatus.apiKeyConfigured && (
+          <Alert className="mt-4 bg-yellow-50 dark:bg-yellow-950 text-yellow-800 dark:text-yellow-300 border-yellow-300">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription className="flex items-center justify-between">
+              <span>OpenAI API key is not configured. Responses will use fallback content.</span>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-xs border-yellow-300 hover:bg-yellow-100 dark:hover:bg-yellow-900"
+                onClick={() => {
+                  queryClient.invalidateQueries({ queryKey: ["/api/openai/status"] });
+                  toast({
+                    title: "Checking OpenAI connection",
+                    description: "Verifying connection to OpenAI API...",
+                  });
+                }}
+              >
+                Check Again
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        {openaiStatus && openaiStatus.apiKeyConfigured && openaiStatus.status !== "connected" && (
+          <Alert className="mt-4 bg-orange-50 dark:bg-orange-950 text-orange-800 dark:text-orange-300 border-orange-300">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription className="flex items-center justify-between">
+              <span>OpenAI connection failed. Chat responses may be limited.</span>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-xs border-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900"
+                onClick={() => {
+                  queryClient.invalidateQueries({ queryKey: ["/api/openai/status"] });
+                  toast({
+                    title: "Checking OpenAI connection",
+                    description: "Verifying connection to OpenAI API...",
+                  });
+                }}
+              >
+                Retry Connection
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        {openaiStatus && openaiStatus.apiKeyConfigured && openaiStatus.status === "connected" && (
+          <Alert className="mt-4 bg-green-50 dark:bg-green-950 text-green-800 dark:text-green-300 border-green-300">
+            <CheckCircle className="h-4 w-4" />
+            <AlertDescription className="flex items-center justify-between">
+              <span>OpenAI connection is active and working properly.</span>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-xs border-green-300 hover:bg-green-100 dark:hover:bg-green-900"
+                onClick={() => {
+                  queryClient.invalidateQueries({ queryKey: ["/api/openai/status"] });
+                  toast({
+                    title: "Refreshing OpenAI status",
+                    description: "Checking connection status...",
+                  });
+                }}
+              >
+                Refresh Status
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
         
         <div className="text-center text-xs text-muted-foreground mt-4 mb-8">
           <p>Powered by OpenAI GPT-4o • Financial information is for educational purposes only</p>

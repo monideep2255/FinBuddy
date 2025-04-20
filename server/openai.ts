@@ -36,15 +36,17 @@ export async function verifyOpenAIConnection(): Promise<boolean> {
       max_tokens: 10
     });
     
-    const success = response.choices[0].message.content?.includes("successful");
+    const responseText = response.choices[0].message.content || "";
+    const success = responseText.includes("successful");
+    
     if (success) {
       log("OpenAI connection verified successfully.");
     } else {
       log("OpenAI connection verification failed: Unexpected response");
     }
     return success;
-  } catch (error) {
-    log(`OpenAI connection verification failed: ${error.message}`);
+  } catch (error: any) {
+    log(`OpenAI connection verification failed: ${error.message || 'Unknown error'}`);
     return false;
   }
 }
