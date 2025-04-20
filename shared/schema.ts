@@ -92,3 +92,35 @@ export interface TopicContent {
   explanation: string;
   realWorldExample: string;
 }
+
+export const chatMessages = pgTable("chat_messages", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  question: text("question").notNull(),
+  answer: text("answer").notNull(),
+  example: text("example").notNull(),
+  relatedTopicId: integer("related_topic_id").references(() => topics.id),
+  relatedTopicTitle: text("related_topic_title").notNull(),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+});
+
+export const insertChatMessageSchema = createInsertSchema(chatMessages).pick({
+  userId: true,
+  question: true,
+  answer: true,
+  example: true,
+  relatedTopicId: true,
+  relatedTopicTitle: true,
+});
+
+export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
+export type ChatMessage = typeof chatMessages.$inferSelect;
+
+export interface ChatResponse {
+  answer: string;
+  example: string;
+  relatedTopic: {
+    id?: number;
+    title: string;
+  };
+}

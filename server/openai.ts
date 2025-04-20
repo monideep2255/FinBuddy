@@ -1,6 +1,16 @@
 import OpenAI from "openai";
 import { QuizQuestion, TopicContent } from "@shared/schema";
 
+// Define the chat response interface
+export interface ChatResponse {
+  answer: string;
+  example: string;
+  relatedTopic: {
+    id?: number;
+    title: string;
+  };
+}
+
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
 const isApiKeyMissing = !process.env.OPENAI_API_KEY;
 
@@ -118,5 +128,83 @@ export async function generateQuizQuestions(topic: string): Promise<QuizQuestion
   } catch (error) {
     console.error("Error generating quiz questions:", error);
     return fallbackQuestions;
+  }
+}
+
+// Generate response for Ask-Me-Anything chat questions
+export async function generateChatResponse(question: string, availableTopics: {id: number; title: string}[]): Promise<ChatResponse> {
+  // Default fallback response
+  const fallbackResponse: ChatResponse = {
+    answer: `I couldn't generate an answer for "${question}" at this time. Please try again later.`,
+    example: "Here's an example I'd normally provide to help illustrate the concept.",
+    relatedTopic: {
+      title: "General Finance"
+    }
+  };
+
+  // If OpenAI client is not available, return fallback response
+  if (!openai) {
+    console.log(`Using fallback chat response for question: "${question}" (OpenAI API not configured)`);
+    return fallbackResponse;
+  }
+  
+  try {
+    // First, format the available topics to provide context
+    const topicsContext = availableTopics.map(t => `${t.id}: ${t.title}`).join('\n');
+    
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content: `You are FinBuddy, a financial education assistant who explains financial concepts in simple, 
+          relatable terms without jargon. Your goal is to help users understand complex financial ideas.
+          
+          For each question:
+          1. Provide a clear, concise answer using plain language
+          2. Include a brief, practical real-world example that illustrates the concept
+          3. Mention a related financial topic from our curriculum that would help the user learn more
+          
+          Available financial topics in our curriculum (ID: Topic Name):
+          ${topicsContext}
+          
+          Always respond in JSON format with "answer", "example", and "relatedTopic" fields. 
+          The "relatedTopic" should contain "id" and "title" from the available topics above.`
+        },
+        {
+          role: "user",
+          content: question
+        }
+      ],
+      response_format: { type: "json_object" }
+    });
+
+    const result = JSON.parse(response.choices[0].message.content || "{}");
+    
+    // Handle case when OpenAI returns without proper matching
+    if (!result.relatedTopic || !result.relatedTopic.id) {
+      // Find most relevant topic based on simple keyword matching
+      const questionLower = question.toLowerCase();
+      const matchedTopic = availableTopics.find(t => 
+        questionLower.includes(t.title.toLowerCase())
+      ) || availableTopics[0]; // Default to first topic if no match
+      
+      result.relatedTopic = {
+        id: matchedTopic.id,
+        title: matchedTopic.title
+      };
+    }
+    
+    return {
+      answer: result.answer || fallbackResponse.answer,
+      example: result.example || fallbackResponse.example,
+      relatedTopic: {
+        id: result.relatedTopic?.id,
+        title: result.relatedTopic?.title || fallbackResponse.relatedTopic.title
+      }
+    };
+  } catch (error) {
+    console.error("Error generating chat response:", error);
+    return fallbackResponse;
   }
 }
