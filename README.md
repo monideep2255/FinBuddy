@@ -47,14 +47,11 @@ In a world where economic shifts impact our daily lives, most people remain conf
    - Investments: Stocks, Bonds, ETFs, Mutual Funds, Options, Yields
    - Personal Finance: Credit Scores, Risk Management, Tax Planning
    - Additional topics: Diversification
-5. 
-
-## Future Phases
-
-### Known Issues & To-Do
-- Adjust the display of text on smaller screens to ensure the login button is visible and text is properly legible.
+5. Adjusted the display of text on smaller screens to ensure the login button is visible and text is properly legible.
    - Home page login button
    - Cards text (Quiz, Explanation etc.)
+
+## Future Phases
 
 ### 📈 Phase 2: Live Market Data
 - Real-time market data integration

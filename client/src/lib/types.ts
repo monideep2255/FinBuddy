@@ -42,3 +42,40 @@ export interface UserProgressResponse {
   completedTopics: number[];
   totalComplete: number;
 }
+
+// Market Data Types
+export interface MarketDataPoint {
+  date: string;
+  value: number;
+}
+
+export interface MarketData {
+  currentValue: number;
+  change: number;
+  changePercent: number;
+  lastUpdated: string;
+  historicalData: MarketDataPoint[];
+  symbol: string;
+  name: string;
+}
+
+export interface AllMarketData {
+  stockIndices: {
+    sp500: MarketData | null;
+    nasdaq: MarketData | null;
+  };
+  treasuryYields: {
+    tenYear: MarketData | null;
+    twoYear: MarketData | null;
+  };
+  interestRates: {
+    fedFunds: MarketData | null;
+  };
+  inflation: {
+    cpi: MarketData | null;
+  };
+  commodities: {
+    gold: MarketData | null;
+    oil: MarketData | null;
+  };
+}

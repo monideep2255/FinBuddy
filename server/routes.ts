@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generateTopicExplanation, generateQuizQuestions } from "./openai";
 import { setupAuth } from "./auth";
+import * as marketData from "./marketData";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication
@@ -148,6 +149,91 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error(`Error updating progress for user ${req.params.userId} on topic ${req.params.topicId}:`, error);
       res.status(500).json({ message: "Failed to update progress" });
+    }
+  });
+
+  // Market Data API Routes
+  
+  // Get all market data
+  app.get("/api/market-data", async (req, res) => {
+    try {
+      const data = await marketData.getAllMarketData();
+      res.json(data);
+    } catch (error) {
+      console.error("Error fetching all market data:", error);
+      res.status(500).json({ message: "Failed to fetch market data" });
+    }
+  });
+
+  // Get S&P 500 data
+  app.get("/api/market-data/sp500", async (req, res) => {
+    try {
+      const data = await marketData.getSP500Data();
+      res.json(data);
+    } catch (error) {
+      console.error("Error fetching S&P 500 data:", error);
+      res.status(500).json({ message: "Failed to fetch S&P 500 data" });
+    }
+  });
+
+  // Get NASDAQ data
+  app.get("/api/market-data/nasdaq", async (req, res) => {
+    try {
+      const data = await marketData.getNasdaqData();
+      res.json(data);
+    } catch (error) {
+      console.error("Error fetching NASDAQ data:", error);
+      res.status(500).json({ message: "Failed to fetch NASDAQ data" });
+    }
+  });
+
+  // Get Treasury Yield data (10 year or 2 year)
+  app.get("/api/market-data/treasury/:maturity", async (req, res) => {
+    try {
+      const maturity = req.params.maturity === '10y' ? '10year' : '2year';
+      const data = await marketData.getTreasuryYieldData(maturity as '10year' | '2year');
+      res.json(data);
+    } catch (error) {
+      console.error(`Error fetching Treasury ${req.params.maturity} data:`, error);
+      res.status(500).json({ message: `Failed to fetch Treasury ${req.params.maturity} data` });
+    }
+  });
+
+  // Get Federal Funds Rate data
+  app.get("/api/market-data/fed-funds", async (req, res) => {
+    try {
+      const data = await marketData.getFederalFundsRateData();
+      res.json(data);
+    } catch (error) {
+      console.error("Error fetching Federal Funds Rate data:", error);
+      res.status(500).json({ message: "Failed to fetch Federal Funds Rate data" });
+    }
+  });
+
+  // Get CPI data (inflation)
+  app.get("/api/market-data/cpi", async (req, res) => {
+    try {
+      const data = await marketData.getCPIData();
+      res.json(data);
+    } catch (error) {
+      console.error("Error fetching CPI data:", error);
+      res.status(500).json({ message: "Failed to fetch CPI data" });
+    }
+  });
+
+  // Get commodity data (Gold or Oil)
+  app.get("/api/market-data/commodity/:symbol", async (req, res) => {
+    try {
+      const symbol = req.params.symbol.toUpperCase();
+      if (symbol !== 'GOLD' && symbol !== 'OIL') {
+        return res.status(400).json({ message: "Invalid commodity symbol. Use 'gold' or 'oil'." });
+      }
+      
+      const data = await marketData.getCommodityData(symbol);
+      res.json(data);
+    } catch (error) {
+      console.error(`Error fetching ${req.params.symbol} data:`, error);
+      res.status(500).json({ message: `Failed to fetch ${req.params.symbol} data` });
     }
   });
 
