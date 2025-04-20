@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import TopicDetail from "@/pages/TopicDetail";
+import MarketDataPage from "@/pages/MarketDataPage";
 import AuthPage from "@/pages/auth-page";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -22,6 +23,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/topics/:id" component={TopicDetail} />
+      <Route path="/market-data" component={MarketDataPage} />
       <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>

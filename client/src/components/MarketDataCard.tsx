@@ -70,12 +70,12 @@ export default function MarketDataCard({
   };
   
   return (
-    <div className={cn("p-4 rounded-lg border bg-card text-card-foreground shadow-sm", className)}>
+    <div className={cn("p-4 rounded-lg border bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-sm", className)}>
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-lg font-semibold">{displayTitle}</h3>
+          <h3 className="text-lg font-semibold text-neutral-800 dark:text-neutral-100">{displayTitle}</h3>
           {data && (
-            <p className="text-sm text-muted-foreground">Last updated: {data.lastUpdated}</p>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400">Last updated: {data.lastUpdated}</p>
           )}
         </div>
         
@@ -152,7 +152,7 @@ export default function MarketDataCard({
           <div className="h-full w-full animate-pulse bg-gray-200 dark:bg-gray-700 rounded"></div>
         ) : (
           <div className="h-full w-full flex items-center justify-center">
-            <p className="text-muted-foreground text-sm">No historical data available</p>
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm">No historical data available</p>
           </div>
         )}
       </div>
