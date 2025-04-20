@@ -179,17 +179,28 @@ FinBuddy uses shadcn/ui components for consistent, accessible UI elements. The t
 
 ```
 └── FinBuddy/
-    ├── client/               # Frontend React application
-    │   └── src/
-    │       ├── components/   # UI components
-    │       ├── pages/        # Page components
-    │       └── lib/          # Shared utilities
-    ├── server/              # Backend Express server
+    ├── client/                # Frontend React application
+    │   ├── src/
+    │   │   ├── components/    # UI components
+    │   │   │   ├── ui/       # Reusable UI components
+    │   │   │   └── ...       # Feature-specific components
+    │   │   ├── hooks/        # Custom React hooks
+    │   │   ├── lib/          # Shared utilities
+    │   │   ├── pages/        # Page components
+    │   │   └── App.tsx       # Root component
+    │   └── index.html        # HTML entry point
+    ├── server/               # Backend Express server
+    │   ├── auth.ts          # Authentication logic
+    │   ├── marketData.ts    # Market data handling
+    │   ├── openai.ts        # OpenAI integration
     │   ├── routes.ts        # API routes
-    │   ├── db.ts           # Database configuration
-    │   └── seed.ts         # Seed data
-    └── shared/              # Shared code
-        └── schema.ts        # Database schema
+    │   ├── db.ts            # Database configuration
+    │   └── seed.ts          # Seed data
+    ├── shared/               # Shared code
+    │   └── schema.ts        # Database schema
+    └── docs/                 # Documentation
+        ├── PRD.pdf          # Product Requirements
+        └── Tech_Spec.pdf    # Technical Specification
 ```
 
 ## Legal Notice
