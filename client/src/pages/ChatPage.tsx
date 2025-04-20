@@ -114,11 +114,7 @@ export default function ChatPage() {
       
       setChatHistory(prev => [...prev, pendingMessage]);
       setQuestion(""); // Clear input field
-      
-      // Scroll to bottom
-      setTimeout(() => {
-        chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+      // Auto-scroll is handled in the useEffect that watches chatHistory.length
     },
     onSuccess: (data) => {
       // Remove the pending message and add the actual response
@@ -139,10 +135,7 @@ export default function ChatPage() {
         return [...filtered, newMessage];
       });
       
-      // Scroll to bottom
-      setTimeout(() => {
-        chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+      // Auto-scroll is handled in the useEffect that watches chatHistory.length
     },
     onError: (error: Error) => {
       // Remove the pending message
@@ -168,10 +161,15 @@ export default function ChatPage() {
     });
   };
   
-  // Auto-scroll to bottom when messages change
+  // Auto-scroll only when new messages are added, not for every state change
   useEffect(() => {
-    chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatHistory]);
+    if (chatHistory.length > 0) {
+      // Use a small timeout to ensure DOM updates are complete
+      setTimeout(() => {
+        chatBottomRef.current?.scrollIntoView({ behavior: "auto" });
+      }, 50);
+    }
+  }, [chatHistory.length]);
   
   return (
     <>
@@ -185,8 +183,8 @@ export default function ChatPage() {
             </CardTitle>
           </CardHeader>
           
-          <CardContent className="flex-grow p-0 relative">
-            <ScrollArea className="h-full p-4">
+          <CardContent className="flex-grow p-0 relative overflow-hidden">
+            <ScrollArea className="h-[calc(100%-4px)] p-4 pb-2">
               {chatHistory.length === 0 && !isHistoryLoading ? (
                 <div className="h-full flex flex-col items-center justify-center text-center p-6 text-muted-foreground">
                   <h3 className="text-xl font-semibold mb-2">Welcome to FinBuddy Chat!</h3>
@@ -233,7 +231,7 @@ export default function ChatPage() {
                               {user ? user.username.charAt(0).toUpperCase() : 'U'}
                             </AvatarFallback>
                           </Avatar>
-                          <div className="rounded-lg bg-muted p-3 max-w-[85%] break-words">
+                          <div className="rounded-lg bg-gray-100 dark:bg-neutral-800 p-3 max-w-[85%] break-words">
                             <div className="whitespace-pre-wrap">{message.question}</div>
                           </div>
                         </div>
@@ -256,13 +254,13 @@ export default function ChatPage() {
                               <AvatarFallback className="bg-primary text-primary-foreground">FB</AvatarFallback>
                               <AvatarImage src="/logo.png" alt="FinBuddy" />
                             </Avatar>
-                            <div className="rounded-lg bg-primary/5 p-3 max-w-[85%] space-y-3 break-words">
+                            <div className="rounded-lg bg-primary-50 dark:bg-neutral-800 p-3 max-w-[85%] space-y-3 break-words">
                               <div className="whitespace-pre-wrap">{message.answer}</div>
                               
                               {message.example && (
                                 <div className="mt-3">
                                   <h4 className="font-medium text-sm text-muted-foreground mb-1">Example:</h4>
-                                  <div className="text-muted-foreground text-sm bg-background p-2 rounded-md whitespace-pre-wrap break-words">
+                                  <div className="text-gray-600 dark:text-gray-300 text-sm bg-gray-50 dark:bg-neutral-900 p-2 rounded-md whitespace-pre-wrap break-words">
                                     {message.example}
                                   </div>
                                 </div>
@@ -293,7 +291,7 @@ export default function ChatPage() {
             </ScrollArea>
           </CardContent>
           
-          <CardFooter className="border-t p-3">
+          <CardFooter className="border-t p-3 bg-white dark:bg-neutral-900 shadow-lg sticky bottom-0 z-10">
             <form onSubmit={handleSubmit} className="flex w-full gap-2">
               <Input
                 type="text"
@@ -301,7 +299,8 @@ export default function ChatPage() {
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 disabled={chatMutation.isPending}
-                className="flex-grow"
+                className="flex-grow bg-white dark:bg-neutral-800 border-gray-300 dark:border-gray-700 focus-visible:ring-primary"
+                autoFocus
               />
               <Button 
                 type="submit" 
