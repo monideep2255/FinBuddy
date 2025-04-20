@@ -11,6 +11,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Test endpoint
   app.get("/api/test", (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
     res.json({ 
       status: "ok",
       message: "API is working",
