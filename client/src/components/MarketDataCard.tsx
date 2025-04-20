@@ -200,16 +200,7 @@ export default function MarketDataCard({
                 />
               </LineChart>
             </ResponsiveContainer>
-            <div className="mt-2 flex justify-between text-xs text-neutral-500">
-              <span>Previous close: {formatValue(data.currentValue - data.change)}</span>
-              <span className="text-right">
-                Updated: {new Date().toLocaleDateString('en-US', { 
-                  hour: '2-digit', 
-                  minute: '2-digit',
-                  timeZone: 'America/New_York' 
-                })} EDT
-              </span>
-            </div>
+            {/* No additional footer information needed since it's already in the header */}
           </>
         ) : isLoading ? (
           <div className="h-full w-full animate-pulse bg-gray-200 dark:bg-gray-700 rounded"></div>
