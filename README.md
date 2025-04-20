@@ -1,5 +1,5 @@
 
-*Last Updated: April 17, 2025*
+*Last Updated: April 20, 2025*
 
 # FinBuddy - Your AI-Powered Finance Learning Companion
 
@@ -12,7 +12,7 @@ In a world where economic shifts impact our daily lives, most people remain conf
 - Simple, jargon-free explanations
 - Real-world examples and analogies
 - Interactive learning experiences
-- Live market data integration (coming soon)
+- Live market data integration
 
 ### Problem Statement
 - Financial concepts are intimidating and full of jargon
@@ -20,7 +20,9 @@ In a world where economic shifts impact our daily lives, most people remain conf
 - Existing learning tools are either passive or too generic
 - No app links finance education to real-time events
 
-## Currently Implemented Features
+
+
+## Implemented Features
 
 ### ✨ Phase 1: Topic Explorer + Concept Cards
 1. **Core Topic List**
@@ -47,16 +49,44 @@ In a world where economic shifts impact our daily lives, most people remain conf
    - Investments: Stocks, Bonds, ETFs, Mutual Funds, Options, Yields
    - Personal Finance: Credit Scores, Risk Management, Tax Planning
    - Additional topics: Diversification
-5. Adjusted the display of text on smaller screens to ensure the login button is visible and text is properly legible.
-   - Home page login button
-   - Cards text (Quiz, Explanation etc.)
 
-## Future Phases
+5. **Mobile Responsiveness**
+   - Adjusted the display of text on smaller screens to ensure the login button is visible and text is properly legible
+   - Enhanced home page login button
+   - Improved card text display (Quiz, Explanation etc.)
 
 ### 📈 Phase 2: Live Market Data
-- Real-time market data integration
-- Visual data representations
-- Current market context for topics
+1. **Real-time Market Data Integration**
+   - Connected to Alpha Vantage API for live market data
+   - Implemented secure API key handling via environment variables
+   - Added data fetching with proper error handling and fallbacks
+
+2. **Comprehensive Market Indicators**
+   - Stock indices: S&P 500, NASDAQ
+   - Treasury yields: 10-year and 2-year
+   - Interest rates: Federal Funds Rate
+   - Inflation metrics: Consumer Price Index (CPI)
+   - Commodities: Gold and Oil prices
+
+3. **Visual Data Representation**
+   - Interactive line charts for historical data visualization
+   - Color-coded indicators (green for positive, red for negative changes)
+   - Data tooltips with detailed information on hover
+   - Responsive charts that adapt to different screen sizes
+
+4. **Market Context for Topics**
+   - Added Live Data tab to topic pages showing relevant market data
+   - Included explanatory text describing market indicators
+   - Connected financial concepts to real-world market movements
+   - Created a comprehensive Market Data dashboard page
+
+5. **Enhanced User Experience**
+   - Improved navigation with easy access to market data
+   - Added helpful explanations about how to interpret data
+   - Ensured consistent styling in both light and dark modes
+   - Implemented proper mobile responsiveness for data visualization
+
+## Future Phases
 
 ### 💬 Phase 3: Ask-Me-Anything
 - Chat interface for questions
@@ -93,6 +123,9 @@ The application requires certain environment variables to be set. Create a `.env
 # OpenAI API Configuration
 OPENAI_API_KEY=your_openai_api_key_here
 
+# Market Data API Configuration
+ALPHA_VANTAGE_API_KEY=your_alpha_vantage_api_key_here
+
 # Database Configuration (automatically set by Replit)
 # DATABASE_URL=
 # PGUSER=
@@ -102,7 +135,9 @@ OPENAI_API_KEY=your_openai_api_key_here
 # PGPORT=
 ```
 
-### OpenAI API Key
+### API Keys
+
+#### OpenAI API Key
 
 To use the content generation features, you need to:
 
@@ -111,6 +146,16 @@ To use the content generation features, you need to:
 3. Add the API key to your `.env` file
 
 If the OpenAI API key is not provided, the application will use fallback content instead of generating new explanations and quiz questions.
+
+#### Alpha Vantage API Key
+
+To display live market data, you need to:
+
+1. Sign up for a free Alpha Vantage account at [www.alphavantage.co](https://www.alphavantage.co)
+2. Get your API key from your Alpha Vantage dashboard
+3. Add the API key to your `.env` file
+
+If the Alpha Vantage API key is not provided, the application will display error messages in the market data sections.
 
 ## Getting Started
 
