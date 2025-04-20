@@ -3,6 +3,7 @@ import {
   topics, 
   quizzes, 
   userProgress,
+  chatMessages,
   type User, 
   type InsertUser, 
   type Topic, 
@@ -12,10 +13,12 @@ import {
   type UserProgress,
   type InsertUserProgress,
   type QuizQuestion,
-  type TopicContent
+  type TopicContent,
+  type ChatMessage,
+  type InsertChatMessage
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, asc, and } from "drizzle-orm";
+import { eq, desc, asc, and, sql } from "drizzle-orm";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -38,6 +41,10 @@ export interface IStorage {
   getTopicProgress(userId: number, topicId: number): Promise<UserProgress | undefined>;
   updateTopicProgress(userId: number, topicId: number, progress: Partial<InsertUserProgress>): Promise<UserProgress>;
   getCompletedTopics(userId: number): Promise<number[]>;
+  
+  // Chat operations
+  getUserChatHistory(userId: number | null): Promise<ChatMessage[]>;
+  saveChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
 }
 
 export class MemStorage implements IStorage {
@@ -45,22 +52,26 @@ export class MemStorage implements IStorage {
   private topics: Map<number, Topic>;
   private quizzes: Map<number, Quiz>;
   private userProgress: Map<string, UserProgress>; // key is userId:topicId
+  private chatMessages: Map<number, ChatMessage>; // Chat messages for users
   
   currentUserId: number;
   currentTopicId: number;
   currentQuizId: number;
   currentProgressId: number;
+  currentChatMessageId: number;
 
   constructor() {
     this.users = new Map();
     this.topics = new Map();
     this.quizzes = new Map();
     this.userProgress = new Map();
+    this.chatMessages = new Map();
     
     this.currentUserId = 1;
     this.currentTopicId = 1;
     this.currentQuizId = 1;
     this.currentProgressId = 1;
+    this.currentChatMessageId = 1;
     
     // Initialize with some topics
     this.seedInitialTopics();
@@ -155,6 +166,45 @@ export class MemStorage implements IStorage {
       progress => progress.userId === userId && progress.completed
     );
     return userProgress.map(progress => progress.topicId);
+  }
+  
+  // Chat operations
+  async getUserChatHistory(userId: number | null): Promise<ChatMessage[]> {
+    // Convert Map to array
+    const allMessages = Array.from(this.chatMessages.values());
+    
+    // If userId is provided, filter to only show that user's messages
+    if (userId) {
+      return allMessages
+        .filter(message => message.userId === userId)
+        .sort((a, b) => (b.timestamp as Date).getTime() - (a.timestamp as Date).getTime())
+        .slice(0, 20);  // Limit to 20 most recent messages
+    }
+    
+    // For anonymous users, return messages with no userId
+    return allMessages
+      .filter(message => message.userId === null)
+      .sort((a, b) => (b.timestamp as Date).getTime() - (a.timestamp as Date).getTime())
+      .slice(0, 10);  // Limit to 10 most recent messages
+  }
+  
+  async saveChatMessage(message: InsertChatMessage): Promise<ChatMessage> {
+    const id = this.currentChatMessageId++;
+    const timestamp = new Date();
+    
+    const chatMessage: ChatMessage = {
+      id,
+      userId: message.userId || null,
+      question: message.question,
+      answer: message.answer,
+      example: message.example,
+      relatedTopicId: message.relatedTopicId || null,
+      relatedTopicTitle: message.relatedTopicTitle,
+      timestamp
+    };
+    
+    this.chatMessages.set(id, chatMessage);
+    return chatMessage;
   }
   
   private seedInitialTopics() {
@@ -596,6 +646,47 @@ export class DatabaseStorage implements IStorage {
         )
       );
     return completed.map(record => record.topicId);
+  }
+  
+  /**
+   * Get chat message history for a user
+   * If userId is null, returns only non-user-specific messages (for anonymous users)
+   */
+  async getUserChatHistory(userId: number | null): Promise<ChatMessage[]> {
+    // For logged-in users, get their specific chat history
+    if (userId) {
+      return db.select()
+        .from(chatMessages)
+        .where(eq(chatMessages.userId, userId))
+        .orderBy(desc(chatMessages.timestamp))
+        .limit(20); // Limit to most recent 20 messages
+    }
+    
+    // For anonymous users, return only non-user specific messages (demo or session-based)
+    // Since direct null comparison is tricky, let's just get recent messages without a filter
+    // and filter in memory
+    const result = await db.select()
+      .from(chatMessages)
+      .orderBy(desc(chatMessages.timestamp))
+      .limit(50);
+      
+    // Filter for null userId in memory
+    return result.filter(msg => msg.userId === null).slice(0, 10);
+  }
+  
+  /**
+   * Save a chat message to the database
+   */
+  async saveChatMessage(message: InsertChatMessage): Promise<ChatMessage> {
+    const [newMessage] = await db.insert(chatMessages)
+      .values({
+        ...message,
+        // If userId is not provided, it will be null (for anonymous users)
+        timestamp: new Date()
+      })
+      .returning();
+    
+    return newMessage;
   }
 }
 
