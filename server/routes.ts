@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { generateTopicExplanation, generateQuizQuestions } from "./openai";
+import { generateTopicExplanation, generateQuizQuestions, generateChatResponse } from "./openai";
 import { setupAuth } from "./auth";
 import * as marketData from "./marketData";
 
@@ -244,6 +244,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error(`Error fetching ${req.params.symbol} data:`, error);
       res.status(500).json({ message: `Failed to fetch ${req.params.symbol} data` });
+    }
+  });
+  
+  // Chat API Routes
+  
+  // Submit a question to the chat (Ask-Me-Anything)
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { question, userId } = req.body;
+      
+      if (!question || typeof question !== 'string') {
+        return res.status(400).json({ message: "Question is required" });
+      }
+      
+      // Get all topics to provide context for the AI
+      const topics = await storage.getAllTopics();
+      
+      // Generate response using OpenAI
+      const chatResponse = await generateChatResponse(question, topics);
+      
+      // Save the chat message to the database for history
+      const savedMessage = await storage.saveChatMessage({
+        userId: userId || null, // Anonymous users will have null userId
+        question,
+        answer: chatResponse.answer,
+        example: chatResponse.example,
+        relatedTopicId: chatResponse.relatedTopic.id || null,
+        relatedTopicTitle: chatResponse.relatedTopic.title
+      });
+      
+      // Return the generated response with the message ID for reference
+      res.status(201).json({
+        id: savedMessage.id,
+        question,
+        response: chatResponse,
+        timestamp: savedMessage.timestamp
+      });
+    } catch (error) {
+      console.error("Error processing chat question:", error);
+      res.status(500).json({ message: "Failed to process chat question" });
+    }
+  });
+  
+  // Get chat history for a user
+  app.get("/api/chat/history", async (req, res) => {
+    try {
+      // If authenticated, use the user's ID, otherwise treat as anonymous
+      const userId = req.isAuthenticated() ? (req.user as any).id : null;
+      const history = await storage.getUserChatHistory(userId);
+      
+      res.json(history);
+    } catch (error) {
+      console.error("Error fetching chat history:", error);
+      res.status(500).json({ message: "Failed to fetch chat history" });
     }
   });
 

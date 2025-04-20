@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import TopicDetail from "@/pages/TopicDetail";
 import MarketDataPage from "@/pages/MarketDataPage";
+import ChatPage from "@/pages/ChatPage";
 import AuthPage from "@/pages/auth-page";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -24,6 +25,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/topics/:id" component={TopicDetail} />
       <Route path="/market-data" component={MarketDataPage} />
+      <Route path="/chat" component={ChatPage} />
       <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>
