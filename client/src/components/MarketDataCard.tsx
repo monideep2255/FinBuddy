@@ -100,7 +100,7 @@ export default function MarketDataCard({
       <div className="h-48 mt-4">
         {data && data.historicalData && data.historicalData.length > 0 ? (
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data.historicalData}>
+            <LineChart data={[...data.historicalData].reverse()}>
               <CartesianGrid strokeDasharray="3 3" stroke="#ccc" strokeOpacity={0.3} />
               <XAxis 
                 dataKey="date" 

@@ -299,9 +299,10 @@ export async function getCPIData(): Promise<MarketData> {
     const change = currentValue - previousValue;
     const changePercent = previousValue !== 0 ? (change / previousValue) * 100 : 0;
     
-    // Format historical data points (last 12 months)
+    // Format historical data points (last 12 months) - in chronological order
     const historicalData: MarketDataPoint[] = dataPoints
       .slice(0, 12)
+      .reverse() // Reverse to get chronological order (oldest first)
       .map(point => ({
         date: formatDate(point.date),
         value: parseFloat(point.value)
