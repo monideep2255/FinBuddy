@@ -41,7 +41,7 @@ export default function Header() {
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center space-x-6 flex-grow justify-center">
           <Link href="/">
             <div className="font-medium text-primary-600 dark:text-primary-400 flex items-center cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1.5">
@@ -85,11 +85,11 @@ export default function Header() {
               </Button>
             </div>
           ) : (
-            <Link href="/auth">
+            <Link href="/auth" className="hidden md:block">
               <Button 
                 variant="default" 
                 size="sm" 
-                className="flex items-center bg-blue-600 hover:bg-blue-700 text-white"
+                className="flex items-center bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-600 text-white"
               >
                 <LogIn className="h-4 w-4 mr-2" />
                 <span>Login</span>
@@ -123,9 +123,6 @@ export default function Header() {
             </Button>
           )}
           
-          {/* Theme Toggle Button */}
-          <ThemeToggle />
-          
           {/* Mobile Menu Button - only visible on small screens */}
           <button 
             className="md:hidden text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 p-2"
@@ -138,6 +135,9 @@ export default function Header() {
               <Menu className="h-5 w-5" />
             )}
           </button>
+          
+          {/* Theme Toggle Button - always at the end */}
+          <ThemeToggle />
         </div>
       </div>
 

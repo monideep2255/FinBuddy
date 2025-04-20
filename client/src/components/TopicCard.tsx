@@ -37,11 +37,11 @@ export default function TopicCard({ topic }: TopicCardProps) {
         
         <div className="p-6 flex flex-col flex-grow">
           {/* Topic header with title and category badge */}
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-2">
             <h3 className="text-lg font-semibold text-neutral-800 dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
               {topic.title}
             </h3>
-            <span className={`px-2 py-1 text-xs font-medium rounded-full ${categoryColorClass} flex-shrink-0 ml-2`}>
+            <span className={`px-2 py-1 text-xs font-medium rounded-full ${categoryColorClass} flex-shrink-0 self-start`}>
               {topic.category}
             </span>
           </div>
