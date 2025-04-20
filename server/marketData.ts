@@ -21,6 +21,7 @@ function generateDemoData(symbol: string, name: string, baseValue: number, volat
   
   // Generate historical data points (30 days)
   const historicalData: MarketDataPoint[] = [];
+  // Start with the oldest date (30 days ago) and move forward to ensure chronological order
   for (let i = 29; i >= 0; i--) {
     const date = new Date();
     date.setDate(now.getDate() - i);
@@ -37,6 +38,11 @@ function generateDemoData(symbol: string, name: string, baseValue: number, volat
       value: parseFloat(dataValue.toFixed(2))
     });
   }
+  
+  // Ensure historical data is always in chronological order (oldest first)
+  historicalData.sort((a, b) => {
+    return new Date(a.date).getTime() - new Date(b.date).getTime();
+  });
   
   return {
     currentValue: parseFloat(currentValue.toFixed(2)),
@@ -79,6 +85,18 @@ function formatDate(dateStr: string): string {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
+  });
+}
+
+/**
+ * Ensures historical data is in chronological order (oldest to newest)
+ * This is important for consistent display in charts
+ */
+function ensureChronologicalOrder(data: MarketDataPoint[]): MarketDataPoint[] {
+  return data.sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return dateA - dateB; // Oldest first
   });
 }
 
@@ -476,6 +494,32 @@ export async function getAllMarketData() {
       })
     ]);
 
+    // Ensure all historical data is in chronological order (oldest to newest)
+    if (sp500Data && sp500Data.historicalData) {
+      sp500Data.historicalData = ensureChronologicalOrder(sp500Data.historicalData);
+    }
+    if (nasdaqData && nasdaqData.historicalData) {
+      nasdaqData.historicalData = ensureChronologicalOrder(nasdaqData.historicalData);
+    }
+    if (treasury10YData && treasury10YData.historicalData) {
+      treasury10YData.historicalData = ensureChronologicalOrder(treasury10YData.historicalData);
+    }
+    if (treasury2YData && treasury2YData.historicalData) {
+      treasury2YData.historicalData = ensureChronologicalOrder(treasury2YData.historicalData);
+    }
+    if (fedFundsData && fedFundsData.historicalData) {
+      fedFundsData.historicalData = ensureChronologicalOrder(fedFundsData.historicalData);
+    }
+    if (cpiData && cpiData.historicalData) {
+      cpiData.historicalData = ensureChronologicalOrder(cpiData.historicalData);
+    }
+    if (goldData && goldData.historicalData) {
+      goldData.historicalData = ensureChronologicalOrder(goldData.historicalData);
+    }
+    if (oilData && oilData.historicalData) {
+      oilData.historicalData = ensureChronologicalOrder(oilData.historicalData);
+    }
+
     return {
       stockIndices: {
         sp500: sp500Data,
@@ -499,7 +543,7 @@ export async function getAllMarketData() {
   } catch (error) {
     console.error('Error fetching all market data:', error);
     // If everything fails, return a complete set of demo data
-    return {
+    const demoData = {
       stockIndices: {
         sp500: generateDemoData('SPY', 'S&P 500 ETF', 500.75, 0.02),
         nasdaq: generateDemoData('QQQ', 'NASDAQ-100 ETF', 410.30, 0.025)
@@ -519,5 +563,17 @@ export async function getAllMarketData() {
         oil: generateDemoData('USO', 'Oil ETF', 75.42, 0.03)
       }
     };
+    
+    // Ensure all demo data is in chronological order
+    demoData.stockIndices.sp500.historicalData = ensureChronologicalOrder(demoData.stockIndices.sp500.historicalData);
+    demoData.stockIndices.nasdaq.historicalData = ensureChronologicalOrder(demoData.stockIndices.nasdaq.historicalData);
+    demoData.treasuryYields.tenYear.historicalData = ensureChronologicalOrder(demoData.treasuryYields.tenYear.historicalData);
+    demoData.treasuryYields.twoYear.historicalData = ensureChronologicalOrder(demoData.treasuryYields.twoYear.historicalData);
+    demoData.interestRates.fedFunds.historicalData = ensureChronologicalOrder(demoData.interestRates.fedFunds.historicalData);
+    demoData.inflation.cpi.historicalData = ensureChronologicalOrder(demoData.inflation.cpi.historicalData);
+    demoData.commodities.gold.historicalData = ensureChronologicalOrder(demoData.commodities.gold.historicalData);
+    demoData.commodities.oil.historicalData = ensureChronologicalOrder(demoData.commodities.oil.historicalData);
+    
+    return demoData;
   }
 }
