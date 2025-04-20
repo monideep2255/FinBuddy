@@ -129,50 +129,14 @@ export default function MarketDataCard({
         )}
       </div>
       
-      {/* Time periods */}
+      {/* Chart Info Header */}
       {data && !isLoading && (
         <div className="flex gap-2 mt-1 mb-2 border-t pt-3 border-neutral-200 dark:border-neutral-700">
-          <div className="flex h-7 space-x-1 text-xs">
-            <button 
-              className="px-2 rounded-md bg-blue-500 text-white font-medium"
-            >
-              1D
-            </button>
-            <button 
-              className="px-2 rounded-md text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-            >
-              5D
-            </button>
-            <button 
-              className="px-2 rounded-md text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-            >
-              1M
-            </button>
-            <button 
-              className="px-2 rounded-md text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-            >
-              6M
-            </button>
-            <button 
-              className="px-2 rounded-md text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-            >
-              YTD
-            </button>
-            <button 
-              className="px-2 rounded-md text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-            >
-              1Y
-            </button>
-            <button 
-              className="px-2 rounded-md text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-            >
-              5Y
-            </button>
-            <button 
-              className="px-2 rounded-md text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-            >
-              Max
-            </button>
+          <div className="flex items-center justify-between w-full text-xs text-neutral-600 dark:text-neutral-400">
+            <div className="font-medium">Historical Data (30 Days)</div>
+            <div className="text-xs text-neutral-500">
+              Data shown: {data.historicalData?.[0]?.date} to {data.historicalData?.[data.historicalData.length-1]?.date}
+            </div>
           </div>
         </div>
       )}
@@ -182,7 +146,7 @@ export default function MarketDataCard({
         {data && data.historicalData && data.historicalData.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={[...data.historicalData].reverse()}>
+              <LineChart data={[...data.historicalData]}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#ccc" strokeOpacity={0.3} />
                 <XAxis 
                   dataKey="date" 
