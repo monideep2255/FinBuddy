@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { topics, quizzes, userProgress } from "@shared/schema";
+import { topics, quizzes, userProgress, chatMessages } from "@shared/schema";
 import { log } from "./vite";
 
 /**
@@ -10,7 +10,10 @@ export async function resetDatabase() {
   try {
     log("Resetting database...");
     
-    // First delete quizzes (due to foreign key constraints)
+    // First delete chat messages (due to foreign key constraints)
+    await db.delete(chatMessages);
+
+    // Delete quizzes (due to foreign key constraints)
     await db.delete(quizzes);
     
     // Delete user progress

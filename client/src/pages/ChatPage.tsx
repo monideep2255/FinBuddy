@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { ChatMessage } from "../../../shared/schema";
+import Footer from "@/components/Footer";
 
 // Extend the ChatMessage interface for frontend usage
 interface ExtendedChatMessage extends Omit<ChatMessage, 'timestamp'> {
@@ -159,151 +160,155 @@ export default function ChatPage() {
   }, [chatHistory]);
   
   return (
-    <div className="container py-6 max-w-4xl mx-auto">
-      <Card className="flex flex-col h-[80vh] shadow-lg">
-        <CardHeader className="bg-primary/5">
-          <CardTitle className="flex items-center gap-2">
-            <Info className="h-5 w-5" />
-            Ask Me Anything
-          </CardTitle>
-        </CardHeader>
-        
-        <CardContent className="flex-grow p-0 relative">
-          <ScrollArea className="h-full p-4">
-            {chatHistory.length === 0 && !isHistoryLoading ? (
-              <div className="h-full flex flex-col items-center justify-center text-center p-6 text-muted-foreground">
-                <h3 className="text-xl font-semibold mb-2">Welcome to FinBuddy Chat!</h3>
-                <p className="max-w-md mb-4">
-                  Ask me any financial question, and I'll provide a helpful explanation with real-world examples.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-lg">
-                  {[
-                    "Explain how inflation affects my savings",
-                    "What are treasury yields?",
-                    "How do interest rates impact the stock market?",
-                    "Explain bonds in simple terms"
-                  ].map((suggestion, i) => (
-                    <Button 
-                      key={i} 
-                      variant="outline" 
-                      className="justify-start text-left h-auto py-2"
-                      onClick={() => {
-                        setQuestion(suggestion);
-                        chatMutation.mutate({
-                          question: suggestion,
-                          userId: user?.id
-                        });
-                      }}
-                    >
-                      {suggestion}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {isHistoryLoading ? (
-                  <div className="flex justify-center items-center h-40">
-                    <Loader2 className="h-8 w-8 animate-spin opacity-70" />
+    <>
+      <div className="container py-6 max-w-4xl mx-auto min-h-[calc(100vh-250px)]">
+        <Card className="flex flex-col shadow-lg" style={{ height: "75vh" }}>
+          <CardHeader className="bg-primary/5">
+            <CardTitle className="flex items-center gap-2">
+              <Info className="h-5 w-5" />
+              Ask Me Anything
+            </CardTitle>
+          </CardHeader>
+          
+          <CardContent className="flex-grow p-0 relative">
+            <ScrollArea className="h-full p-4">
+              {chatHistory.length === 0 && !isHistoryLoading ? (
+                <div className="h-full flex flex-col items-center justify-center text-center p-6 text-muted-foreground">
+                  <h3 className="text-xl font-semibold mb-2">Welcome to FinBuddy Chat!</h3>
+                  <p className="max-w-md mb-4">
+                    Ask me any financial question, and I'll provide a helpful explanation with real-world examples.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-lg">
+                    {[
+                      "Explain how inflation affects my savings",
+                      "What are treasury yields?",
+                      "How do interest rates impact the stock market?",
+                      "Explain bonds in simple terms"
+                    ].map((suggestion, i) => (
+                      <Button 
+                        key={i} 
+                        variant="outline" 
+                        className="justify-start text-left h-auto py-2"
+                        onClick={() => {
+                          setQuestion(suggestion);
+                          chatMutation.mutate({
+                            question: suggestion,
+                            userId: user?.id
+                          });
+                        }}
+                      >
+                        {suggestion}
+                      </Button>
+                    ))}
                   </div>
-                ) : (
-                  chatHistory.map((message) => (
-                    <div key={message.id + (message.pending ? '-pending' : '')}>
-                      {/* User Message */}
-                      <div className="flex items-start gap-3 mb-4">
-                        <Avatar className="h-8 w-8 mt-1">
-                          <AvatarFallback className="bg-primary/10 text-primary">
-                            {user ? user.username.charAt(0).toUpperCase() : 'U'}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="rounded-lg bg-muted p-3 max-w-[85%]">
-                          {message.question}
-                        </div>
-                      </div>
-                      
-                      {/* Bot Response */}
-                      {message.pending ? (
-                        <div className="flex items-start gap-3 opacity-70">
-                          <Avatar className="h-8 w-8 mt-1">
-                            <AvatarFallback className="bg-primary text-primary-foreground">FB</AvatarFallback>
-                            <AvatarImage src="/logo.png" alt="FinBuddy" />
-                          </Avatar>
-                          <div className="flex items-center gap-2 p-3">
-                            <Loader2 className="h-5 w-5 animate-spin" />
-                            <span>Thinking...</span>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex items-start gap-3">
-                          <Avatar className="h-8 w-8 mt-1">
-                            <AvatarFallback className="bg-primary text-primary-foreground">FB</AvatarFallback>
-                            <AvatarImage src="/logo.png" alt="FinBuddy" />
-                          </Avatar>
-                          <div className="rounded-lg bg-primary/5 p-3 max-w-[85%] space-y-3">
-                            <div>{message.answer}</div>
-                            
-                            {message.example && (
-                              <div className="mt-3">
-                                <h4 className="font-medium text-sm text-muted-foreground mb-1">Example:</h4>
-                                <div className="text-muted-foreground text-sm bg-background p-2 rounded-md">
-                                  {message.example}
-                                </div>
-                              </div>
-                            )}
-                            
-                            {message.relatedTopicId && (
-                              <div className="mt-2 pt-2 border-t border-border">
-                                <div className="flex items-center gap-1 text-sm">
-                                  <Link className="h-4 w-4" />
-                                  <span>Related Topic: </span>
-                                  <RouterLink to={`/topics/${message.relatedTopicId}`}>
-                                    <Badge variant="outline" className="cursor-pointer hover:bg-primary/10">
-                                      {message.relatedTopicTitle}
-                                    </Badge>
-                                  </RouterLink>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))
-                )}
-                <div ref={chatBottomRef} />
-              </div>
-            )}
-          </ScrollArea>
-        </CardContent>
-        
-        <CardFooter className="border-t p-3">
-          <form onSubmit={handleSubmit} className="flex w-full gap-2">
-            <Input
-              type="text"
-              placeholder="Ask me anything about finance..."
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              disabled={chatMutation.isPending}
-              className="flex-grow"
-            />
-            <Button 
-              type="submit" 
-              disabled={!question.trim() || chatMutation.isPending}
-            >
-              {chatMutation.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                </div>
               ) : (
-                <Send className="h-4 w-4" />
+                <div className="space-y-4">
+                  {isHistoryLoading ? (
+                    <div className="flex justify-center items-center h-40">
+                      <Loader2 className="h-8 w-8 animate-spin opacity-70" />
+                    </div>
+                  ) : (
+                    chatHistory.map((message) => (
+                      <div key={message.id + (message.pending ? '-pending' : '')}>
+                        {/* User Message */}
+                        <div className="flex items-start gap-3 mb-4">
+                          <Avatar className="h-8 w-8 mt-1">
+                            <AvatarFallback className="bg-primary/10 text-primary">
+                              {user ? user.username.charAt(0).toUpperCase() : 'U'}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="rounded-lg bg-muted p-3 max-w-[85%]">
+                            {message.question}
+                          </div>
+                        </div>
+                        
+                        {/* Bot Response */}
+                        {message.pending ? (
+                          <div className="flex items-start gap-3 opacity-70">
+                            <Avatar className="h-8 w-8 mt-1">
+                              <AvatarFallback className="bg-primary text-primary-foreground">FB</AvatarFallback>
+                              <AvatarImage src="/logo.png" alt="FinBuddy" />
+                            </Avatar>
+                            <div className="flex items-center gap-2 p-3">
+                              <Loader2 className="h-5 w-5 animate-spin" />
+                              <span>Thinking...</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex items-start gap-3">
+                            <Avatar className="h-8 w-8 mt-1">
+                              <AvatarFallback className="bg-primary text-primary-foreground">FB</AvatarFallback>
+                              <AvatarImage src="/logo.png" alt="FinBuddy" />
+                            </Avatar>
+                            <div className="rounded-lg bg-primary/5 p-3 max-w-[85%] space-y-3">
+                              <div>{message.answer}</div>
+                              
+                              {message.example && (
+                                <div className="mt-3">
+                                  <h4 className="font-medium text-sm text-muted-foreground mb-1">Example:</h4>
+                                  <div className="text-muted-foreground text-sm bg-background p-2 rounded-md">
+                                    {message.example}
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {message.relatedTopicId && (
+                                <div className="mt-2 pt-2 border-t border-border">
+                                  <div className="flex items-center gap-1 text-sm">
+                                    <Link className="h-4 w-4" />
+                                    <span>Related Topic: </span>
+                                    <RouterLink to={`/topics/${message.relatedTopicId}`}>
+                                      <Badge variant="outline" className="cursor-pointer hover:bg-primary/10">
+                                        {message.relatedTopicTitle}
+                                      </Badge>
+                                    </RouterLink>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  )}
+                  <div ref={chatBottomRef} />
+                </div>
               )}
-              <span className="sr-only">Send</span>
-            </Button>
-          </form>
-        </CardFooter>
-      </Card>
-      
-      <div className="text-center text-xs text-muted-foreground mt-4">
-        <p>Powered by OpenAI GPT-4o • Financial information is for educational purposes only</p>
+            </ScrollArea>
+          </CardContent>
+          
+          <CardFooter className="border-t p-3">
+            <form onSubmit={handleSubmit} className="flex w-full gap-2">
+              <Input
+                type="text"
+                placeholder="Ask me anything about finance..."
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                disabled={chatMutation.isPending}
+                className="flex-grow"
+              />
+              <Button 
+                type="submit" 
+                disabled={!question.trim() || chatMutation.isPending}
+              >
+                {chatMutation.isPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+                <span className="sr-only">Send</span>
+              </Button>
+            </form>
+          </CardFooter>
+        </Card>
+        
+        <div className="text-center text-xs text-muted-foreground mt-4 mb-8">
+          <p>Powered by OpenAI GPT-4o • Financial information is for educational purposes only</p>
+        </div>
       </div>
-    </div>
+      
+      <Footer />
+    </>
   );
 }
