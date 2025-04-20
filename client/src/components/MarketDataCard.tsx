@@ -11,6 +11,34 @@ import {
 import { MarketData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
+// Helper function to create Wikipedia URLs for financial terms
+const getWikipediaUrl = (term: string): string => {
+  // Map display titles to appropriate Wikipedia pages
+  const termMap: Record<string, string> = {
+    "S&P 500": "S%26P_500",
+    "S&P 500 ETF": "S%26P_500",
+    "NASDAQ": "NASDAQ",
+    "NASDAQ-100 ETF": "NASDAQ-100",
+    "10-Year Treasury Yield": "United_States_Treasury_security",
+    "2-Year Treasury Yield": "United_States_Treasury_security",
+    "Federal Funds Rate": "Federal_funds_rate",
+    "Consumer Price Index": "Consumer_price_index",
+    "Gold": "Gold_as_an_investment",
+    "Gold ETF": "Gold_exchange-traded_fund",
+    "Oil": "Petroleum",
+    "Oil ETF": "United_States_Oil_Fund"
+  };
+
+  // Default to a search if the term isn't in our map
+  const wikipediaTerm = termMap[term] || term.replace(/\s+/g, "_");
+  return `https://en.wikipedia.org/wiki/${wikipediaTerm}`;
+};
+
+// Helper function to create ticker symbol search URLs
+const getSymbolSearchUrl = (symbol: string): string => {
+  return `https://finance.yahoo.com/quote/${symbol}`;
+};
+
 interface MarketDataCardProps {
   data: MarketData | null;
   isLoading: boolean;
@@ -74,11 +102,27 @@ export default function MarketDataCard({
       <div className="flex justify-between items-start mb-4">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="text-lg font-semibold text-neutral-800 dark:text-neutral-100">{displayTitle}</h3>
+            <a 
+              href={getWikipediaUrl(displayTitle)} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="group"
+              title={`Learn more about ${displayTitle}`}
+            >
+              <h3 className="text-lg font-semibold text-neutral-800 dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 group-hover:underline transition-colors">
+                {displayTitle}
+              </h3>
+            </a>
             {data?.symbol && (
-              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-400">
+              <a 
+                href={getSymbolSearchUrl(data.symbol)}
+                target="_blank" 
+                rel="noopener noreferrer"
+                title={`Search for ${data.symbol} information`}
+                className="text-xs font-medium px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors"
+              >
                 {data.symbol}
-              </span>
+              </a>
             )}
           </div>
           {data && (
