@@ -21,7 +21,8 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Link as RouterLink } from "wouter";
 
-interface ChatHistory extends ChatMessage {
+interface ChatHistory extends Omit<ChatMessage, 'timestamp'> {
+  timestamp: string;
   pending?: boolean;
 }
 
@@ -59,9 +60,20 @@ export default function ChatPage() {
   // Update chat history when data is fetched
   useEffect(() => {
     if (history) {
-      setChatHistory(history.sort((a: ChatMessage, b: ChatMessage) => {
-        return new Date(a.timestamp as string).getTime() - new Date(b.timestamp as string).getTime();
+      // Convert ChatMessage[] to ChatHistory[] with string timestamps
+      const formattedHistory: ChatHistory[] = history.map(msg => ({
+        ...msg,
+        timestamp: typeof msg.timestamp === 'string' 
+          ? msg.timestamp 
+          : new Date(msg.timestamp).toISOString()
       }));
+      
+      // Sort by timestamp
+      formattedHistory.sort((a, b) => {
+        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+      });
+      
+      setChatHistory(formattedHistory);
     }
   }, [history]);
   
