@@ -47,6 +47,7 @@ In a world where economic shifts impact our daily lives, most people remain conf
    - Investments: Stocks, Bonds, ETFs, Mutual Funds, Options, Yields
    - Personal Finance: Credit Scores, Risk Management, Tax Planning
    - Additional topics: Diversification
+5. 
 
 ## Future Phases
 

@@ -259,10 +259,10 @@ export default function TopicDetail() {
           </div>
 
           {/* Topic Content Tabs */}
-          <div className="border-b border-neutral-200 dark:border-neutral-700">
-            <div className="flex -mb-px">
+          <div className="border-b border-neutral-200 dark:border-neutral-700 overflow-x-auto">
+            <div className="flex flex-nowrap -mb-px min-w-full">
               <button 
-                className={`px-4 py-3 border-b-2 font-medium transition-colors ${
+                className={`px-3 sm:px-4 py-3 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                   activeTab === 'explanation' 
                     ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
                     : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
@@ -272,17 +272,17 @@ export default function TopicDetail() {
                 Explanation
               </button>
               <button 
-                className={`px-4 py-3 border-b-2 font-medium transition-colors ${
+                className={`px-3 sm:px-4 py-3 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                   activeTab === 'example' 
                     ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
                     : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
                 }`}
                 onClick={() => handleTabChange('example')}
               >
-                Real-world Example
+                Real-world Ex.
               </button>
               <button 
-                className={`px-4 py-3 border-b-2 font-medium transition-colors ${
+                className={`px-3 sm:px-4 py-3 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                   activeTab === 'quiz' 
                     ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
                     : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
@@ -292,7 +292,7 @@ export default function TopicDetail() {
                 Quiz
               </button>
               <button 
-                className={`px-4 py-3 border-b-2 font-medium transition-colors ${
+                className={`px-3 sm:px-4 py-3 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                   activeTab === 'liveData' 
                     ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
                     : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'
