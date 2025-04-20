@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import ExplanationTab from '@/components/ExplanationTab';
 import RealWorldExampleTab from '@/components/RealWorldExampleTab';
 import QuizTab from '@/components/QuizTab';
+import LiveDataTab from '@/components/LiveDataTab';
 import Disclaimer from '@/components/Disclaimer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { apiRequest, queryClient } from '@/lib/queryClient';
@@ -322,18 +323,7 @@ export default function TopicDetail() {
           )}
           
           {activeTab === 'liveData' && (
-            <div className="py-6 font-serif">
-              <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100 mb-4">Live Market Data</h3>
-              <p className="text-neutral-700 dark:text-neutral-300 mb-4">
-                This feature will be available in Phase 2. Stay tuned for real-time market data related to {topic?.title}.
-              </p>
-              <div className="p-8 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 text-neutral-400 dark:text-neutral-600 mx-auto mb-2">
-                  <path fillRule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm4.5 7.5a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75zm3.75-1.5a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0V12zm2.25-3a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0V9.75A.75.75 0 0113.5 9zm3.75-1.5a.75.75 0 00-1.5 0v9a.75.75 0 001.5 0v-9z" clipRule="evenodd" />
-                </svg>
-                <p className="text-neutral-500 dark:text-neutral-400">Live data integration coming soon</p>
-              </div>
-            </div>
+            <LiveDataTab title={topic.title} />
           )}
         </section>
 
