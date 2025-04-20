@@ -8,7 +8,16 @@ import * as marketData from "./marketData";
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication
   setupAuth(app);
-  
+
+  // Test endpoint
+  app.get("/api/test", (req, res) => {
+    res.json({ 
+      status: "ok",
+      message: "API is working",
+      timestamp: new Date().toISOString()
+    });
+  });
+
   // Get all topics
   app.get("/api/topics", async (req, res) => {
     try {
@@ -24,11 +33,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = parseInt(req.params.id);
       const topic = await storage.getTopicById(id);
-      
+
       if (!topic) {
         return res.status(404).json({ message: "Topic not found" });
       }
-      
+
       res.json(topic);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch topic" });
@@ -40,13 +49,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const topicId = parseInt(req.params.id);
       const topic = await storage.getTopicById(topicId);
-      
+
       if (!topic) {
         return res.status(404).json({ message: "Topic not found" });
       }
-      
+
       let quiz = await storage.getQuizByTopicId(topicId);
-      
+
       if (!quiz) {
         // Generate a quiz if it doesn't exist
         const questions = await generateQuizQuestions(topic.title);
@@ -55,7 +64,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           questions
         });
       }
-      
+
       res.json(quiz);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch or generate quiz" });
@@ -66,14 +75,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/topics", async (req, res) => {
     try {
       const { title, description, category, readingTime } = req.body;
-      
+
       if (!title || !description || !category || !readingTime) {
         return res.status(400).json({ message: "Missing required fields" });
       }
 
       // Generate content using OpenAI
       const content = await generateTopicExplanation(title);
-      
+
       const newTopic = await storage.createTopic({
         title,
         description,
@@ -82,7 +91,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         content,
         createdAt: new Date().toISOString()
       });
-      
+
       res.status(201).json(newTopic);
     } catch (error) {
       res.status(500).json({ message: "Failed to create topic" });
@@ -101,18 +110,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/users/:userId/progress", isAuthenticated, async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
-      
+
       // Make sure the user can only access their own progress
       if (req.user && req.user.id !== userId) {
         return res.status(403).json({ message: "You can only access your own progress" });
       }
-      
+
       // Get all progress entries for this user
       const progressEntries = await storage.getUserProgress(userId);
-      
+
       // Get completed topics
       const completedTopics = await storage.getCompletedTopics(userId);
-      
+
       res.json({
         userId,
         progressEntries,
@@ -124,27 +133,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch user progress" });
     }
   });
-  
+
   // Update topic progress - requires authentication
   app.post("/api/users/:userId/topics/:topicId/progress", isAuthenticated, async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
       const topicId = parseInt(req.params.topicId);
-      
+
       // Make sure the user can only update their own progress
       if (req.user && req.user.id !== userId) {
         return res.status(403).json({ message: "You can only update your own progress" });
       }
-      
+
       // Check if the topic exists
       const topic = await storage.getTopicById(topicId);
       if (!topic) {
         return res.status(404).json({ message: "Topic not found" });
       }
-      
+
       // Update the progress
       const progress = await storage.updateTopicProgress(userId, topicId, req.body);
-      
+
       res.json(progress);
     } catch (error) {
       console.error(`Error updating progress for user ${req.params.userId} on topic ${req.params.topicId}:`, error);
@@ -153,7 +162,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Market Data API Routes
-  
+
   // Get all market data
   app.get("/api/market-data", async (req, res) => {
     try {
@@ -228,7 +237,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (symbol !== 'GOLD' && symbol !== 'OIL') {
         return res.status(400).json({ message: "Invalid commodity symbol. Use 'gold' or 'oil'." });
       }
-      
+
       const data = await marketData.getCommodityData(symbol);
       res.json(data);
     } catch (error) {
