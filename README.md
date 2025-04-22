@@ -1,9 +1,13 @@
 
-*Last Updated: April 20, 2025*
+*Last Updated: April 21, 2025*
 
 # FinBuddy - Your AI-Powered Finance Learning Companion
 
-FinBuddy is an interactive learning tool designed to make financial concepts accessible and engaging. It breaks down complex financial topics into simple explanations with real-world examples, helping users build confidence in understanding markets, economics, and personal finance.
+FinBuddy is an interactive learning tool that makes financial concepts accessible and engaging. It breaks down complex financial topics into simple explanations with real-world examples, helping users build confidence in understanding markets, economics, and personal finance.
+
+## Links to Website and PRD
+- [FinBuddy Website](https://financial-learning-buddy-monideepchakrab.replit.app/)
+- [PRD](docs/FinBuddy_PRD.docx.pdf)
 
 ## Project Overview
 
