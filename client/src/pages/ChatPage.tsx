@@ -268,7 +268,7 @@ export default function ChatPage() {
 
                               {message.relatedTopicId && (
                                 <div className="mt-2 pt-2 border-t border-border">
-                                  <div className="flex items-center flex-wrap gap-1 text-sm">
+                                  <div className="flex items-center flex-wrap gap-1 text-sm text-foreground">
                                     <Link className="h-4 w-4 flex-shrink-0" />
                                     <span>Related Topic: </span>
                                     <RouterLink to={`/topics/${message.relatedTopicId}`}>
