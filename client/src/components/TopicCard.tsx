@@ -53,7 +53,7 @@ export default function TopicCard({ topic }: TopicCardProps) {
           
           {/* Footer with explore button (enhanced visibility on mobile) */}
           <div className="flex items-center justify-center sm:justify-end mt-auto pt-2">
-            <div className="px-4 py-3 sm:py-2 bg-primary-100 dark:bg-primary-900 group-hover:bg-primary-200 dark:group-hover:bg-primary-800 rounded-lg text-primary-700 dark:text-primary-300 text-sm font-medium transition-all duration-200 w-full flex items-center justify-center">
+            <div className="px-4 py-3 sm:py-2 bg-primary-100 dark:bg-primary-900 group-hover:bg-primary-200 dark:group-hover:bg-primary-800 rounded-lg text-primary-700 dark:text-primary-300 text-sm font-medium transition-colors duration-200 w-full flex items-center justify-center">
               <span>Explore Topic</span>
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </div>
