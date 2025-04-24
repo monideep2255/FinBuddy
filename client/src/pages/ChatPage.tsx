@@ -177,10 +177,25 @@ export default function ChatPage() {
       <div className="container px-2 sm:px-4 md:px-6 py-4 sm:py-6 max-w-4xl mx-auto min-h-[calc(100vh-250px)]">
         <Card className="flex flex-col shadow-lg h-[500px] sm:h-[550px] md:h-[600px] lg:h-[650px] overflow-hidden bg-background">
           <CardHeader className="bg-primary/5">
-            <CardTitle className="flex items-center gap-2 text-foreground">
-              <Info className="h-5 w-5" />
-              Ask Me Anything
-            </CardTitle>
+            <div className="flex justify-between items-center">
+              <CardTitle className="flex items-center gap-2 text-foreground">
+                <Info className="h-5 w-5" />
+                Ask Me Anything
+              </CardTitle>
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-xs"
+                onClick={() => setChatHistory([])}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 mr-1">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                New Chat
+              </Button>
+            </div>
           </CardHeader>
 
           <CardContent className="flex-grow p-0 relative overflow-hidden">
