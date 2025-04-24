@@ -35,37 +35,31 @@ body {
   min-height: 100vh;
 }
 
-/* Force consistent chat bubbles in dark mode, especially on mobile */
-html.dark .rounded-lg.bg-muted,
-.dark .rounded-lg.bg-muted {
-  @apply bg-neutral-800 text-neutral-200 !important;
+/* Theme-aware chat bubbles */
+.rounded-lg.bg-muted {
+  @apply bg-gray-100 text-gray-900 dark:bg-neutral-800 dark:text-neutral-200;
 }
 
-html.dark .rounded-lg.bg-primary\/5,
-.dark .rounded-lg.bg-primary\/5 {
-  @apply bg-neutral-800/50 text-neutral-200 !important;
+.rounded-lg.bg-primary\/5 {
+  @apply bg-gray-50 text-gray-900 dark:bg-neutral-800/50 dark:text-neutral-200;
 }
 
-html.dark .text-muted-foreground.bg-background,
-.dark .text-muted-foreground.bg-background {
-  @apply bg-neutral-900 text-neutral-400 !important;
+.text-muted-foreground.bg-background {
+  @apply bg-white text-gray-600 dark:bg-neutral-900 dark:text-neutral-400;
 }
 
-/* Ensure consistent card background on small screens */
-html.dark .card, 
-.dark .card {
-  @apply bg-neutral-900 border-neutral-800 !important;
+/* Card backgrounds */
+.card {
+  @apply bg-white border-gray-200 dark:bg-neutral-900 dark:border-neutral-800;
 }
 
-/* Force darker body and html */
-html.dark, 
-.dark {
-  @apply bg-neutral-950 text-neutral-200 !important;
+/* Base theme colors */
+html {
+  @apply bg-white text-gray-900 dark:bg-neutral-950 dark:text-neutral-200;
 }
 
-html.dark body, 
-.dark body {
-  @apply bg-neutral-950 text-neutral-200 !important;
+body {
+  @apply bg-white text-gray-900 dark:bg-neutral-950 dark:text-neutral-200;
 }
 
 /* Ensure consistent card backgrounds */
