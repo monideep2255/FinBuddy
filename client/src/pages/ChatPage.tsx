@@ -231,7 +231,7 @@ export default function ChatPage() {
                               {user ? user.username.charAt(0).toUpperCase() : 'U'}
                             </AvatarFallback>
                           </Avatar>
-                          <div className="rounded-lg bg-gray-100 dark:bg-neutral-800 p-3 max-w-[85%] break-words" style={{ backgroundColor: 'var(--gray-100)' }}>
+                          <div className="rounded-lg bg-gray-100 dark:bg-neutral-800 p-3 max-w-[85%] break-words">
                             <div className="whitespace-pre-wrap">{message.question}</div>
                           </div>
                         </div>
@@ -254,7 +254,7 @@ export default function ChatPage() {
                               <AvatarFallback className="bg-primary text-primary-foreground">FB</AvatarFallback>
                               <AvatarImage src="/logo.png" alt="FinBuddy" />
                             </Avatar>
-                            <div className="rounded-lg p-3 max-w-[85%] space-y-3 break-words bg-muted/50">
+                            <div className="rounded-lg p-3 max-w-[85%] space-y-3 break-words bg-gray-50 dark:bg-neutral-800/50">
                               <div className="whitespace-pre-wrap">{message.answer}</div>
 
                               {message.example && (
