@@ -102,12 +102,18 @@ In a world where economic shifts impact our daily lives, most people remain conf
 - OpenAI integration status monitoring with fallback content
 - Persistent chat history across sessions
 
-## Future Phases
+## In Progress
 
 ### 🧪 Phase 4: Personalized Learning
-- Progress tracking
-- Customized learning paths
-- Bookmarking system
+- Topic completion tracking with visual indicators
+- Personalized topic bookmarking for later review
+- Quiz score and attempt history
+- Difficulty ratings for different topics
+- "What to learn next" personalized recommendations
+- Progress dashboard with completed and bookmarked topics
+- User-specific learning paths based on interests and history
+
+## Future Phases
 
 ### 🚀 Phase 5: Scenario Playground
 - Interactive market simulations

@@ -49,6 +49,15 @@ export default function TopicDetail() {
     queryKey: [`/api/topics/${topicId}/quiz`],
   });
   
+  // Local state to track progress updates immediately
+  const [localProgress, setLocalProgress] = useState<Partial<UserProgress>>({
+    bookmarked: false,
+    completed: false,
+    difficultyRating: 0,
+    quizScore: 0,
+    quizAttempts: 0
+  });
+  
   // Fetch the user's progress for this topic (only if logged in)
   const { data: progress, isLoading: isProgressLoading } = useQuery<UserProgress>({
     queryKey: [`/api/users/${userId}/topics/${topicId}/progress`],
@@ -74,6 +83,19 @@ export default function TopicDetail() {
     // Only run this query if the user is logged in and has an ID
     enabled: !!user?.id && !!topicId,
   });
+  
+  // Update local state when progress data changes
+  useEffect(() => {
+    if (progress) {
+      setLocalProgress({
+        bookmarked: progress.bookmarked || false,
+        completed: progress.completed || false,
+        difficultyRating: progress.difficultyRating || 0,
+        quizScore: progress.quizScore || 0,
+        quizAttempts: progress.quizAttempts || 0
+      });
+    }
+  }, [progress]);
   
   // Mutation to update progress
   const updateProgressMutation = useMutation({
@@ -132,8 +154,16 @@ export default function TopicDetail() {
   
   // Mark topic as completed or undo completion
   const toggleCompleted = () => {
+    // Update local state immediately for responsive UI
+    const newCompletedState = !progress?.completed;
+    setLocalProgress(prev => ({
+      ...prev,
+      completed: newCompletedState
+    }));
+    
+    // Send to server
     updateProgressMutation.mutate({
-      completed: !progress?.completed,
+      completed: newCompletedState,
     });
   };
 
@@ -229,12 +259,12 @@ export default function TopicDetail() {
                     onClick={toggleCompleted}
                     disabled={updateProgressMutation.isPending}
                     className={`w-full sm:w-auto px-3 py-2.5 sm:py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center
-                      ${progress?.completed 
+                      ${localProgress.completed || progress?.completed 
                         ? 'bg-green-100 dark:bg-green-900 hover:bg-green-200 dark:hover:bg-green-800 text-green-700 dark:text-green-300' 
                         : 'bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
                       }`}
                   >
-                    {progress?.completed ? (
+                    {localProgress.completed || progress?.completed ? (
                       <svg 
                         xmlns="http://www.w3.org/2000/svg" 
                         width="16" 
@@ -268,7 +298,7 @@ export default function TopicDetail() {
                       </svg>
                     )}
                     <span>
-                      {progress?.completed ? 'Completed' : 'Mark as Completed'}
+                      {localProgress.completed || progress?.completed ? 'Completed' : 'Mark as Completed'}
                     </span>
                   </button>
                 </>
@@ -289,17 +319,27 @@ export default function TopicDetail() {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <button 
-                          onClick={() => updateProgressMutation.mutate({
-                            bookmarked: !progress?.bookmarked
-                          })}
+                          onClick={() => {
+                            // Update local state immediately for responsive UI
+                            const newBookmarkedState = !progress?.bookmarked;
+                            setLocalProgress(prev => ({
+                              ...prev,
+                              bookmarked: newBookmarkedState
+                            }));
+                            
+                            // Send to server
+                            updateProgressMutation.mutate({
+                              bookmarked: newBookmarkedState
+                            });
+                          }}
                           disabled={updateProgressMutation.isPending}
                           className={`flex-1 px-3 py-2.5 sm:py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center
-                            ${progress?.bookmarked 
+                            ${localProgress.bookmarked || progress?.bookmarked 
                               ? 'bg-amber-100 dark:bg-amber-900 hover:bg-amber-200 dark:hover:bg-amber-800 text-amber-700 dark:text-amber-300' 
                               : 'bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
                             }`}
                         >
-                          {progress?.bookmarked ? (
+                          {localProgress.bookmarked || progress?.bookmarked ? (
                             <>
                               <svg 
                                 xmlns="http://www.w3.org/2000/svg" 
