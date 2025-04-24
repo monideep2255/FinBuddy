@@ -31,6 +31,7 @@ interface UserProgressResponse {
   userId: number;
   progressEntries: UserProgress[];
   completedTopics: number[];
+  bookmarkedTopics: number[];
   totalComplete: number;
 }
 
@@ -80,7 +81,9 @@ export default function LearningPath() {
     return new Date(bDate).getTime() - new Date(aDate).getTime();
   });
 
+  // Get bookmarked topics from API response
   const bookmarkedTopics = topicsWithProgress.filter(topic => 
+    progressData?.bookmarkedTopics?.includes(topic.id) || 
     topic.progress?.bookmarked
   );
 
@@ -98,15 +101,30 @@ export default function LearningPath() {
         engagedCategories.add(topic.category);
       }
     });
+    
+    // Get list of bookmarked topic IDs
+    const bookmarkedIds = new Set(
+      bookmarkedTopics.map(topic => topic.id)
+    );
+    
+    // Get completed topic IDs
+    const completedIds = new Set(
+      completedTopics.map(topic => topic.id)
+    );
 
     // First, recommend topics from categories user has engaged with
     const categoryRecommendations = topicsWithProgress.filter(topic => 
-      !topic.progress && engagedCategories.has(topic.category)
+      // Exclude completed and bookmarked topics
+      !completedIds.has(topic.id) && 
+      !bookmarkedIds.has(topic.id) && 
+      engagedCategories.has(topic.category)
     );
 
     // Then add other topics if needed
     const otherTopics = topicsWithProgress.filter(topic => 
-      !topic.progress && !engagedCategories.has(topic.category)
+      !completedIds.has(topic.id) && 
+      !bookmarkedIds.has(topic.id) && 
+      !engagedCategories.has(topic.category)
     );
 
     // Combine and limit to 6 recommendations

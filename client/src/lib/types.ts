@@ -34,12 +34,15 @@ export interface UserProgress {
   quizAttempts: number;
   lastAccessed: string;
   notes: string | null;
+  bookmarked: boolean;
+  difficultyRating: number | null;
 }
 
 export interface UserProgressResponse {
   userId: number;
   progressEntries: UserProgress[];
   completedTopics: number[];
+  bookmarkedTopics: number[];
   totalComplete: number;
 }
 
