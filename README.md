@@ -1,5 +1,5 @@
 
-*Last Updated: April 21, 2025*
+*Last Updated: April 23, 2025*
 
 # FinBuddy - Your AI-Powered Finance Learning Companion
 
