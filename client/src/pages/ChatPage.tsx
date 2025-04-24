@@ -254,7 +254,7 @@ export default function ChatPage() {
                               <AvatarFallback className="bg-primary text-primary-foreground">FB</AvatarFallback>
                               <AvatarImage src="/logo.png" alt="FinBuddy" />
                             </Avatar>
-                            <div className="rounded-lg p-3 max-w-[85%] space-y-3 break-words" style={{ backgroundColor: 'var(--background-light)', color: 'var(--foreground)' }}>
+                            <div className="rounded-lg p-3 max-w-[85%] space-y-3 break-words bg-muted/50">
                               <div className="whitespace-pre-wrap">{message.answer}</div>
 
                               {message.example && (
