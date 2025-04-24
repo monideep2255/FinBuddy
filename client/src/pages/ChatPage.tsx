@@ -201,7 +201,7 @@ export default function ChatPage() {
                       <Button 
                         key={i} 
                         variant="outline" 
-                        className="justify-start text-left h-auto py-2 text-sm sm:text-base w-full overflow-hidden text-ellipsis"
+                        className="justify-start text-left h-auto py-2 text-sm sm:text-base w-full overflow-hidden text-ellipsis hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors"
                         onClick={() => {
                           setQuestion(suggestion);
                           chatMutation.mutate({
