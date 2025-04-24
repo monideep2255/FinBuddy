@@ -185,7 +185,7 @@ export default function ChatPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs sm:text-sm font-medium text-neutral-900 dark:text-neutral-900 hover:bg-primary/10 dark:hover:bg-primary/20"
+                className="text-xs sm:text-sm font-medium text-neutral-900 dark:text-neutral-900 hover:text-neutral-900 dark:hover:text-neutral-900 hover:bg-primary/10 dark:hover:bg-primary/20"
                 onClick={() => setChatHistory([])}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 mr-1.5">
