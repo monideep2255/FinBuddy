@@ -108,8 +108,10 @@ export default function TopicDetail() {
   // Mark the topic as accessed when the user views it (only if logged in)
   useEffect(() => {
     if (topicId && !isProgressLoading && user) {
+      // Make sure we have a valid ISO formatted timestamp string
+      const timestamp = new Date().toISOString();
       updateProgressMutation.mutate({
-        lastAccessed: new Date().toISOString(),
+        lastAccessed: timestamp,
       });
     }
   }, [topicId, user]);
@@ -223,27 +225,20 @@ export default function TopicDetail() {
               {/* Progress Tracking - Only shown for logged in users */}
               {user ? (
                 <>
-                  {!progress?.completed ? (
-                    <button 
-                      onClick={toggleCompleted}
-                      disabled={updateProgressMutation.isPending}
-                      className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 bg-primary-100 dark:bg-primary-900 hover:bg-primary-200 dark:hover:bg-primary-800 rounded-lg text-primary-700 dark:text-primary-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center"
-                    >
-                      <CheckCircle2 className="w-4 h-4 mr-1.5" />
-                      <span>Mark as Completed</span>
-                    </button>
-                  ) : (
-                    <button 
-                      onClick={toggleCompleted}
-                      disabled={updateProgressMutation.isPending}
-                      className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 bg-green-100 dark:bg-green-900 hover:bg-green-200 dark:hover:bg-green-800 rounded-lg text-green-700 dark:text-green-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center"
-                    >
-                      <CheckCircle2 className="w-4 h-4 mr-1.5" />
-                      <span className="flex-grow text-center">
-                        Completed (Click to Undo)
-                      </span>
-                    </button>
-                  )}
+                  <button 
+                    onClick={toggleCompleted}
+                    disabled={updateProgressMutation.isPending}
+                    className={`w-full sm:w-auto px-3 py-2.5 sm:py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center
+                      ${progress?.completed 
+                        ? 'bg-green-100 dark:bg-green-900 hover:bg-green-200 dark:hover:bg-green-800 text-green-700 dark:text-green-300' 
+                        : 'bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
+                      }`}
+                  >
+                    <CheckCircle2 className={`w-4 h-4 mr-1.5 ${progress?.completed ? 'fill-green-500 text-white' : ''}`} />
+                    <span>
+                      {progress?.completed ? 'Completed' : 'Mark as Completed'}
+                    </span>
+                  </button>
                 </>
               ) : (
                 <Link href="/auth" className="w-full sm:w-auto">
@@ -274,8 +269,8 @@ export default function TopicDetail() {
                         >
                           {progress?.bookmarked ? (
                             <>
-                              <BookmarkX className="w-4 h-4 mr-1.5" />
-                              <span>Remove Bookmark</span>
+                              <Bookmark className="w-4 h-4 mr-1.5 fill-amber-500 text-amber-500" />
+                              <span>Bookmarked</span>
                             </>
                           ) : (
                             <>
