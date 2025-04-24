@@ -191,7 +191,7 @@ export default function ChatPage() {
                   <p className="max-w-md mb-4">
                     Ask me any financial question, and I'll provide a helpful explanation with real-world examples.
                   </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-lg mx-auto px-2">
+                  <div className="grid grid-cols-1 gap-3 w-full max-w-lg mx-auto px-2">
                     {[
                       "How does inflation affect the value of my savings over time?",
                       "What are treasury yields and how do they work?",
