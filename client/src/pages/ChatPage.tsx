@@ -255,7 +255,7 @@ export default function ChatPage() {
                               <AvatarImage src="/logo.png" alt="FinBuddy" />
                             </Avatar>
                             <div className="rounded-lg p-3 sm:p-4 max-w-[85%] sm:max-w-[80%] space-y-3 break-words bg-background border">
-                              <div className="whitespace-pre-wrap">{message.answer}</div>
+                              <div className="whitespace-pre-wrap text-foreground">{message.answer}</div>
 
                               {message.example && (
                                 <div className="mt-3">
