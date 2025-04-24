@@ -175,7 +175,7 @@ export default function ChatPage() {
     <>
       <Header />
       <div className="container py-4 max-w-4xl mx-auto min-h-[calc(100vh-250px)]">
-        <Card className="flex flex-col shadow-lg h-[500px] sm:h-[550px] md:h-[600px] overflow-hidden">
+        <Card className="flex flex-col shadow-lg h-[500px] sm:h-[550px] md:h-[600px] overflow-hidden bg-background">
           <CardHeader className="bg-primary/5">
             <CardTitle className="flex items-center gap-2">
               <Info className="h-5 w-5" />
