@@ -193,10 +193,10 @@ export default function ChatPage() {
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-lg mx-auto px-2">
                     {[
-                      "Explain how inflation affects my savings",
-                      "What are treasury yields?",
-                      "How do interest rates impact the stock market?",
-                      "Explain bonds in simple terms"
+                      "How does inflation affect the value of my savings over time?",
+                      "What are treasury yields and how do they work?",
+                      "How do interest rate changes impact stock market performance?",
+                      "Can you explain how bonds work in simple terms?"
                     ].map((suggestion, i) => (
                       <Button 
                         key={i} 
