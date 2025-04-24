@@ -37,6 +37,8 @@ export const userProgress = pgTable("user_progress", {
   quizAttempts: integer("quiz_attempts").default(0).notNull(),
   lastAccessed: timestamp("last_accessed").defaultNow().notNull(),
   notes: text("notes"),
+  bookmarked: boolean("bookmarked").default(false).notNull(),
+  difficultyRating: integer("difficulty_rating"), // User-rated difficulty (1-5)
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -66,6 +68,8 @@ export const insertUserProgressSchema = createInsertSchema(userProgress).pick({
   quizAttempts: true,
   lastAccessed: true,
   notes: true,
+  bookmarked: true,
+  difficultyRating: true,
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;

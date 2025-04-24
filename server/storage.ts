@@ -154,7 +154,9 @@ export class MemStorage implements IStorage {
         quizScore: progressData.quizScore || null,
         quizAttempts: progressData.quizAttempts || 0,
         lastAccessed: progressData.lastAccessed || new Date(),
-        notes: progressData.notes || null
+        notes: progressData.notes || null,
+        bookmarked: progressData.bookmarked || false,
+        difficultyRating: progressData.difficultyRating || null
       };
       this.userProgress.set(key, newProgress);
       return newProgress;
