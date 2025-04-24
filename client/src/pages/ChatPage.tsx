@@ -164,10 +164,10 @@ export default function ChatPage() {
   // Auto-scroll only when new messages are added, not for every state change
   useEffect(() => {
     if (chatHistory.length > 0) {
-      // Use a small timeout to ensure DOM updates are complete
-      setTimeout(() => {
-        chatBottomRef.current?.scrollIntoView({ behavior: "auto" });
-      }, 50);
+      const scrollElement = chatBottomRef.current?.parentElement;
+      if (scrollElement) {
+        scrollElement.scrollTop = scrollElement.scrollHeight;
+      }
     }
   }, [chatHistory.length]);
 
@@ -299,7 +299,7 @@ export default function ChatPage() {
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 disabled={chatMutation.isPending}
-                className="flex-grow bg-white dark:bg-neutral-800 border-gray-300 dark:border-gray-700 focus-visible:ring-primary h-10 sm:h-10 px-3 text-base"
+                className="flex-grow bg-white dark:bg-neutral-800 border-gray-300 dark:border-gray-700 focus-visible:ring-primary h-10 sm:h-10 px-3 text-base text-foreground"
                 autoFocus
               />
               <Button 
