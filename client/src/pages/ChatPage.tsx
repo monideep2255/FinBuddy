@@ -49,7 +49,7 @@ export default function ChatPage() {
   const [question, setQuestion] = useState("");
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const chatBottomRef = useRef<HTMLDivElement>(null);
-  
+
   // Check OpenAI connection status
   const { data: openaiStatus, isLoading: isOpenAIStatusLoading } = useQuery({
     queryKey: ["/api/openai/status"],
@@ -61,7 +61,7 @@ export default function ChatPage() {
     refetchOnWindowFocus: false,
     retry: 1
   });
-  
+
   // Fetch chat history
   const { data: history, isLoading: isHistoryLoading } = useQuery<ChatMessage[]>({
     queryKey: ["/api/chat/history"],
@@ -71,7 +71,7 @@ export default function ChatPage() {
       return res.json();
     }
   });
-  
+
   // Update chat history when data is fetched
   useEffect(() => {
     if (history) {
@@ -82,16 +82,16 @@ export default function ChatPage() {
           ? msg.timestamp 
           : new Date(msg.timestamp).toISOString()
       }));
-      
+
       // Sort by timestamp
       formattedHistory.sort((a, b) => {
         return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
       });
-      
+
       setChatHistory(formattedHistory);
     }
   }, [history]);
-  
+
   // Mutation for submitting a question
   const chatMutation = useMutation({
     mutationFn: async (data: { question: string; userId?: number }) => {
@@ -111,7 +111,7 @@ export default function ChatPage() {
         timestamp: new Date().toISOString(),
         pending: true
       };
-      
+
       setChatHistory(prev => [...prev, pendingMessage]);
       setQuestion(""); // Clear input field
       // Auto-scroll is handled in the useEffect that watches chatHistory.length
@@ -120,7 +120,7 @@ export default function ChatPage() {
       // Remove the pending message and add the actual response
       setChatHistory(prev => {
         const filtered = prev.filter(msg => !msg.pending);
-        
+
         const newMessage: ChatHistory = {
           id: data.id,
           userId: user?.id || null,
@@ -131,16 +131,16 @@ export default function ChatPage() {
           relatedTopicTitle: data.response.relatedTopic.title,
           timestamp: data.timestamp
         };
-        
+
         return [...filtered, newMessage];
       });
-      
+
       // Auto-scroll is handled in the useEffect that watches chatHistory.length
     },
     onError: (error: Error) => {
       // Remove the pending message
       setChatHistory(prev => prev.filter(msg => !msg.pending));
-      
+
       toast({
         title: "Failed to send message",
         description: error.message,
@@ -148,19 +148,19 @@ export default function ChatPage() {
       });
     }
   });
-  
+
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!question.trim()) return;
-    
+
     chatMutation.mutate({
       question: question.trim(),
       userId: user?.id
     });
   };
-  
+
   // Auto-scroll only when new messages are added, not for every state change
   useEffect(() => {
     if (chatHistory.length > 0) {
@@ -170,7 +170,7 @@ export default function ChatPage() {
       }, 50);
     }
   }, [chatHistory.length]);
-  
+
   return (
     <>
       <Header />
@@ -182,7 +182,7 @@ export default function ChatPage() {
               Ask Me Anything
             </CardTitle>
           </CardHeader>
-          
+
           <CardContent className="flex-grow p-0 relative overflow-hidden">
             <ScrollArea className="h-[calc(100%-4px)] p-4 pb-2">
               {chatHistory.length === 0 && !isHistoryLoading ? (
@@ -235,7 +235,7 @@ export default function ChatPage() {
                             <div className="whitespace-pre-wrap">{message.question}</div>
                           </div>
                         </div>
-                        
+
                         {/* Bot Response */}
                         {message.pending ? (
                           <div className="flex items-start gap-3 opacity-70">
@@ -256,7 +256,7 @@ export default function ChatPage() {
                             </Avatar>
                             <div className="rounded-lg p-3 max-w-[85%] space-y-3 break-words" style={{ backgroundColor: 'var(--background-light)', color: 'var(--foreground)' }}>
                               <div className="whitespace-pre-wrap">{message.answer}</div>
-                              
+
                               {message.example && (
                                 <div className="mt-3">
                                   <h4 className="font-medium text-sm text-muted-foreground mb-1">Example:</h4>
@@ -265,7 +265,7 @@ export default function ChatPage() {
                                   </div>
                                 </div>
                               )}
-                              
+
                               {message.relatedTopicId && (
                                 <div className="mt-2 pt-2 border-t border-border">
                                   <div className="flex items-center flex-wrap gap-1 text-sm">
@@ -290,7 +290,7 @@ export default function ChatPage() {
               )}
             </ScrollArea>
           </CardContent>
-          
+
           <CardFooter className="border-t p-3 bg-white dark:bg-neutral-900 shadow-lg sticky bottom-0 z-20">
             <form onSubmit={handleSubmit} className="flex w-full gap-2">
               <Input
@@ -317,7 +317,7 @@ export default function ChatPage() {
             </form>
           </CardFooter>
         </Card>
-        
+
         {/* OpenAI Status Alert */}
         {openaiStatus && !openaiStatus.apiKeyConfigured && (
           <Alert className="mt-4 bg-yellow-50 dark:bg-yellow-900/60 text-yellow-800 dark:text-yellow-300 border-yellow-300 dark:border-yellow-800">
@@ -341,7 +341,7 @@ export default function ChatPage() {
             </AlertDescription>
           </Alert>
         )}
-        
+
         {openaiStatus && openaiStatus.apiKeyConfigured && openaiStatus.status !== "connected" && (
           <Alert className="mt-4 bg-orange-50 dark:bg-orange-900/60 text-orange-800 dark:text-orange-300 border-orange-300 dark:border-orange-800">
             <AlertTriangle className="h-4 w-4" />
@@ -364,7 +364,7 @@ export default function ChatPage() {
             </AlertDescription>
           </Alert>
         )}
-        
+
         {openaiStatus && openaiStatus.apiKeyConfigured && openaiStatus.status === "connected" && (
           <Alert className="mt-4 bg-green-50 dark:bg-green-900/60 text-green-800 dark:text-green-300 border-green-300 dark:border-green-800">
             <CheckCircle className="h-4 w-4" />
@@ -387,12 +387,12 @@ export default function ChatPage() {
             </AlertDescription>
           </Alert>
         )}
-        
+
         <div className="text-center text-xs text-muted-foreground mt-4 mb-8">
           <p>Powered by OpenAI GPT-4o • Financial information is for educational purposes only</p>
         </div>
       </div>
-      
+
       <Footer />
     </>
   );
