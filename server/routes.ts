@@ -122,11 +122,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Get completed topics
       const completedTopics = await storage.getCompletedTopics(userId);
+      
+      // Get bookmarked topics
+      const bookmarkedTopics = await storage.getBookmarkedTopics(userId);
 
       res.json({
         userId,
         progressEntries,
         completedTopics,
+        bookmarkedTopics,
         totalComplete: completedTopics.length
       });
     } catch (error) {

@@ -170,6 +170,13 @@ export class MemStorage implements IStorage {
     return userProgress.map(progress => progress.topicId);
   }
   
+  async getBookmarkedTopics(userId: number): Promise<number[]> {
+    const userProgress = Array.from(this.userProgress.values()).filter(
+      progress => progress.userId === userId && progress.bookmarked
+    );
+    return userProgress.map(progress => progress.topicId);
+  }
+  
   // Chat operations
   async getUserChatHistory(userId: number | null): Promise<ChatMessage[]> {
     // Convert Map to array
@@ -648,6 +655,21 @@ export class DatabaseStorage implements IStorage {
         )
       );
     return completed.map(record => record.topicId);
+  }
+  
+  /**
+   * Get list of topic IDs that the user has bookmarked
+   */
+  async getBookmarkedTopics(userId: number): Promise<number[]> {
+    const bookmarked = await db.select({ topicId: userProgress.topicId })
+      .from(userProgress)
+      .where(
+        and(
+          eq(userProgress.userId, userId),
+          eq(userProgress.bookmarked, true)
+        )
+      );
+    return bookmarked.map(record => record.topicId);
   }
   
   /**

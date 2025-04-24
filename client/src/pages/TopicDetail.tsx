@@ -11,9 +11,21 @@ import Disclaimer from '@/components/Disclaimer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
-import { CheckCircle2, LogIn } from 'lucide-react';
+import { CheckCircle2, LogIn, Bookmark, BookmarkX, Star, StarHalf, Stars } from 'lucide-react';
 import { Topic, Quiz, UserProgress } from '@/lib/types';
 import { useAuth } from '@/hooks/use-auth';
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipProvider, 
+  TooltipTrigger 
+} from "@/components/ui/tooltip";
+import { Button } from '@/components/ui/button';
+import { 
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover';
 
 type TabType = 'explanation' | 'example' | 'quiz' | 'liveData';
 
@@ -242,20 +254,111 @@ export default function TopicDetail() {
                 </Link>
               )}
               
-              <div className="w-full sm:w-auto flex gap-2">
-                <button className="flex-1 px-3 py-2.5 sm:py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-1.5">
-                    <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clipRule="evenodd" />
-                  </svg>
-                  <span>Save</span>
-                </button>
-                <button className="flex-1 px-3 py-2.5 sm:py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-1.5">
-                    <path fillRule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clipRule="evenodd" />
-                  </svg>
-                  <span>Share</span>
-                </button>
-              </div>
+              {/* Bookmark and Difficulty Rating Buttons - Only shown for logged in users */}
+              {user ? (
+                <div className="w-full sm:w-auto flex gap-2">
+                  {/* Bookmark Button */}
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button 
+                          onClick={() => updateProgressMutation.mutate({
+                            bookmarked: !progress?.bookmarked
+                          })}
+                          disabled={updateProgressMutation.isPending}
+                          className={`flex-1 px-3 py-2.5 sm:py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center
+                            ${progress?.bookmarked 
+                              ? 'bg-amber-100 dark:bg-amber-900 hover:bg-amber-200 dark:hover:bg-amber-800 text-amber-700 dark:text-amber-300' 
+                              : 'bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
+                            }`}
+                        >
+                          {progress?.bookmarked ? (
+                            <>
+                              <BookmarkX className="w-4 h-4 mr-1.5" />
+                              <span>Remove Bookmark</span>
+                            </>
+                          ) : (
+                            <>
+                              <Bookmark className="w-4 h-4 mr-1.5" />
+                              <span>Bookmark</span>
+                            </>
+                          )}
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {progress?.bookmarked 
+                          ? "Remove this topic from your bookmarks" 
+                          : "Save this topic to your bookmarks for easy access later"}
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+
+                  {/* Difficulty Rating Button */}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button 
+                        className="flex-1 px-3 py-2.5 sm:py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center"
+                      >
+                        <StarHalf className="w-4 h-4 mr-1.5" />
+                        <span>
+                          {progress?.difficultyRating 
+                            ? `Difficulty: ${progress.difficultyRating}/5` 
+                            : "Rate Difficulty"}
+                        </span>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-64 p-4">
+                      <h4 className="font-medium text-sm mb-2 text-neutral-800 dark:text-neutral-200">
+                        How difficult was this topic?
+                      </h4>
+                      <p className="text-xs text-neutral-600 dark:text-neutral-400 mb-3">
+                        Your rating helps us recommend appropriate topics for other learners
+                      </p>
+                      <div className="flex justify-between mb-2">
+                        {[1, 2, 3, 4, 5].map((rating) => (
+                          <button
+                            key={rating}
+                            onClick={() => updateProgressMutation.mutate({
+                              difficultyRating: rating
+                            })}
+                            className={`p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors
+                              ${progress?.difficultyRating === rating 
+                                ? 'text-amber-500 dark:text-amber-400' 
+                                : 'text-neutral-400 dark:text-neutral-600'
+                              }`}
+                          >
+                            <Star 
+                              className={`w-6 h-6 ${progress?.difficultyRating === rating ? 'fill-amber-500' : ''}`} 
+                            />
+                          </button>
+                        ))}
+                      </div>
+                      <div className="flex justify-between text-xs text-neutral-500 dark:text-neutral-500 px-1.5">
+                        <span>Easiest</span>
+                        <span>Hardest</span>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              ) : (
+                <div className="w-full sm:w-auto flex gap-2">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link href="/auth" className="flex-1">
+                          <button className="w-full px-3 py-2.5 sm:py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center">
+                            <Bookmark className="w-4 h-4 mr-1.5" />
+                            <span>Bookmark</span>
+                          </button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Login to bookmark topics
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              )}
             </div>
           </div>
 
