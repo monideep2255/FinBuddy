@@ -232,7 +232,7 @@ export default function ChatPage() {
                             </AvatarFallback>
                           </Avatar>
                           <div className="rounded-lg bg-gray-100 dark:bg-neutral-800 p-3 sm:p-4 max-w-[85%] sm:max-w-[80%] break-words">
-                            <div className="whitespace-pre-wrap text-sm sm:text-base">{message.question}</div>
+                            <div className="whitespace-pre-wrap text-sm sm:text-base text-foreground">{message.question}</div>
                           </div>
                         </div>
 
