@@ -185,7 +185,7 @@ export default function ChatPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs sm:text-sm font-medium text-primary dark:text-primary hover:bg-primary/10 dark:hover:bg-primary/20"
+                className="text-xs sm:text-sm font-medium text-neutral-900 dark:text-neutral-900 hover:bg-primary/10 dark:hover:bg-primary/20"
                 onClick={() => setChatHistory([])}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 mr-1.5">
@@ -208,10 +208,10 @@ export default function ChatPage() {
                   </p>
                   <div className="grid grid-cols-1 gap-3 w-full max-w-lg mx-auto px-2">
                     {[
-                      "How does inflation affect the value of my savings over time?",
-                      "What are treasury yields and how do they work?",
-                      "How do interest rate changes impact stock market performance?",
-                      "Can you explain how bonds work in simple terms?"
+                      "How does inflation affect savings?",
+                      "Explain treasury yields",
+                      "Interest rates & stock markets",
+                      "How do bonds work?"
                     ].map((suggestion, i) => (
                       <Button 
                         key={i} 
