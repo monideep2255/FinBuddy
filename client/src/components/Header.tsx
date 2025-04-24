@@ -1,6 +1,6 @@
 import { Link } from 'wouter';
 import ThemeToggle from './ThemeToggle';
-import { Menu, X, LogIn, LogOut, User } from 'lucide-react';
+import { Menu, X, LogIn, LogOut, User, Award } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
@@ -66,6 +66,14 @@ export default function Header() {
               <span>Ask FinBuddy</span>
             </div>
           </Link>
+          {user && (
+            <Link href="/learning-path">
+              <div className="font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 flex items-center cursor-pointer transition-colors">
+                <Award className="w-5 h-5 mr-1.5" />
+                <span>My Progress</span>
+              </div>
+            </Link>
+          )}
         </nav>
         
         {/* Right side controls - Auth buttons, Mobile menu, and Theme toggle */}
@@ -174,7 +182,16 @@ export default function Header() {
                   <span>Ask FinBuddy</span>
                 </div>
               </Link>
-              {/* Removed My Progress entry */}
+              
+              {/* My Progress link - only visible for logged in users */}
+              {user && (
+                <Link href="/learning-path" onClick={() => setMobileMenuOpen(false)}>
+                  <div className="font-medium text-neutral-500 dark:text-neutral-400 flex items-center p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-700 dark:hover:text-neutral-200 data-[active=true]:text-primary-600 dark:data-[active=true]:text-primary-400">
+                    <Award className="w-5 h-5 mr-3" />
+                    <span>My Progress</span>
+                  </div>
+                </Link>
+              )}
               
               {/* Mobile Auth Options */}
               {user ? (

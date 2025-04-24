@@ -9,6 +9,7 @@ import TopicDetail from "@/pages/TopicDetail";
 import MarketDataPage from "@/pages/MarketDataPage";
 import ChatPage from "@/pages/ChatPage";
 import AuthPage from "@/pages/auth-page";
+import LearningPath from "@/pages/LearningPath";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/market-data" component={MarketDataPage} />
       <Route path="/chat" component={ChatPage} />
       <Route path="/auth" component={AuthPage} />
+      <ProtectedRoute path="/learning-path" component={LearningPath} />
       <Route component={NotFound} />
     </Switch>
   );
