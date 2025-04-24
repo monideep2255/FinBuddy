@@ -174,8 +174,8 @@ export default function ChatPage() {
   return (
     <>
       <Header />
-      <div className="container py-4 max-w-4xl mx-auto min-h-[calc(100vh-250px)]">
-        <Card className="flex flex-col shadow-lg h-[500px] sm:h-[550px] md:h-[600px] overflow-hidden bg-background">
+      <div className="container px-2 sm:px-4 md:px-6 py-4 sm:py-6 max-w-4xl mx-auto min-h-[calc(100vh-250px)]">
+        <Card className="flex flex-col shadow-lg h-[500px] sm:h-[550px] md:h-[600px] lg:h-[650px] overflow-hidden bg-background">
           <CardHeader className="bg-primary/5">
             <CardTitle className="flex items-center gap-2">
               <Info className="h-5 w-5" />
@@ -231,7 +231,7 @@ export default function ChatPage() {
                               {user ? user.username.charAt(0).toUpperCase() : 'U'}
                             </AvatarFallback>
                           </Avatar>
-                          <div className="rounded-lg bg-gray-100 dark:bg-neutral-800 p-3 max-w-[85%] break-words">
+                          <div className="rounded-lg bg-gray-100 dark:bg-neutral-800 p-3 sm:p-4 max-w-[85%] sm:max-w-[80%] break-words">
                             <div className="whitespace-pre-wrap">{message.question}</div>
                           </div>
                         </div>
@@ -254,7 +254,7 @@ export default function ChatPage() {
                               <AvatarFallback className="bg-primary text-primary-foreground">FB</AvatarFallback>
                               <AvatarImage src="/logo.png" alt="FinBuddy" />
                             </Avatar>
-                            <div className="rounded-lg p-3 max-w-[85%] space-y-3 break-words bg-background border">
+                            <div className="rounded-lg p-3 sm:p-4 max-w-[85%] sm:max-w-[80%] space-y-3 break-words bg-background border">
                               <div className="whitespace-pre-wrap">{message.answer}</div>
 
                               {message.example && (
