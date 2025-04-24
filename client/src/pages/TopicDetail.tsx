@@ -234,7 +234,39 @@ export default function TopicDetail() {
                         : 'bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
                       }`}
                   >
-                    <CheckCircle2 className={`w-4 h-4 mr-1.5 ${progress?.completed ? 'fill-green-500 text-white' : ''}`} />
+                    {progress?.completed ? (
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width="16" 
+                        height="16" 
+                        viewBox="0 0 24 24" 
+                        fill="#22c55e" 
+                        stroke="#ffffff" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        className="w-4 h-4 mr-1.5"
+                      >
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                    ) : (
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width="16" 
+                        height="16" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        className="w-4 h-4 mr-1.5"
+                      >
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                    )}
                     <span>
                       {progress?.completed ? 'Completed' : 'Mark as Completed'}
                     </span>
@@ -269,12 +301,38 @@ export default function TopicDetail() {
                         >
                           {progress?.bookmarked ? (
                             <>
-                              <Bookmark className="w-4 h-4 mr-1.5 fill-amber-500 text-amber-500" />
+                              <svg 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                width="16" 
+                                height="16" 
+                                viewBox="0 0 24 24" 
+                                fill="#f59e0b" 
+                                stroke="#f59e0b" 
+                                strokeWidth="2" 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                className="w-4 h-4 mr-1.5"
+                              >
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                              </svg>
                               <span>Bookmarked</span>
                             </>
                           ) : (
                             <>
-                              <Bookmark className="w-4 h-4 mr-1.5" />
+                              <svg 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                width="16" 
+                                height="16" 
+                                viewBox="0 0 24 24" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                strokeWidth="2" 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                className="w-4 h-4 mr-1.5"
+                              >
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                              </svg>
                               <span>Bookmark</span>
                             </>
                           )}
@@ -342,7 +400,20 @@ export default function TopicDetail() {
                       <TooltipTrigger asChild>
                         <Link href="/auth" className="flex-1">
                           <button className="w-full px-3 py-2.5 sm:py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center">
-                            <Bookmark className="w-4 h-4 mr-1.5" />
+                            <svg 
+                              xmlns="http://www.w3.org/2000/svg" 
+                              width="16" 
+                              height="16" 
+                              viewBox="0 0 24 24" 
+                              fill="none" 
+                              stroke="currentColor" 
+                              strokeWidth="2" 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              className="w-4 h-4 mr-1.5"
+                            >
+                              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                            </svg>
                             <span>Bookmark</span>
                           </button>
                         </Link>

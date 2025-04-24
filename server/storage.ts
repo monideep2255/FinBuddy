@@ -616,17 +616,25 @@ export class DatabaseStorage implements IStorage {
     
     if (existingProgress) {
       // Update existing progress
+      const lastAccessed = progressData.lastAccessed 
+        ? new Date(progressData.lastAccessed) // Convert string timestamp to Date
+        : new Date(); // Or use current date
+      
       const [updated] = await db.update(userProgress)
         .set({
           ...progressData,
           // Always update the lastAccessed timestamp unless explicitly provided
-          lastAccessed: progressData.lastAccessed || new Date()
+          lastAccessed
         })
         .where(eq(userProgress.id, existingProgress.id))
         .returning();
       return updated;
     } else {
       // Create new progress
+      const lastAccessed = progressData.lastAccessed 
+        ? new Date(progressData.lastAccessed) // Convert string timestamp to Date
+        : new Date(); // Or use current date
+        
       const [created] = await db.insert(userProgress)
         .values({
           userId,
@@ -635,7 +643,7 @@ export class DatabaseStorage implements IStorage {
           // Default values if not provided
           completed: progressData.completed !== undefined ? progressData.completed : false,
           quizAttempts: progressData.quizAttempts || 0,
-          lastAccessed: progressData.lastAccessed || new Date()
+          lastAccessed
         })
         .returning();
       return created;
