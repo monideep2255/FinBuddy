@@ -185,10 +185,10 @@ export default function ChatPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs"
+                className="text-xs sm:text-sm font-medium text-primary dark:text-primary hover:bg-primary/10 dark:hover:bg-primary/20"
                 onClick={() => setChatHistory([])}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 mr-1">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 mr-1.5">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                   <polyline points="17 8 12 3 7 8" />
                   <line x1="12" y1="3" x2="12" y2="15" />
