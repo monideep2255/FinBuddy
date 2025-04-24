@@ -90,8 +90,6 @@ In a world where economic shifts impact our daily lives, most people remain conf
    - Ensured consistent styling in both light and dark modes
    - Implemented proper mobile responsiveness for data visualization
 
-## Currently Implemented Features
-
 ### 💬 Phase 3: Ask-Me-Anything
 - Chat interface for questions
 - Contextual topic suggestions
