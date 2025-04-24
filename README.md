@@ -90,12 +90,16 @@ In a world where economic shifts impact our daily lives, most people remain conf
    - Ensured consistent styling in both light and dark modes
    - Implemented proper mobile responsiveness for data visualization
 
-## Future Phases
+## Currently Implemented Features
 
 ### 💬 Phase 3: Ask-Me-Anything
 - Chat interface for questions
 - Contextual topic suggestions
-- Dynamic examples
+- Dynamic examples generated in real-time
+- AI-powered responses with related topics
+- Natural conversation flow
+
+## Future Phases
 
 ### 🧪 Phase 4: Personalized Learning
 - Progress tracking
