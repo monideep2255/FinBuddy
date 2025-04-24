@@ -16,22 +16,20 @@
 
 /* Override to ensure consistent light/dark theme across all components */
 :root {
-  --background-light: #ffffff;
-  --background-dark: #121212;
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
   color-scheme: light;
 }
 
-:root.dark {
+.dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
   color-scheme: dark;
 }
 
 /* Ensure consistent background colors */
-html {
-  @apply bg-white dark:bg-neutral-950;
-}
-
-body {
-  @apply bg-white dark:bg-neutral-950;
+html, body {
+  @apply bg-background text-foreground;
   min-height: 100vh;
 }
 
