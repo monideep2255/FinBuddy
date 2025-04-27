@@ -46,15 +46,13 @@ export default function ScenariosPage() {
     retry: 1,
   });
 
-  // Convert scenarios data to an array and deduplicate based on title, limiting to 3 scenarios
+  // Convert scenarios data to an array and deduplicate based on title
   const scenariosArray = Array.isArray(scenarios) 
     ? scenarios
         // Make sure we only include unique values by title
         .filter((s, index, self) => 
           index === self.findIndex(t => t.title === s.title)
         )
-        // Limit to 3 items
-        .slice(0, 3)
     : [];
 
   // Handle scenario selection
@@ -137,7 +135,7 @@ export default function ScenariosPage() {
     return (
       <>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {scenariosArray.slice(page * 6, (page + 1) * 6).map((scenario: Scenario) => (
+          {scenariosArray.slice(page * 3, (page + 1) * 3).map((scenario: Scenario) => (
             <ScenarioCard
               key={scenario.id}
               scenario={scenario}
@@ -145,7 +143,7 @@ export default function ScenariosPage() {
             />
           ))}
         </div>
-        {scenariosArray.length > 6 && (
+        {scenariosArray.length > 3 && (
           <div className="mt-6 flex justify-center">
             <Pagination>
               <PaginationContent>
@@ -155,7 +153,7 @@ export default function ScenariosPage() {
                     className={page === 0 ? 'pointer-events-none opacity-50' : ''}
                   />
                 </PaginationItem>
-                {[...Array(Math.ceil(scenariosArray.length / 6))].map((_, i) => (
+                {[...Array(Math.ceil(scenariosArray.length / 3))].map((_, i) => (
                   <PaginationItem key={i}>
                     <PaginationLink 
                       onClick={() => setPage(i)}
@@ -167,8 +165,8 @@ export default function ScenariosPage() {
                 ))}
                 <PaginationItem>
                   <PaginationNext 
-                    onClick={() => setPage(p => Math.min(Math.ceil(scenariosArray.length / 6) - 1, p + 1))}
-                    className={page >= Math.ceil(scenariosArray.length / 6) - 1 ? 'pointer-events-none opacity-50' : ''}
+                    onClick={() => setPage(p => Math.min(Math.ceil(scenariosArray.length / 3) - 1, p + 1))}
+                    className={page >= Math.ceil(scenariosArray.length / 3) - 1 ? 'pointer-events-none opacity-50' : ''}
                   />
                 </PaginationItem>
               </PaginationContent>
@@ -203,11 +201,11 @@ export default function ScenariosPage() {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="explore">Explore Scenarios</TabsTrigger>
-              <TabsTrigger value="custom">Custom Scenario</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-muted">
+              <TabsTrigger value="explore" className="data-[state=active]:bg-background">Explore Scenarios</TabsTrigger>
+              <TabsTrigger value="custom" className="data-[state=active]:bg-background">Custom Scenario</TabsTrigger>
               {currentAnalysis && (
-                <TabsTrigger value="analysis" className="col-span-2 mt-2">
+                <TabsTrigger value="analysis" className="col-span-2 mt-2 data-[state=active]:bg-background">
                   Analysis Results
                 </TabsTrigger>
               )}
