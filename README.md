@@ -139,6 +139,9 @@ In a world where economic shifts impact our daily lives, most people remain conf
 - Interactive market simulations
 - Economic impact analysis
 - Real-world application testing
+- On smaller screen, fix dark and light mode error
+- Add custom scenarios for the playground
+- Introduce multiple simulations (refer chatGPT if needed!)
 
 ## Technical Stack
 
