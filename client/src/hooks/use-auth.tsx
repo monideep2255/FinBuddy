@@ -61,11 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Success toast is handled in AuthPage to avoid distracting mobile views
     },
     onError: (error: Error) => {
-      toast({
-        title: "Login failed",
-        description: "Invalid username or password",
-        variant: "destructive",
-      });
+      console.error("Login error:", error);
     },
   });
 
@@ -81,11 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Success toast is handled in AuthPage to avoid distracting mobile views
     },
     onError: (error: Error) => {
-      toast({
-        title: "Registration failed",
-        description: error.message || "Could not create account",
-        variant: "destructive",
-      });
+      console.error("Registration error:", error);
     },
   });
 
@@ -99,11 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // No toast for better mobile experience
     },
     onError: (error: Error) => {
-      toast({
-        title: "Logout failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      console.error("Logout error:", error);
     },
   });
 
