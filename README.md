@@ -1,5 +1,5 @@
 
-*Last Updated: April 23, 2025*
+*Last Updated: April 26, 2025*
 
 # FinBuddy - Your AI-Powered Finance Learning Companion
 
@@ -102,14 +102,12 @@ In a world where economic shifts impact our daily lives, most people remain conf
 - OpenAI integration status monitoring with fallback content
 - Persistent chat history across sessions
 
-## In Progress
-
 ### 🧪 Phase 4: Personalized Learning
 - Progress tracking
 - Customized learning paths
 - Bookmarking system
-  
-## Future Phases
+
+## In Progress
 
 ### 🚀 Phase 5: Scenario Playground
 - Interactive market simulations
