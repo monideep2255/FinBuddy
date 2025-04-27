@@ -22,27 +22,20 @@ export default function AuthPage() {
   // Get auth context
   const { user, isLoading, loginMutation, registerMutation } = useAuth();
   const { toast } = useToast();
-  
+
   // Track which form is active
   const [isLogin, setIsLogin] = useState(true);
-  
+
   // Show success toast when login or registration succeeds
   useEffect(() => {
-    if (loginMutation.isSuccess) {
-      toast({
-        title: "Login successful",
-        description: `Welcome back, ${loginMutation.data?.username}!`,
-      });
-    }
-    
     if (registerMutation.isSuccess) {
       toast({
         title: "Registration successful",
         description: `Welcome, ${registerMutation.data?.username}!`,
       });
     }
-  }, [loginMutation.isSuccess, registerMutation.isSuccess, toast]);
-  
+  }, [registerMutation.isSuccess, toast]);
+
   // Setup form validation with react-hook-form and zod
   const { 
     register, 
@@ -80,7 +73,7 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-neutral-950">
       <Header />
-      
+
       <main className="flex-grow flex items-center py-8 px-4">
         <div className="container max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -89,7 +82,7 @@ export default function AuthPage() {
               <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100 mb-6">
                 {isLogin ? "Welcome Back" : "Create an Account"}
               </h2>
-              
+
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="username" className="text-neutral-800 dark:text-neutral-200">
@@ -105,7 +98,7 @@ export default function AuthPage() {
                     <p className="text-sm text-red-500 dark:text-red-400">{errors.username.message}</p>
                   )}
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-neutral-800 dark:text-neutral-200">
                     Password
@@ -121,7 +114,7 @@ export default function AuthPage() {
                     <p className="text-sm text-red-500 dark:text-red-400">{errors.password.message}</p>
                   )}
                 </div>
-                
+
                 <Button 
                   type="submit" 
                   className="w-full" 
@@ -142,7 +135,7 @@ export default function AuthPage() {
                   </div>
                 )}
               </form>
-              
+
               <div className="mt-6 text-center">
                 <p className="text-sm text-neutral-600 dark:text-neutral-400">
                   {isLogin ? "Don't have an account?" : "Already have an account?"}
@@ -156,7 +149,7 @@ export default function AuthPage() {
                 </p>
               </div>
             </div>
-            
+
             {/* Hero Content Column */}
             <div className="text-center md:text-left order-1 md:order-2">
               <div className="bg-gradient-to-br from-blue-500 to-blue-700 w-16 h-16 rounded-xl flex items-center justify-center text-white shadow-md mx-auto md:mx-0 mb-4">
@@ -166,14 +159,14 @@ export default function AuthPage() {
                   <path d="M2.25 18a.75.75 0 000 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 00-.75-.75H2.25z" />
                 </svg>
               </div>
-              
+
               <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-4">
                 FinBuddy
               </h1>
               <p className="text-lg text-neutral-700 dark:text-neutral-300 mb-6">
                 Your personal guide to understanding finances
               </p>
-              
+
               <div className="max-w-md mx-auto md:mx-0">
                 <ul className="space-y-4 text-neutral-600 dark:text-neutral-400 text-left">
                   <li className="flex items-start">
@@ -206,7 +199,7 @@ export default function AuthPage() {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
