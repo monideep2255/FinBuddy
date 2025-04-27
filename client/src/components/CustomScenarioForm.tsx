@@ -69,7 +69,7 @@ export function CustomScenarioForm({ onAnalyzeSuccess, onAnalyzeStart }: CustomS
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full custom-scenario-form">
       <CardHeader>
         <CardTitle>Create Custom Scenario</CardTitle>
         <CardDescription>

@@ -88,6 +88,11 @@ html, body, #root {
   }
 }
 
+/* Custom scenario form styles */
+.custom-scenario-form {
+  @apply bg-card text-card-foreground;
+}
+
 /* Consistent background for all pages */
 #root {
   @apply bg-white dark:bg-neutral-950;
