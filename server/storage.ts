@@ -643,6 +643,7 @@ export class DatabaseStorage implements IStorage {
           // Default values if not provided
           completed: progressData.completed !== undefined ? progressData.completed : false,
           quizAttempts: progressData.quizAttempts || 0,
+          difficultyRating: progressData.difficultyRating === null ? null : (progressData.difficultyRating || 0),
           lastAccessed
         })
         .returning();

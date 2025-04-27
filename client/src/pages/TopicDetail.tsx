@@ -430,7 +430,8 @@ export default function TopicDetail() {
                           <button
                             key={rating}
                             onClick={() => {
-                              const newRating = localProgress.difficultyRating === rating ? 0 : rating;
+                              // Reset rating if clicking the same rating again
+                              const newRating = localProgress.difficultyRating === rating ? null : rating;
                               setLocalProgress(prev => ({
                                 ...prev,
                                 difficultyRating: newRating
