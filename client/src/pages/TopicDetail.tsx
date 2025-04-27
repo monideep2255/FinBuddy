@@ -82,15 +82,16 @@ export default function TopicDetail() {
     },
     // Only run this query if the user is logged in and has an ID
     enabled: !!user?.id && !!topicId,
+    staleTime: Infinity, // Keep the data fresh indefinitely
+    cacheTime: Infinity, // Never remove from cache
   });
 
-  // Update local state when progress data changes.  Prioritize localProgress if it exists
+  // Initialize local state when progress data is first loaded
   useEffect(() => {
-    setLocalProgress(prevProgress => ({
-      ...prevProgress, // Keep existing local state
-      ...progress // Merge in server data, overwriting if necessary
-    }));
-  }, [progress]);
+    if (progress) {
+      setLocalProgress(progress);
+    }
+  }, [progress?.id]); // Only run when the progress ID changes
 
 
   // Mutation to update progress
