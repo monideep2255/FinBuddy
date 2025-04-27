@@ -71,15 +71,15 @@ html, body, #root {
 }
 
 [role="tab"] {
-  @apply text-neutral-700 dark:text-neutral-300;
+  @apply text-neutral-700 dark:text-neutral-300 bg-background;
 }
 
 [role="tab"][data-state="active"] {
-  @apply bg-white dark:bg-neutral-900 text-primary dark:text-primary;
+  @apply bg-background text-foreground;
 }
 
 [role="tab"]:hover:not([data-state="active"]) {
-  @apply text-neutral-900 dark:text-neutral-100;
+  @apply text-foreground/80;
 }
 
 @media (max-width: 640px) {
