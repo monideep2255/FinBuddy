@@ -54,7 +54,7 @@ export default function LearningPath() {
   const { data: topics = [], isLoading: isTopicsLoading } = useQuery<Topic[]>({
     queryKey: ['/api/topics'],
   });
-  
+
   // Fetch user progress data
   const { data: progressData, isLoading: isProgressLoading } = useQuery<UserProgressResponse>({
     queryKey: [`/api/users/${userId}/progress`],
@@ -101,12 +101,12 @@ export default function LearningPath() {
         engagedCategories.add(topic.category);
       }
     });
-    
+
     // Get list of bookmarked topic IDs
     const bookmarkedIds = new Set(
       bookmarkedTopics.map(topic => topic.id)
     );
-    
+
     // Get completed topic IDs
     const completedIds = new Set(
       completedTopics.map(topic => topic.id)
@@ -171,7 +171,7 @@ export default function LearningPath() {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-neutral-950">
       <Header />
-      
+
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-4 flex items-center">
@@ -219,7 +219,7 @@ export default function LearningPath() {
 
         {/* Learning Path Tabs */}
         <Tabs defaultValue="progress" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-6">
+          <TabsList className="mb-6 bg-neutral-100 dark:bg-neutral-800">
             <TabsTrigger value="progress" className="flex items-center">
               <Check className="w-4 h-4 mr-2" />
               <span>Progress</span>
@@ -359,7 +359,7 @@ export default function LearningPath() {
             )}
           </TabsContent>
         </Tabs>
-        
+
         {/* Legal Disclaimer */}
         <Disclaimer />
       </main>
@@ -378,7 +378,7 @@ interface TopicCardProps {
 function TopicCard({ topic, progress, isRecommendation = false }: TopicCardProps) {
   // Determine category color class
   let categoryColorClass = "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300";
-  
+
   if (topic.category === "Economics") {
     categoryColorClass = "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300";
   } else if (topic.category === "Investments") {
@@ -392,7 +392,7 @@ function TopicCard({ topic, progress, isRecommendation = false }: TopicCardProps
       <Card className="h-full bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 overflow-hidden hover:shadow-md transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-800 cursor-pointer">
         {/* Colored top accent bar */}
         <div className={`h-2 ${isRecommendation ? 'bg-gradient-to-r from-amber-500 to-amber-600' : progress?.completed ? 'bg-gradient-to-r from-emerald-500 to-emerald-600' : 'bg-gradient-to-r from-blue-500 to-blue-600'}`}></div>
-        
+
         <CardHeader className="pb-2">
           <div className="flex justify-between items-start gap-2">
             <CardTitle className="text-lg text-neutral-800 dark:text-neutral-100">
@@ -410,7 +410,7 @@ function TopicCard({ topic, progress, isRecommendation = false }: TopicCardProps
             {topic.description}
           </CardDescription>
         </CardHeader>
-        
+
         <CardContent className="pt-0 pb-2">
           {progress?.quizScore !== null && progress?.quizScore !== undefined && (
             <div className="flex items-center text-sm text-neutral-600 dark:text-neutral-400 mb-2">
@@ -423,7 +423,7 @@ function TopicCard({ topic, progress, isRecommendation = false }: TopicCardProps
               )}
             </div>
           )}
-          
+
           {progress?.difficultyRating && (
             <div className="flex items-center text-sm text-neutral-600 dark:text-neutral-400">
               <span className="mr-1">Difficulty: </span>
@@ -441,14 +441,14 @@ function TopicCard({ topic, progress, isRecommendation = false }: TopicCardProps
               </div>
             </div>
           )}
-          
+
           {isRecommendation && (
             <Badge variant="outline" className="mt-2 border-amber-300 text-amber-700 dark:border-amber-700 dark:text-amber-300">
               Recommended for you
             </Badge>
           )}
         </CardContent>
-        
+
         <CardFooter>
           <div className="w-full px-4 py-2 bg-primary-100 dark:bg-primary-900 hover:bg-primary-200 dark:hover:bg-primary-800 rounded-lg text-primary-700 dark:text-primary-300 text-sm font-medium transition-all duration-200 flex items-center justify-center">
             {progress?.completed 
