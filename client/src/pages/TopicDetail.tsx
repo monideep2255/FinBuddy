@@ -59,7 +59,7 @@ export default function TopicDetail() {
   });
 
   // Fetch the user's progress for this topic (only if logged in)
-  const { data: progress, isLoading: isProgressLoading } = useQuery<UserProgress>({
+  const { data: progress, isLoading: isProgressLoading } = useQuery<UserProgress | null>({
     queryKey: [`/api/users/${userId}/topics/${topicId}/progress`],
     queryFn: async () => {
       // Don't try to fetch progress if no user is logged in
