@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from '@/components/ui/pagination';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { RefreshCw } from 'lucide-react';
@@ -10,6 +18,7 @@ import { ScenarioCard } from '@/components/ScenarioCard';
 import { Scenario } from '@shared/schema';
 
 export default function ScenariosPage() {
+  const [page, setPage] = useState(0);
   const {
     data: scenarios,
     isLoading,
@@ -71,15 +80,45 @@ export default function ScenariosPage() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {scenariosArray.map((scenario: Scenario) => (
-                  <ScenarioCard
-                    key={scenario.id}
-                    scenario={scenario}
-                    onClick={() => console.log("Selected scenario:", scenario.title)}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {scenariosArray.slice(page * 6, (page + 1) * 6).map((scenario: Scenario) => (
+                    <ScenarioCard
+                      key={scenario.id}
+                      scenario={scenario}
+                      onClick={() => console.log("Selected scenario:", scenario.title)}
+                    />
+                  ))}
+                </div>
+                <div className="mt-6 flex justify-center">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          onClick={() => setPage(p => Math.max(0, p - 1))}
+                          className={page === 0 ? 'pointer-events-none opacity-50' : ''}
+                        />
+                      </PaginationItem>
+                      {[...Array(Math.ceil(scenariosArray.length / 6))].map((_, i) => (
+                        <PaginationItem key={i}>
+                          <PaginationLink 
+                            onClick={() => setPage(i)}
+                            isActive={page === i}
+                          >
+                            {i + 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      ))}
+                      <PaginationItem>
+                        <PaginationNext 
+                          onClick={() => setPage(p => Math.min(Math.ceil(scenariosArray.length / 6) - 1, p + 1))}
+                          className={page >= Math.ceil(scenariosArray.length / 6) - 1 ? 'pointer-events-none opacity-50' : ''}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              </>
             )}
           </div>
         </div>

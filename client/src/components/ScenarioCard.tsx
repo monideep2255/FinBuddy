@@ -36,7 +36,7 @@ export function ScenarioCard({ scenario, onClick }: ScenarioCardProps) {
   const timeframe = details?.timeframe || 'unknown';
   
   return (
-    <Card className="h-full flex flex-col hover:shadow-md transition-shadow duration-300">
+    <Card className="h-full flex flex-col hover:shadow-md transition-shadow duration-300 bg-card text-card-foreground">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg font-semibold line-clamp-2">{scenario.title}</CardTitle>
