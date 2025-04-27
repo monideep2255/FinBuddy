@@ -69,8 +69,7 @@ export default function Header() {
           <Link href="/scenarios">
             <div className="font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 flex items-center cursor-pointer transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1.5">
-                <path fillRule="evenodd" d="M3.75 2.25a.75.75 0 100 1.5h16.5a.75.75 0 100-1.5H3.75zM2.25 13.5a.75.75 0 000 1.5h18a.75.75 0 000-1.5h-18zm0-6.75a.75.75 0 000 1.5h18a.75.75 0 000-1.5h-18zm18 12.75a.75.75 0 100-1.5h-18a.75.75 0 100 1.5h18z" clipRule="evenodd" />
-                <path d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm3.75 8.25a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z" />
               </svg>
               <span>Scenarios</span>
             </div>
@@ -198,7 +197,7 @@ export default function Header() {
               <Link href="/scenarios" onClick={() => setMobileMenuOpen(false)}>
                 <div className="font-medium text-neutral-500 dark:text-neutral-400 flex items-center p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-700 dark:hover:text-neutral-200 data-[active=true]:text-primary-600 dark:data-[active=true]:text-primary-400">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-3">
-                    <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clipRule="evenodd" />
+                    <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z" />
                   </svg>
                   <span>Scenarios</span>
                 </div>
