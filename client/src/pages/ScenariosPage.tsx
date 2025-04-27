@@ -58,17 +58,17 @@ export default function ScenariosPage() {
   // Handle scenario selection
   const handleScenarioSelect = (scenario: Scenario) => {
     setSelectedScenario(scenario);
-    
+
     // Parse details if needed
     const details = typeof scenario.details === 'string'
       ? JSON.parse(scenario.details as string)
       : scenario.details;
-      
+
     // Parse impacts if needed
     const impacts = typeof scenario.impacts === 'string'
       ? JSON.parse(scenario.impacts as string)
       : scenario.impacts;
-    
+
     setCurrentAnalysis({
       details: details as ScenarioDetails,
       impacts: impacts as ScenarioImpact,
@@ -180,7 +180,7 @@ export default function ScenariosPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      
+
       <main className="flex-grow container mx-auto px-4 py-8 max-w-7xl">
         <div className="space-y-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
@@ -201,11 +201,24 @@ export default function ScenariosPage() {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
-            <TabsList className="grid w-full grid-cols-2 bg-muted">
-              <TabsTrigger value="explore" className="data-[state=active]:bg-background">Explore Scenarios</TabsTrigger>
-              <TabsTrigger value="custom" className="data-[state=active]:bg-background">Custom Scenario</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-muted p-1 rounded-lg">
+              <TabsTrigger 
+                value="explore" 
+                className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm px-4 py-2 rounded-md hover:bg-muted-foreground/10 transition-colors"
+              >
+                Explore Scenarios
+              </TabsTrigger>
+              <TabsTrigger 
+                value="custom" 
+                className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm px-4 py-2 rounded-md hover:bg-muted-foreground/10 transition-colors"
+              >
+                Custom Scenario
+              </TabsTrigger>
               {currentAnalysis && (
-                <TabsTrigger value="analysis" className="col-span-2 mt-2 data-[state=active]:bg-background">
+                <TabsTrigger 
+                  value="analysis" 
+                  className="col-span-2 mt-2 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm px-4 py-2 rounded-md hover:bg-muted-foreground/10 transition-colors"
+                >
                   Analysis Results
                 </TabsTrigger>
               )}
@@ -353,7 +366,7 @@ export default function ScenariosPage() {
           </Tabs>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
