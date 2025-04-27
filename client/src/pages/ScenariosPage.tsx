@@ -46,9 +46,15 @@ export default function ScenariosPage() {
     retry: 1,
   });
 
-  // Convert scenarios data to an array and ensure no duplicates
+  // Convert scenarios data to an array and deduplicate based on title, limiting to 3 scenarios
   const scenariosArray = Array.isArray(scenarios) 
-    ? [...new Map(scenarios.map(item => [item.id, item])).values()] 
+    ? scenarios
+        // Make sure we only include unique values by title
+        .filter((s, index, self) => 
+          index === self.findIndex(t => t.title === s.title)
+        )
+        // Limit to 3 items
+        .slice(0, 3)
     : [];
 
   // Handle scenario selection
@@ -177,8 +183,8 @@ export default function ScenariosPage() {
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
       
-      <main className="flex-grow px-4 sm:px-6">
-        <div className="container mx-auto py-6 max-w-7xl">
+      <main className="flex-grow container mx-auto px-4 py-8 max-w-7xl">
+        <div className="space-y-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Scenario Playground</h1>
@@ -219,7 +225,7 @@ export default function ScenariosPage() {
                 </div>
                 <div className="lg:col-span-2">
                   <h3 className="text-xl font-semibold mb-4">How It Works</h3>
-                  <Card>
+                  <Card className="border bg-card text-card-foreground">
                     <CardHeader>
                       <CardTitle>Economic Scenario Analysis</CardTitle>
                       <CardDescription>
@@ -293,7 +299,7 @@ export default function ScenariosPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                   <div className="lg:col-span-5">
                     <ScenarioImpactChart impacts={currentAnalysis.impacts} />
-                    <Card className="mt-6">
+                    <Card className="mt-6 border bg-card text-card-foreground">
                       <CardHeader className="pb-2">
                         <CardTitle className="text-xl">Scenario Details</CardTitle>
                       </CardHeader>

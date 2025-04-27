@@ -86,7 +86,7 @@ export function ScenarioImpactDetail({ impacts }: ScenarioImpactDetailProps) {
 
   return (
     <div className="w-full space-y-6">
-      <Card>
+      <Card className="border bg-card text-card-foreground">
         <CardHeader>
           <CardTitle>Scenario Analysis</CardTitle>
           <CardDescription>
