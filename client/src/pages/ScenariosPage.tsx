@@ -201,23 +201,23 @@ export default function ScenariosPage() {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
-            <TabsList className="grid w-full grid-cols-2 bg-muted p-1 rounded-lg">
+            <TabsList className="grid w-full grid-cols-2 bg-muted/80 p-2 rounded-xl gap-2">
               <TabsTrigger 
                 value="explore" 
-                className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm px-4 py-2 rounded-md hover:bg-muted-foreground/10 transition-colors"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-accent hover:text-accent-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
               >
                 Explore Scenarios
               </TabsTrigger>
               <TabsTrigger 
                 value="custom" 
-                className="data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm px-4 py-2 rounded-md hover:bg-muted-foreground/10 transition-colors"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-accent hover:text-accent-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
               >
                 Custom Scenario
               </TabsTrigger>
               {currentAnalysis && (
                 <TabsTrigger 
                   value="analysis" 
-                  className="col-span-2 mt-2 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm px-4 py-2 rounded-md hover:bg-muted-foreground/10 transition-colors"
+                  className="col-span-2 mt-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-accent hover:text-accent-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
                 >
                   Analysis Results
                 </TabsTrigger>
