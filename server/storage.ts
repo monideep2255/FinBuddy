@@ -1227,11 +1227,16 @@ export class DatabaseStorage implements IStorage {
    * Delete a user's saved scenario
    */
   async deleteUserScenario(id: number): Promise<boolean> {
-    const result = await db
-      .delete(userScenarios)
-      .where(eq(userScenarios.id, id));
-    
-    return result.count > 0;
+    try {
+      await db
+        .delete(userScenarios)
+        .where(eq(userScenarios.id, id));
+      
+      return true;
+    } catch (error) {
+      console.error(`Error deleting user scenario ${id}:`, error);
+      return false;
+    }
   }
 }
 

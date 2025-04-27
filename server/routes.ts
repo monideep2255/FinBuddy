@@ -4,6 +4,8 @@ import { storage } from "./storage";
 import { generateTopicExplanation, generateQuizQuestions, generateChatResponse, verifyOpenAIConnection } from "./openai";
 import { setupAuth } from "./auth";
 import * as marketData from "./marketData";
+import { generateScenarioImpacts, analyzeCustomScenario } from "./scenarioAnalysis";
+import { insertScenarioSchema, insertUserScenarioSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication
@@ -320,6 +322,208 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching chat history:", error);
       res.status(500).json({ message: "Failed to fetch chat history" });
+    }
+  });
+
+  // Scenario Playground API Routes
+
+  // Get all scenarios
+  app.get("/api/scenarios", async (req, res) => {
+    try {
+      const scenarios = await storage.getAllScenarios();
+      res.json(scenarios);
+    } catch (error) {
+      console.error("Error fetching scenarios:", error);
+      res.status(500).json({ message: "Failed to fetch scenarios" });
+    }
+  });
+  
+  // Get a specific scenario by ID
+  app.get("/api/scenarios/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const scenario = await storage.getScenarioById(id);
+      
+      if (!scenario) {
+        return res.status(404).json({ message: "Scenario not found" });
+      }
+      
+      res.json(scenario);
+    } catch (error) {
+      console.error(`Error fetching scenario ${req.params.id}:`, error);
+      res.status(500).json({ message: "Failed to fetch scenario" });
+    }
+  });
+  
+  // Get scenarios by category
+  app.get("/api/scenarios/category/:category", async (req, res) => {
+    try {
+      const category = req.params.category;
+      const scenarios = await storage.getScenariosByCategory(category);
+      res.json(scenarios);
+    } catch (error) {
+      console.error(`Error fetching scenarios for category ${req.params.category}:`, error);
+      res.status(500).json({ message: "Failed to fetch scenarios by category" });
+    }
+  });
+  
+  // Get popular scenarios
+  app.get("/api/scenarios/popular/:limit?", async (req, res) => {
+    try {
+      const limit = req.params.limit ? parseInt(req.params.limit) : 5;
+      const scenarios = await storage.getPopularScenarios(limit);
+      res.json(scenarios);
+    } catch (error) {
+      console.error("Error fetching popular scenarios:", error);
+      res.status(500).json({ message: "Failed to fetch popular scenarios" });
+    }
+  });
+  
+  // Create a new scenario
+  app.post("/api/scenarios", async (req, res) => {
+    try {
+      // Validate input using zod schema
+      const parsed = insertScenarioSchema.safeParse(req.body);
+      
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid scenario data", errors: parsed.error });
+      }
+      
+      const newScenario = await storage.createScenario(parsed.data);
+      res.status(201).json(newScenario);
+    } catch (error) {
+      console.error("Error creating scenario:", error);
+      res.status(500).json({ message: "Failed to create scenario" });
+    }
+  });
+  
+  // Record scenario view/usage (increment popularity)
+  app.post("/api/scenarios/:id/view", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updatedScenario = await storage.updateScenarioPopularity(id);
+      res.json(updatedScenario);
+    } catch (error) {
+      console.error(`Error updating scenario popularity ${req.params.id}:`, error);
+      res.status(500).json({ message: "Failed to update scenario popularity" });
+    }
+  });
+  
+  // Analyze a custom scenario
+  app.post("/api/scenarios/analyze", async (req, res) => {
+    try {
+      const { scenarioType, value, direction, customDetails } = req.body;
+      
+      if (!scenarioType || typeof value !== 'number' || !direction) {
+        return res.status(400).json({ message: "Missing required fields: scenarioType, value, direction" });
+      }
+      
+      const analysis = await analyzeCustomScenario(
+        scenarioType,
+        value,
+        direction,
+        customDetails
+      );
+      
+      res.json(analysis);
+    } catch (error) {
+      console.error("Error analyzing custom scenario:", error);
+      res.status(500).json({ message: "Failed to analyze custom scenario" });
+    }
+  });
+  
+  // User Scenario Routes (requires authentication)
+  
+  // Get user's saved scenarios
+  app.get("/api/users/:userId/scenarios", isAuthenticated, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      // Make sure the user can only access their own scenarios
+      if (req.user && req.user.id !== userId) {
+        return res.status(403).json({ message: "You can only access your own saved scenarios" });
+      }
+      
+      const userScenarios = await storage.getUserScenarios(userId);
+      res.json(userScenarios);
+    } catch (error) {
+      console.error(`Error fetching scenarios for user ${req.params.userId}:`, error);
+      res.status(500).json({ message: "Failed to fetch user scenarios" });
+    }
+  });
+  
+  // Save a scenario for a user
+  app.post("/api/users/:userId/scenarios", isAuthenticated, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      // Make sure the user can only save scenarios to their own account
+      if (req.user && req.user.id !== userId) {
+        return res.status(403).json({ message: "You can only save scenarios to your own account" });
+      }
+      
+      // Validate input using zod schema
+      const parsed = insertUserScenarioSchema.safeParse({
+        ...req.body,
+        userId
+      });
+      
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid user scenario data", errors: parsed.error });
+      }
+      
+      const newUserScenario = await storage.saveUserScenario(parsed.data);
+      res.status(201).json(newUserScenario);
+    } catch (error) {
+      console.error(`Error saving scenario for user ${req.params.userId}:`, error);
+      res.status(500).json({ message: "Failed to save user scenario" });
+    }
+  });
+  
+  // Update a user's saved scenario
+  app.patch("/api/users/:userId/scenarios/:scenarioId", isAuthenticated, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const scenarioId = parseInt(req.params.scenarioId);
+      
+      // Make sure the user can only update their own scenarios
+      if (req.user && req.user.id !== userId) {
+        return res.status(403).json({ message: "You can only update your own saved scenarios" });
+      }
+      
+      const updatedUserScenario = await storage.updateUserScenario(scenarioId, {
+        ...req.body,
+        userId
+      });
+      
+      res.json(updatedUserScenario);
+    } catch (error) {
+      console.error(`Error updating scenario ${req.params.scenarioId} for user ${req.params.userId}:`, error);
+      res.status(500).json({ message: "Failed to update user scenario" });
+    }
+  });
+  
+  // Delete a user's saved scenario
+  app.delete("/api/users/:userId/scenarios/:scenarioId", isAuthenticated, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const scenarioId = parseInt(req.params.scenarioId);
+      
+      // Make sure the user can only delete their own scenarios
+      if (req.user && req.user.id !== userId) {
+        return res.status(403).json({ message: "You can only delete your own saved scenarios" });
+      }
+      
+      const deleted = await storage.deleteUserScenario(scenarioId);
+      
+      if (!deleted) {
+        return res.status(404).json({ message: "User scenario not found or already deleted" });
+      }
+      
+      res.status(204).end();
+    } catch (error) {
+      console.error(`Error deleting scenario ${req.params.scenarioId} for user ${req.params.userId}:`, error);
+      res.status(500).json({ message: "Failed to delete user scenario" });
     }
   });
 
