@@ -52,12 +52,8 @@ html, body {
 }
 
 /* Base theme colors */
-html {
-  @apply bg-white text-gray-900 dark:bg-neutral-950 dark:text-neutral-200;
-}
-
-body {
-  @apply bg-white text-gray-900 dark:bg-neutral-950 dark:text-neutral-200;
+html, body, #root {
+  @apply bg-background text-foreground min-h-screen;
 }
 
 /* Ensure consistent card backgrounds */
