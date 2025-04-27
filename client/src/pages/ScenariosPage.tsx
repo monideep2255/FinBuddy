@@ -38,9 +38,20 @@ export default function ScenariosPage() {
   // Handle scenario selection
   const handleScenarioSelect = (scenario: Scenario) => {
     setSelectedScenario(scenario);
+    
+    // Parse details if needed
+    const details = typeof scenario.details === 'string'
+      ? JSON.parse(scenario.details as string)
+      : scenario.details;
+      
+    // Parse impacts if needed
+    const impacts = typeof scenario.impacts === 'string'
+      ? JSON.parse(scenario.impacts as string)
+      : scenario.impacts;
+    
     setCurrentAnalysis({
-      details: scenario.details,
-      impacts: scenario.impacts,
+      details: details as ScenarioDetails,
+      impacts: impacts as ScenarioImpact,
     });
     setActiveTab('analysis');
   };
@@ -89,7 +100,10 @@ export default function ScenariosPage() {
       );
     }
 
-    if (!scenarios || scenarios.length === 0) {
+    // Check if scenarios exists and has items
+    const scenariosArray = Array.isArray(scenarios) ? scenarios : [];
+    
+    if (scenariosArray.length === 0) {
       return (
         <Card>
           <CardContent className="pt-6">
@@ -103,7 +117,7 @@ export default function ScenariosPage() {
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {scenarios.map((scenario: Scenario) => (
+        {scenariosArray.map((scenario: Scenario) => (
           <ScenarioCard
             key={scenario.id}
             scenario={scenario}

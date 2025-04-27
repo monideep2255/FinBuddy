@@ -48,12 +48,14 @@ export function CustomScenarioForm({ onAnalyzeSuccess, onAnalyzeStart }: CustomS
     if (onAnalyzeStart) onAnalyzeStart();
     
     try {
-      const response = await apiRequest('/api/scenarios/analyze', {
-        method: 'POST',
-        data,
-      });
+      const response = await apiRequest(
+        'POST',
+        '/api/scenarios/analyze',
+        data
+      );
       
-      onAnalyzeSuccess(response);
+      const responseData = await response.json();
+      onAnalyzeSuccess(responseData);
     } catch (error) {
       console.error('Error analyzing scenario:', error);
       toast({

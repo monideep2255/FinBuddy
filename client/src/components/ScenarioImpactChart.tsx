@@ -102,7 +102,7 @@ export function ScenarioImpactChart({ impacts }: ScenarioImpactChartProps) {
                     key={`label-${index}`}
                     dataKey="value"
                     position="right"
-                    formatter={(value) => Number(value).toFixed(1)}
+                    formatter={(value: number) => Number(value).toFixed(1)}
                   />
                 ))}
               </Bar>
