@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { topics, quizzes, insertTopicSchema, insertQuizSchema, type QuizQuestion } from "@shared/schema";
+import { topics, quizzes, scenarios, insertTopicSchema, insertQuizSchema, insertScenarioSchema, type QuizQuestion } from "@shared/schema";
 import { log } from "./vite";
 import { resetDatabase } from "./resetDb";
 // Import OpenAI functions with alias to avoid naming conflicts
@@ -194,6 +194,251 @@ export async function seedDatabase(force = false) {
       
       const validatedQuiz = insertQuizSchema.parse(quizData);
       await db.insert(quizzes).values(validatedQuiz);
+    }
+    
+    // Initial scenarios data
+    const initialScenarios = [
+      {
+        title: "Fed Raises Interest Rates by 0.75%",
+        description: "The Federal Reserve increases the federal funds rate by 75 basis points to combat inflation.",
+        category: "Monetary Policy",
+        scenarioType: "predefined",
+        details: {
+          change: {
+            type: "interest_rate",
+            value: 0.75,
+            direction: "increase",
+            magnitude: "significant",
+            rationale: "The Federal Reserve is raising rates to combat persistent inflation that has exceeded its 2% target."
+          },
+          timeframe: "immediate"
+        },
+        impacts: {
+          markets: {
+            stocks: {
+              overall: -5,
+              description: "Stock markets typically react negatively to interest rate hikes as borrowing costs increase and future profit expectations decrease.",
+              sectors: {
+                "Technology": {
+                  impact: -7,
+                  reason: "Growth stocks with future earnings are more heavily discounted when rates rise."
+                },
+                "Financials": {
+                  impact: 2,
+                  reason: "Banks can benefit from higher interest rate spreads."
+                },
+                "Utilities": {
+                  impact: -6,
+                  reason: "High-dividend stocks become less attractive compared to bonds with higher yields."
+                }
+              }
+            },
+            bonds: {
+              overall: -3,
+              description: "Existing bonds lose value as rates rise because newer bonds offer higher yields.",
+              types: {
+                "Long-term Treasury": {
+                  impact: -5,
+                  reason: "Long-duration bonds are more sensitive to rate changes."
+                },
+                "Short-term Treasury": {
+                  impact: -1,
+                  reason: "Short-duration bonds are less affected by rate increases."
+                },
+                "Corporate Bonds": {
+                  impact: -4,
+                  reason: "Corporate borrowing becomes more expensive, increasing default risk."
+                }
+              }
+            },
+            commodities: {
+              gold: -2,
+              oil: -3,
+              description: "Gold often falls as higher rates increase the opportunity cost of holding non-yielding assets. Oil may decline due to expectations of reduced economic activity."
+            },
+            economy: {
+              employment: -1,
+              inflation: -3,
+              gdp: -2,
+              description: "Higher rates are designed to slow economic activity, reducing inflation but potentially increasing unemployment and slowing GDP growth."
+            }
+          },
+          analysis: "A 0.75% rate hike is a significant monetary tightening action that signals the Fed's strong commitment to controlling inflation. Markets typically experience volatility immediately after such announcements. The economy may take 6-12 months to fully reflect the impact of higher rates as businesses adjust investment plans and consumers reduce borrowing. While painful in the short term, this action aims to create a more sustainable economic growth path with stable prices.",
+          learningPoints: [
+            "Interest rates are the primary tool central banks use to control inflation",
+            "Rate hikes typically cause immediate market reactions before the real economy changes",
+            "Different asset classes and sectors respond differently to rate changes",
+            "Bond prices move inversely to interest rates",
+            "Monetary policy involves trade-offs between inflation, employment, and growth"
+          ]
+        },
+        difficulty: 1,
+        relatedTopicIds: [1, 2, 3]
+      },
+      {
+        title: "Inflation Spikes to 6%",
+        description: "Annual inflation rate rises unexpectedly from 3% to 6%, exceeding economist forecasts significantly.",
+        category: "Inflation",
+        scenarioType: "predefined",
+        details: {
+          change: {
+            type: "inflation",
+            value: 6.0,
+            direction: "increase",
+            magnitude: "significant",
+            rationale: "Supply chain disruptions, rising energy costs, and strong consumer demand have pushed prices higher than expected."
+          },
+          timeframe: "immediate"
+        },
+        impacts: {
+          markets: {
+            stocks: {
+              overall: -4,
+              description: "High inflation typically pressures stock valuations as it erodes corporate profit margins and prompts expectations of interest rate hikes.",
+              sectors: {
+                "Consumer Discretionary": {
+                  impact: -7,
+                  reason: "Consumers cut back on non-essential purchases as their purchasing power decreases."
+                },
+                "Energy": {
+                  impact: 5,
+                  reason: "Energy companies benefit from higher commodity prices, which are often a key driver of inflation."
+                },
+                "Consumer Staples": {
+                  impact: -2,
+                  reason: "Essential goods see less demand reduction, but profit margins compress as input costs rise."
+                }
+              }
+            },
+            bonds: {
+              overall: -6,
+              description: "Bonds suffer during inflation spikes as it erodes the real value of future interest payments and principal.",
+              types: {
+                "Treasury Bonds": {
+                  impact: -8,
+                  reason: "Fixed-rate government bonds are particularly vulnerable to inflation erosion."
+                },
+                "TIPS (Treasury Inflation-Protected Securities)": {
+                  impact: 3,
+                  reason: "These securities are designed to increase in value during inflationary periods."
+                },
+                "High-Yield Corporate Bonds": {
+                  impact: -4,
+                  reason: "Less impacted than treasuries but still face price pressure from anticipated rate hikes."
+                }
+              }
+            },
+            commodities: {
+              gold: 7,
+              oil: 5,
+              description: "Commodities often perform well during inflation as they represent real assets with intrinsic value."
+            },
+            economy: {
+              employment: 1,
+              inflation: 6,
+              gdp: -2,
+              description: "Initially, high inflation may coincide with strong employment, but eventually leads to economic slowdown as purchasing power erodes and central banks tighten policy."
+            }
+          },
+          analysis: "A sudden spike in inflation to 6% represents a significant economic development that will likely trigger policy responses. Central banks would be expected to accelerate interest rate increases, potentially causing market volatility. While some assets like commodities and inflation-protected securities might benefit, most financial assets suffer as future cash flows are discounted at higher rates. For consumers, the impact is felt through reduced purchasing power, especially for lower-income households that spend higher percentages of income on necessities like food and energy.",
+          learningPoints: [
+            "Inflation erodes purchasing power and the real value of fixed-income investments",
+            "Not all assets respond the same way to inflation – some provide natural hedges",
+            "Central banks typically respond to high inflation by raising interest rates",
+            "Inflation can create winners and losers across different economic sectors",
+            "Higher input costs can squeeze corporate profit margins, affecting stock valuations"
+          ]
+        },
+        difficulty: 2,
+        relatedTopicIds: [1, 4, 7]
+      },
+      {
+        title: "Tariffs Rise by 20% on Imports",
+        description: "Government announces a 20% increase in tariffs on imported goods, affecting international trade relationships.",
+        category: "Trade",
+        scenarioType: "predefined",
+        details: {
+          change: {
+            type: "tariff",
+            value: 20.0,
+            direction: "increase",
+            magnitude: "significant",
+            rationale: "Government is implementing protectionist policies to support domestic industries and reduce trade deficits."
+          },
+          timeframe: "short_term"
+        },
+        impacts: {
+          markets: {
+            stocks: {
+              overall: -3,
+              description: "Overall negative impact as global supply chains are disrupted and costs increase, but with significant sector variation.",
+              sectors: {
+                "Manufacturing": {
+                  impact: 4,
+                  reason: "Domestic manufacturers protected from foreign competition may see increased market share."
+                },
+                "Retail": {
+                  impact: -6,
+                  reason: "Retailers face higher costs for imported goods that cannot be easily passed on to consumers."
+                },
+                "Technology": {
+                  impact: -5,
+                  reason: "Global tech companies with international supply chains face disruption and higher component costs."
+                }
+              }
+            },
+            bonds: {
+              overall: -1,
+              description: "Minor negative impact as tariffs may contribute to inflation, putting pressure on central banks to raise rates.",
+              types: {
+                "Government Bonds": {
+                  impact: -2,
+                  reason: "Slight pressure due to potential inflation and budget impacts from reduced trade."
+                },
+                "Corporate Bonds": {
+                  impact: -3,
+                  reason: "Companies with global supply chains may face increased costs affecting their credit quality."
+                },
+                "Municipal Bonds": {
+                  impact: 0,
+                  reason: "Limited direct impact from international trade changes."
+                }
+              }
+            },
+            commodities: {
+              gold: 2,
+              oil: -1,
+              description: "Gold benefits from economic uncertainty, while oil may face pressure from expectations of reduced global trade and economic activity."
+            },
+            economy: {
+              employment: 1,
+              inflation: 3,
+              gdp: -2,
+              description: "Short-term boost to domestic employment in protected industries, but higher inflation from import prices and lower overall economic efficiency resulting in reduced GDP growth."
+            }
+          },
+          analysis: "A 20% tariff increase represents a significant shift in trade policy with widespread economic implications. While designed to protect domestic industries, tariffs typically lead to higher consumer prices, potential retaliation from trading partners, and disruption of global supply chains. The net effect tends to be inflationary and growth-reducing in the medium term. Certain industries may benefit from protection, but consumers and businesses reliant on imported goods face higher costs. Financial markets often react negatively to trade restrictions due to increased uncertainty and efficiency losses in the global economy.",
+          learningPoints: [
+            "Tariffs create both winners and losers in the domestic economy",
+            "Trade restrictions typically increase prices for consumers",
+            "Global supply chains can be significantly disrupted by trade policy changes",
+            "Protectionist policies often trigger retaliation from trading partners",
+            "Economic nationalism tends to reduce global economic efficiency while potentially supporting specific domestic industries"
+          ]
+        },
+        difficulty: 2,
+        relatedTopicIds: [3, 5, 8]
+      }
+    ];
+    
+    // Insert scenarios
+    for (const scenarioData of initialScenarios) {
+      const validatedScenario = insertScenarioSchema.parse(scenarioData);
+      await db.insert(scenarios).values({
+        ...validatedScenario,
+        createdAt: new Date(),
+        popularity: 0
+      });
     }
     
     log("Database seeding completed successfully");
