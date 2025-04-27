@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useNavigate } from 'wouter';
+import { useLocation } from 'wouter';
 import { Scenario } from '@shared/schema';
 
 interface ScenarioCardProps {
@@ -11,15 +11,29 @@ interface ScenarioCardProps {
 }
 
 export function ScenarioCard({ scenario, onClick }: ScenarioCardProps) {
-  const navigate = useNavigate();
+  const [_, setLocation] = useLocation();
   
   const handleClick = () => {
     if (onClick) {
       onClick();
     } else {
-      navigate(`/scenarios/${scenario.id}`);
+      setLocation(`/scenarios/${scenario.id}`);
     }
   };
+  
+  // Parse details to ensure type safety
+  const details = typeof scenario.details === 'string' 
+    ? JSON.parse(scenario.details) 
+    : scenario.details;
+    
+  const change = details?.change || {
+    type: 'unknown',
+    value: 0,
+    direction: 'unknown',
+    magnitude: 'unknown'
+  };
+  
+  const timeframe = details?.timeframe || 'unknown';
   
   return (
     <Card className="h-full flex flex-col hover:shadow-md transition-shadow duration-300">
@@ -34,24 +48,28 @@ export function ScenarioCard({ scenario, onClick }: ScenarioCardProps) {
         <div className="text-sm">
           <div className="flex justify-between mb-1">
             <span className="text-muted-foreground">Type:</span>
-            <span className="font-medium">{scenario.details.change.type}</span>
+            <span className="font-medium">{change.type}</span>
           </div>
           <div className="flex justify-between mb-1">
             <span className="text-muted-foreground">Value:</span>
-            <span className="font-medium">{scenario.details.change.value}{scenario.details.change.type === 'interest_rate' ? '%' : ''}</span>
+            <span className="font-medium">
+              {change.value}{change.type === 'interest_rate' ? '%' : ''}
+            </span>
           </div>
           <div className="flex justify-between mb-1">
             <span className="text-muted-foreground">Direction:</span>
-            <span className="font-medium capitalize">{scenario.details.change.direction}</span>
+            <span className="font-medium capitalize">{change.direction}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Timeframe:</span>
-            <span className="font-medium capitalize">{scenario.details.timeframe}</span>
+            <span className="font-medium capitalize">{timeframe}</span>
           </div>
         </div>
       </CardContent>
       <CardFooter className="pt-2">
-        <Button variant="default" className="w-full" onClick={handleClick}>Explore Impacts</Button>
+        <Button variant="default" className="w-full" onClick={handleClick}>
+          Explore Impacts
+        </Button>
       </CardFooter>
     </Card>
   );
