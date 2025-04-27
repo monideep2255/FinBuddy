@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, jsonb, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, jsonb, boolean, timestamp, real } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -127,4 +127,106 @@ export interface ChatResponse {
     id?: number;
     title: string;
   };
+}
+
+/**
+ * Economic Scenario Tables and Types
+ */
+
+export const scenarios = pgTable("scenarios", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  category: text("category").notNull(), // e.g., "Monetary Policy", "Inflation", "Trade"
+  scenarioType: text("scenario_type").notNull(),  // e.g., "predefined", "custom"
+  details: jsonb("details").notNull(), // Economic change details
+  impacts: jsonb("impacts").notNull(), // Impacts on various markets
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  difficulty: integer("difficulty").default(1).notNull(), // 1-3 (Beginner, Intermediate, Advanced)
+  popularity: integer("popularity").default(0).notNull(), // Count of times the scenario has been run
+  relatedTopicIds: integer("related_topic_ids").array().notNull(), // IDs of related topics for learning
+});
+
+export const userScenarios = pgTable("user_scenarios", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  scenarioId: integer("scenario_id").references(() => scenarios.id).notNull(),
+  customParameters: jsonb("custom_parameters"), // User's custom scenario parameters
+  userNotes: text("user_notes"),
+  savedAt: timestamp("saved_at").defaultNow().notNull(),
+  favorite: boolean("favorite").default(false).notNull(),
+});
+
+export const insertScenarioSchema = createInsertSchema(scenarios).pick({
+  title: true,
+  description: true,
+  category: true,
+  scenarioType: true,
+  details: true,
+  impacts: true,
+  difficulty: true,
+  relatedTopicIds: true,
+});
+
+export const insertUserScenarioSchema = createInsertSchema(userScenarios).pick({
+  userId: true,
+  scenarioId: true,
+  customParameters: true,
+  userNotes: true,
+  favorite: true,
+});
+
+export type InsertScenario = z.infer<typeof insertScenarioSchema>;
+export type Scenario = typeof scenarios.$inferSelect;
+
+export type InsertUserScenario = z.infer<typeof insertUserScenarioSchema>;
+export type UserScenario = typeof userScenarios.$inferSelect;
+
+export interface ScenarioDetails {
+  change: {
+    type: string;         // e.g., "interest_rate", "tariff", "inflation"
+    value: number;        // Numeric value of the change
+    direction: string;    // "increase" or "decrease"
+    magnitude: string;    // "slight", "moderate", "significant"
+    rationale: string;    // Brief explanation of why this change occurred
+  };
+  timeframe: string;      // e.g., "immediate", "short_term", "long_term"
+}
+
+export interface ScenarioImpact {
+  markets: {
+    stocks: {
+      overall: number;      // Overall impact score (-10 to 10)
+      description: string;  // Description of impact
+      sectors: {            // Sector-specific impacts
+        [key: string]: {
+          impact: number;
+          reason: string;
+        }
+      }
+    };
+    bonds: {
+      overall: number;
+      description: string;
+      types: {              // Different bond types impacts
+        [key: string]: {
+          impact: number;
+          reason: string;
+        }
+      }
+    };
+    commodities: {
+      gold: number;
+      oil: number;
+      description: string;
+    };
+    economy: {
+      employment: number;
+      inflation: number;
+      gdp: number;
+      description: string;
+    };
+  };
+  analysis: string;        // Comprehensive analysis of impacts
+  learningPoints: string[];  // Key learning points about this scenario
 }

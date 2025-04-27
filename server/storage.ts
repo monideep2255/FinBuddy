@@ -4,6 +4,8 @@ import {
   quizzes, 
   userProgress,
   chatMessages,
+  scenarios,
+  userScenarios,
   type User, 
   type InsertUser, 
   type Topic, 
@@ -15,7 +17,13 @@ import {
   type QuizQuestion,
   type TopicContent,
   type ChatMessage,
-  type InsertChatMessage
+  type InsertChatMessage,
+  type Scenario,
+  type InsertScenario,
+  type UserScenario,
+  type InsertUserScenario,
+  type ScenarioDetails,
+  type ScenarioImpact
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc, and, sql } from "drizzle-orm";
@@ -45,6 +53,20 @@ export interface IStorage {
   // Chat operations
   getUserChatHistory(userId: number | null): Promise<ChatMessage[]>;
   saveChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
+  
+  // Scenario operations
+  getAllScenarios(): Promise<Scenario[]>;
+  getScenarioById(id: number): Promise<Scenario | undefined>;
+  createScenario(scenario: InsertScenario): Promise<Scenario>;
+  updateScenarioPopularity(id: number): Promise<Scenario>;
+  getScenariosByCategory(category: string): Promise<Scenario[]>;
+  getPopularScenarios(limit?: number): Promise<Scenario[]>;
+  
+  // User Scenario operations
+  getUserScenarios(userId: number): Promise<UserScenario[]>;
+  saveUserScenario(userScenario: InsertUserScenario): Promise<UserScenario>;
+  updateUserScenario(id: number, updates: Partial<InsertUserScenario>): Promise<UserScenario>;
+  deleteUserScenario(id: number): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
