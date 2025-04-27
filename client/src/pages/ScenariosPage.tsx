@@ -31,8 +31,8 @@ export default function ScenariosPage() {
         <div className="container mx-auto py-6 max-w-7xl">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Scenario Playground</h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">Scenario Playground</h1>
+              <p className="text-neutral-600 dark:text-neutral-400 mt-1">
                 Explore how different economic scenarios affect markets and investments
               </p>
             </div>
