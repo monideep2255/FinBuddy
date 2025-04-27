@@ -390,19 +390,27 @@ export default function TopicDetail() {
                   <Popover>
                     <PopoverTrigger asChild>
                       <button 
-                        className="flex-1 px-3 py-2.5 sm:py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors duration-200 flex items-center justify-center"
+                        className={`flex-1 px-3 py-2.5 sm:py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center
+                          ${localProgress.difficultyRating 
+                            ? 'bg-amber-100 dark:bg-amber-900 hover:bg-amber-200 dark:hover:bg-amber-800 text-amber-700 dark:text-amber-300'
+                            : 'bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300'
+                          }`}
                       >
-                        <StarHalf className="w-4 h-4 mr-1.5" />
+                        {localProgress.difficultyRating ? (
+                          <Star className="w-4 h-4 mr-1.5 fill-current" />
+                        ) : (
+                          <StarHalf className="w-4 h-4 mr-1.5" />
+                        )}
                         <span>
-                          {progress?.difficultyRating 
-                            ? `Difficulty: ${progress.difficultyRating}/5` 
+                          {localProgress.difficultyRating 
+                            ? `Difficulty: ${localProgress.difficultyRating}/5` 
                             : "Rate Difficulty"}
                         </span>
                       </button>
                     </PopoverTrigger>
                     <PopoverContent className="w-64 p-4">
                       <h4 className="font-medium text-sm mb-2 text-neutral-800 dark:text-neutral-200">
-                        How difficult was this topic?
+                        {localProgress.difficultyRating ? "Update or reset your rating" : "How difficult was this topic?"}
                       </h4>
                       <p className="text-xs text-neutral-600 dark:text-neutral-400 mb-3">
                         Your rating helps us recommend appropriate topics for other learners
@@ -411,17 +419,24 @@ export default function TopicDetail() {
                         {[1, 2, 3, 4, 5].map((rating) => (
                           <button
                             key={rating}
-                            onClick={() => updateProgressMutation.mutate({
-                              difficultyRating: rating
-                            })}
+                            onClick={() => {
+                              const newRating = localProgress.difficultyRating === rating ? 0 : rating;
+                              setLocalProgress(prev => ({
+                                ...prev,
+                                difficultyRating: newRating
+                              }));
+                              updateProgressMutation.mutate({
+                                difficultyRating: newRating
+                              });
+                            }}
                             className={`p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors
-                              ${progress?.difficultyRating === rating 
+                              ${localProgress.difficultyRating === rating 
                                 ? 'text-amber-500 dark:text-amber-400' 
                                 : 'text-neutral-400 dark:text-neutral-600'
                               }`}
                           >
                             <Star 
-                              className={`w-6 h-6 ${progress?.difficultyRating === rating ? 'fill-amber-500' : ''}`} 
+                              className={`w-6 h-6 ${localProgress.difficultyRating === rating ? 'fill-amber-500' : ''}`} 
                             />
                           </button>
                         ))}
