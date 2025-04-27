@@ -75,12 +75,16 @@ export class MemStorage implements IStorage {
   private quizzes: Map<number, Quiz>;
   private userProgress: Map<string, UserProgress>; // key is userId:topicId
   private chatMessages: Map<number, ChatMessage>; // Chat messages for users
+  private scenarios: Map<number, Scenario>; // Economic scenarios
+  private userScenarios: Map<number, UserScenario>; // User saved scenarios
   
   currentUserId: number;
   currentTopicId: number;
   currentQuizId: number;
   currentProgressId: number;
   currentChatMessageId: number;
+  currentScenarioId: number;
+  currentUserScenarioId: number;
 
   constructor() {
     this.users = new Map();
@@ -88,15 +92,22 @@ export class MemStorage implements IStorage {
     this.quizzes = new Map();
     this.userProgress = new Map();
     this.chatMessages = new Map();
+    this.scenarios = new Map();
+    this.userScenarios = new Map();
     
     this.currentUserId = 1;
     this.currentTopicId = 1;
     this.currentQuizId = 1;
     this.currentProgressId = 1;
     this.currentChatMessageId = 1;
+    this.currentScenarioId = 1;
+    this.currentUserScenarioId = 1;
     
     // Initialize with some topics
     this.seedInitialTopics();
+    
+    // Initialize with predefined economic scenarios
+    this.seedInitialScenarios();
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -236,6 +247,346 @@ export class MemStorage implements IStorage {
     
     this.chatMessages.set(id, chatMessage);
     return chatMessage;
+  }
+  
+  // Scenario operations
+  async getAllScenarios(): Promise<Scenario[]> {
+    return Array.from(this.scenarios.values());
+  }
+  
+  async getScenarioById(id: number): Promise<Scenario | undefined> {
+    return this.scenarios.get(id);
+  }
+  
+  async createScenario(scenario: InsertScenario): Promise<Scenario> {
+    const id = this.currentScenarioId++;
+    const createdAt = new Date();
+    const newScenario: Scenario = { 
+      ...scenario, 
+      id, 
+      createdAt,
+      popularity: 0,
+      difficulty: scenario.difficulty || 1,
+      relatedTopicIds: scenario.relatedTopicIds || []
+    };
+    this.scenarios.set(id, newScenario);
+    return newScenario;
+  }
+  
+  async updateScenarioPopularity(id: number): Promise<Scenario> {
+    const scenario = this.scenarios.get(id);
+    if (!scenario) {
+      throw new Error(`Scenario with ID ${id} not found`);
+    }
+    
+    const updatedScenario: Scenario = {
+      ...scenario,
+      popularity: scenario.popularity + 1
+    };
+    
+    this.scenarios.set(id, updatedScenario);
+    return updatedScenario;
+  }
+  
+  async getScenariosByCategory(category: string): Promise<Scenario[]> {
+    return Array.from(this.scenarios.values()).filter(
+      scenario => scenario.category.toLowerCase() === category.toLowerCase()
+    );
+  }
+  
+  async getPopularScenarios(limit: number = 5): Promise<Scenario[]> {
+    return Array.from(this.scenarios.values())
+      .sort((a, b) => b.popularity - a.popularity)
+      .slice(0, limit);
+  }
+  
+  // User Scenario operations
+  async getUserScenarios(userId: number): Promise<UserScenario[]> {
+    return Array.from(this.userScenarios.values()).filter(
+      userScenario => userScenario.userId === userId
+    );
+  }
+  
+  async saveUserScenario(userScenario: InsertUserScenario): Promise<UserScenario> {
+    const id = this.currentUserScenarioId++;
+    const savedAt = new Date();
+    
+    const newUserScenario: UserScenario = {
+      ...userScenario,
+      id,
+      savedAt,
+      customParameters: userScenario.customParameters || null,
+      userNotes: userScenario.userNotes || null,
+      favorite: userScenario.favorite || false
+    };
+    
+    this.userScenarios.set(id, newUserScenario);
+    return newUserScenario;
+  }
+  
+  async updateUserScenario(id: number, updates: Partial<InsertUserScenario>): Promise<UserScenario> {
+    const userScenario = this.userScenarios.get(id);
+    if (!userScenario) {
+      throw new Error(`User scenario with ID ${id} not found`);
+    }
+    
+    const updatedUserScenario: UserScenario = {
+      ...userScenario,
+      ...updates,
+      savedAt: new Date()
+    };
+    
+    this.userScenarios.set(id, updatedUserScenario);
+    return updatedUserScenario;
+  }
+  
+  async deleteUserScenario(id: number): Promise<boolean> {
+    if (!this.userScenarios.has(id)) {
+      return false;
+    }
+    
+    return this.userScenarios.delete(id);
+  }
+  
+  private seedInitialScenarios() {
+    const initialScenarios: InsertScenario[] = [
+      {
+        title: "Fed Raises Interest Rates by 0.75%",
+        description: "The Federal Reserve increases the federal funds rate by 75 basis points to combat inflation.",
+        category: "Monetary Policy",
+        scenarioType: "predefined",
+        details: {
+          change: {
+            type: "interest_rate",
+            value: 0.75,
+            direction: "increase",
+            magnitude: "significant",
+            rationale: "The Federal Reserve is raising rates to combat persistent inflation that has exceeded its 2% target."
+          },
+          timeframe: "immediate"
+        },
+        impacts: {
+          markets: {
+            stocks: {
+              overall: -5,
+              description: "Stock markets typically react negatively to interest rate hikes as borrowing costs increase and future profit expectations decrease.",
+              sectors: {
+                "Technology": {
+                  impact: -7,
+                  reason: "Growth stocks with future earnings are more heavily discounted when rates rise."
+                },
+                "Financials": {
+                  impact: 2,
+                  reason: "Banks can benefit from higher interest rate spreads."
+                },
+                "Utilities": {
+                  impact: -6,
+                  reason: "High-dividend stocks become less attractive compared to bonds with higher yields."
+                }
+              }
+            },
+            bonds: {
+              overall: -3,
+              description: "Existing bonds lose value as rates rise because newer bonds offer higher yields.",
+              types: {
+                "Long-term Treasury": {
+                  impact: -5,
+                  reason: "Long-duration bonds are more sensitive to rate changes."
+                },
+                "Short-term Treasury": {
+                  impact: -1,
+                  reason: "Short-duration bonds are less affected by rate increases."
+                },
+                "Corporate Bonds": {
+                  impact: -4,
+                  reason: "Corporate borrowing becomes more expensive, increasing default risk."
+                }
+              }
+            },
+            commodities: {
+              gold: -2,
+              oil: -3,
+              description: "Gold often falls as higher rates increase the opportunity cost of holding non-yielding assets. Oil may decline due to expectations of reduced economic activity."
+            },
+            economy: {
+              employment: -1,
+              inflation: -3,
+              gdp: -2,
+              description: "Higher rates are designed to slow economic activity, reducing inflation but potentially increasing unemployment and slowing GDP growth."
+            }
+          },
+          analysis: "A 0.75% rate hike is a significant monetary tightening action that signals the Fed's strong commitment to controlling inflation. Markets typically experience volatility immediately after such announcements. The economy may take 6-12 months to fully reflect the impact of higher rates as businesses adjust investment plans and consumers reduce borrowing. While painful in the short term, this action aims to create a more sustainable economic growth path with stable prices.",
+          learningPoints: [
+            "Interest rates are the primary tool central banks use to control inflation",
+            "Rate hikes typically cause immediate market reactions before the real economy changes",
+            "Different asset classes and sectors respond differently to rate changes",
+            "Bond prices move inversely to interest rates",
+            "Monetary policy involves trade-offs between inflation, employment, and growth"
+          ]
+        },
+        difficulty: 1,
+        relatedTopicIds: [1, 2, 3]
+      },
+      {
+        title: "Inflation Spikes to 6%",
+        description: "Annual inflation rate rises unexpectedly from 3% to 6%, exceeding economist forecasts significantly.",
+        category: "Inflation",
+        scenarioType: "predefined",
+        details: {
+          change: {
+            type: "inflation",
+            value: 6.0,
+            direction: "increase",
+            magnitude: "significant",
+            rationale: "Supply chain disruptions, rising energy costs, and strong consumer demand have pushed prices higher than expected."
+          },
+          timeframe: "immediate"
+        },
+        impacts: {
+          markets: {
+            stocks: {
+              overall: -4,
+              description: "High inflation typically pressures stock valuations as it erodes corporate profit margins and prompts expectations of interest rate hikes.",
+              sectors: {
+                "Consumer Discretionary": {
+                  impact: -7,
+                  reason: "Consumers cut back on non-essential purchases as their purchasing power decreases."
+                },
+                "Energy": {
+                  impact: 5,
+                  reason: "Energy companies benefit from higher commodity prices, which are often a key driver of inflation."
+                },
+                "Consumer Staples": {
+                  impact: -2,
+                  reason: "Essential goods see less demand reduction, but profit margins compress as input costs rise."
+                }
+              }
+            },
+            bonds: {
+              overall: -6,
+              description: "Bonds suffer during inflation spikes as it erodes the real value of future interest payments and principal.",
+              types: {
+                "Treasury Bonds": {
+                  impact: -8,
+                  reason: "Fixed-rate government bonds are particularly vulnerable to inflation erosion."
+                },
+                "TIPS (Treasury Inflation-Protected Securities)": {
+                  impact: 3,
+                  reason: "These securities are designed to increase in value during inflationary periods."
+                },
+                "High-Yield Corporate Bonds": {
+                  impact: -4,
+                  reason: "Less impacted than treasuries but still face price pressure from anticipated rate hikes."
+                }
+              }
+            },
+            commodities: {
+              gold: 7,
+              oil: 5,
+              description: "Commodities often perform well during inflation as they represent real assets with intrinsic value."
+            },
+            economy: {
+              employment: 1,
+              inflation: 6,
+              gdp: -2,
+              description: "Initially, high inflation may coincide with strong employment, but eventually leads to economic slowdown as purchasing power erodes and central banks tighten policy."
+            }
+          },
+          analysis: "A sudden spike in inflation to 6% represents a significant economic development that will likely trigger policy responses. Central banks would be expected to accelerate interest rate increases, potentially causing market volatility. While some assets like commodities and inflation-protected securities might benefit, most financial assets suffer as future cash flows are discounted at higher rates. For consumers, the impact is felt through reduced purchasing power, especially for lower-income households that spend higher percentages of income on necessities like food and energy.",
+          learningPoints: [
+            "Inflation erodes purchasing power and the real value of fixed-income investments",
+            "Not all assets respond the same way to inflation – some provide natural hedges",
+            "Central banks typically respond to high inflation by raising interest rates",
+            "Inflation can create winners and losers across different economic sectors",
+            "Higher input costs can squeeze corporate profit margins, affecting stock valuations"
+          ]
+        },
+        difficulty: 2,
+        relatedTopicIds: [1, 4, 7]
+      },
+      {
+        title: "Tariffs Rise by 20% on Imports",
+        description: "Government announces a 20% increase in tariffs on imported goods, affecting international trade relationships.",
+        category: "Trade",
+        scenarioType: "predefined",
+        details: {
+          change: {
+            type: "tariff",
+            value: 20.0,
+            direction: "increase",
+            magnitude: "significant",
+            rationale: "Government is implementing protectionist policies to support domestic industries and reduce trade deficits."
+          },
+          timeframe: "short_term"
+        },
+        impacts: {
+          markets: {
+            stocks: {
+              overall: -3,
+              description: "Overall negative impact as global supply chains are disrupted and costs increase, but with significant sector variation.",
+              sectors: {
+                "Manufacturing": {
+                  impact: 4,
+                  reason: "Domestic manufacturers protected from foreign competition may see increased market share."
+                },
+                "Retail": {
+                  impact: -6,
+                  reason: "Retailers face higher costs for imported goods that cannot be easily passed on to consumers."
+                },
+                "Technology": {
+                  impact: -5,
+                  reason: "Global tech companies with international supply chains face disruption and higher component costs."
+                }
+              }
+            },
+            bonds: {
+              overall: -1,
+              description: "Minor negative impact as tariffs may contribute to inflation, putting pressure on central banks to raise rates.",
+              types: {
+                "Government Bonds": {
+                  impact: -2,
+                  reason: "Slight pressure due to potential inflation and budget impacts from reduced trade."
+                },
+                "Corporate Bonds": {
+                  impact: -3,
+                  reason: "Companies with global supply chains may face increased costs affecting their credit quality."
+                },
+                "Municipal Bonds": {
+                  impact: 0,
+                  reason: "Limited direct impact from international trade changes."
+                }
+              }
+            },
+            commodities: {
+              gold: 2,
+              oil: -1,
+              description: "Gold benefits from economic uncertainty, while oil may face pressure from expectations of reduced global trade and economic activity."
+            },
+            economy: {
+              employment: 1,
+              inflation: 3,
+              gdp: -2,
+              description: "Short-term boost to domestic employment in protected industries, but higher inflation from import prices and lower overall economic efficiency resulting in reduced GDP growth."
+            }
+          },
+          analysis: "A 20% tariff increase represents a significant shift in trade policy with widespread economic implications. While designed to protect domestic industries, tariffs typically lead to higher consumer prices, potential retaliation from trading partners, and disruption of global supply chains. The net effect tends to be inflationary and growth-reducing in the medium term. Certain industries may benefit from protection, but consumers and businesses reliant on imported goods face higher costs. Financial markets often react negatively to trade restrictions due to increased uncertainty and efficiency losses in the global economy.",
+          learningPoints: [
+            "Tariffs create both winners and losers in the domestic economy",
+            "Trade restrictions typically increase prices for consumers",
+            "Global supply chains can be significantly disrupted by trade policy changes",
+            "Protectionist policies often trigger retaliation from trading partners",
+            "Economic nationalism tends to reduce global economic efficiency while potentially supporting specific domestic industries"
+          ]
+        },
+        difficulty: 2,
+        relatedTopicIds: [3, 5, 8]
+      }
+    ];
+    
+    // Add scenarios to storage
+    for (const scenario of initialScenarios) {
+      this.createScenario(scenario);
+    }
   }
   
   private seedInitialTopics() {
@@ -742,6 +1093,145 @@ export class DatabaseStorage implements IStorage {
       .returning();
     
     return newMessage;
+  }
+  
+  /**
+   * Scenario operations
+   */
+  
+  /**
+   * Get all economic scenarios
+   */
+  async getAllScenarios(): Promise<Scenario[]> {
+    return db.select().from(scenarios).orderBy(asc(scenarios.title));
+  }
+  
+  /**
+   * Get a specific scenario by ID
+   */
+  async getScenarioById(id: number): Promise<Scenario | undefined> {
+    const result = await db.select().from(scenarios).where(eq(scenarios.id, id));
+    return result[0];
+  }
+  
+  /**
+   * Create a new economic scenario
+   */
+  async createScenario(scenario: InsertScenario): Promise<Scenario> {
+    const [newScenario] = await db.insert(scenarios)
+      .values({
+        ...scenario,
+        createdAt: new Date(),
+        popularity: 0,
+        difficulty: scenario.difficulty || 1,
+        relatedTopicIds: scenario.relatedTopicIds || []
+      })
+      .returning();
+    
+    return newScenario;
+  }
+  
+  /**
+   * Increment the popularity count of a scenario
+   */
+  async updateScenarioPopularity(id: number): Promise<Scenario> {
+    const scenario = await this.getScenarioById(id);
+    if (!scenario) {
+      throw new Error(`Scenario with ID ${id} not found`);
+    }
+    
+    const [updatedScenario] = await db
+      .update(scenarios)
+      .set({ popularity: scenario.popularity + 1 })
+      .where(eq(scenarios.id, id))
+      .returning();
+    
+    return updatedScenario;
+  }
+  
+  /**
+   * Get scenarios by category
+   */
+  async getScenariosByCategory(category: string): Promise<Scenario[]> {
+    return db
+      .select()
+      .from(scenarios)
+      .where(sql`lower(${scenarios.category}) = lower(${category})`)
+      .orderBy(asc(scenarios.title));
+  }
+  
+  /**
+   * Get most popular scenarios
+   */
+  async getPopularScenarios(limit: number = 5): Promise<Scenario[]> {
+    return db
+      .select()
+      .from(scenarios)
+      .orderBy(desc(scenarios.popularity))
+      .limit(limit);
+  }
+  
+  /**
+   * User Scenario operations
+   */
+  
+  /**
+   * Get all scenarios saved by a user
+   */
+  async getUserScenarios(userId: number): Promise<UserScenario[]> {
+    return db
+      .select()
+      .from(userScenarios)
+      .where(eq(userScenarios.userId, userId))
+      .orderBy(desc(userScenarios.savedAt));
+  }
+  
+  /**
+   * Save a user's customized scenario
+   */
+  async saveUserScenario(userScenario: InsertUserScenario): Promise<UserScenario> {
+    const [newUserScenario] = await db.insert(userScenarios)
+      .values({
+        ...userScenario,
+        savedAt: new Date(),
+        customParameters: userScenario.customParameters || null,
+        userNotes: userScenario.userNotes || null,
+        favorite: userScenario.favorite || false
+      })
+      .returning();
+    
+    return newUserScenario;
+  }
+  
+  /**
+   * Update a user's saved scenario
+   */
+  async updateUserScenario(id: number, updates: Partial<InsertUserScenario>): Promise<UserScenario> {
+    const [updatedUserScenario] = await db
+      .update(userScenarios)
+      .set({
+        ...updates,
+        savedAt: new Date()
+      })
+      .where(eq(userScenarios.id, id))
+      .returning();
+    
+    if (!updatedUserScenario) {
+      throw new Error(`User scenario with ID ${id} not found`);
+    }
+    
+    return updatedUserScenario;
+  }
+  
+  /**
+   * Delete a user's saved scenario
+   */
+  async deleteUserScenario(id: number): Promise<boolean> {
+    const result = await db
+      .delete(userScenarios)
+      .where(eq(userScenarios.id, id));
+    
+    return result.count > 0;
   }
 }
 
