@@ -38,17 +38,17 @@ export default function ScenariosPage() {
   // Handle scenario selection
   const handleScenarioSelect = (scenario: Scenario) => {
     setSelectedScenario(scenario);
-    
+
     // Parse details if needed
     const details = typeof scenario.details === 'string'
       ? JSON.parse(scenario.details as string)
       : scenario.details;
-      
+
     // Parse impacts if needed
     const impacts = typeof scenario.impacts === 'string'
       ? JSON.parse(scenario.impacts as string)
       : scenario.impacts;
-    
+
     setCurrentAnalysis({
       details: details as ScenarioDetails,
       impacts: impacts as ScenarioImpact,
@@ -102,7 +102,7 @@ export default function ScenariosPage() {
 
     // Check if scenarios exists and has items
     const scenariosArray = Array.isArray(scenarios) ? scenarios : [];
-    
+
     if (scenariosArray.length === 0) {
       return (
         <Card>
@@ -240,7 +240,7 @@ export default function ScenariosPage() {
               </div>
             </div>
             <Separator />
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-5">
                 <ScenarioImpactChart impacts={currentAnalysis.impacts} />
