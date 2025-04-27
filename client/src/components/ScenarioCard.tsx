@@ -47,22 +47,22 @@ export function ScenarioCard({ scenario, onClick }: ScenarioCardProps) {
       <CardContent className="flex-grow">
         <div className="text-sm">
           <div className="flex justify-between mb-1">
-            <span className="text-muted-foreground">Type:</span>
-            <span className="font-medium">{change.type}</span>
+            <span className="text-muted-foreground font-medium">Type:</span>
+            <span className="text-foreground font-semibold">{change.type}</span>
           </div>
           <div className="flex justify-between mb-1">
-            <span className="text-muted-foreground">Value:</span>
-            <span className="font-medium">
+            <span className="text-muted-foreground font-medium">Value:</span>
+            <span className="text-foreground font-semibold">
               {change.value}{change.type === 'interest_rate' ? '%' : ''}
             </span>
           </div>
           <div className="flex justify-between mb-1">
-            <span className="text-muted-foreground">Direction:</span>
-            <span className="font-medium capitalize">{change.direction}</span>
+            <span className="text-muted-foreground font-medium">Direction:</span>
+            <span className="text-foreground font-semibold capitalize">{change.direction}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Timeframe:</span>
-            <span className="font-medium capitalize">{timeframe}</span>
+            <span className="text-muted-foreground font-medium">Timeframe:</span>
+            <span className="text-foreground font-semibold capitalize">{timeframe}</span>
           </div>
         </div>
       </CardContent>
