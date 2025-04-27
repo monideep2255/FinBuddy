@@ -83,15 +83,22 @@ export default function TopicDetail() {
     // Only run this query if the user is logged in and has an ID
     enabled: !!user?.id && !!topicId,
     staleTime: Infinity, // Keep the data fresh indefinitely
-    cacheTime: Infinity, // Never remove from cache
+    gcTime: Infinity // Never garbage collect from cache
   });
 
   // Initialize local state when progress data is first loaded
   useEffect(() => {
     if (progress) {
-      setLocalProgress(progress);
+      // Update the local state with the server data
+      setLocalProgress({
+        bookmarked: progress.bookmarked || false,
+        completed: progress.completed || false,
+        difficultyRating: progress.difficultyRating || 0,
+        quizScore: progress.quizScore || 0,
+        quizAttempts: progress.quizAttempts || 0
+      });
     }
-  }, [progress?.id]); // Only run when the progress ID changes
+  }, [progress]); // Run when progress changes
 
 
   // Mutation to update progress
@@ -104,16 +111,22 @@ export default function TopicDetail() {
       );
       return await res.json();
     },
-    onSuccess: () => {
-      // Invalidate the progress query to refetch
+    onSuccess: (updatedProgress) => {
+      // Update the cache directly instead of invalidating
+      queryClient.setQueryData(
+        [`/api/users/${userId}/topics/${topicId}/progress`], 
+        updatedProgress
+      );
+      
+      // Update the all-progress cache
       queryClient.invalidateQueries({ queryKey: [`/api/users/${userId}/progress`] });
-      queryClient.invalidateQueries({ queryKey: [`/api/users/${userId}/topics/${topicId}/progress`] });
 
-      toast({
-        title: 'Progress Updated',
-        description: 'Your learning progress has been saved.',
-        variant: 'default',
-      });
+      // Silently update without notifications per user request
+      // toast({
+      //  title: 'Progress Updated',
+      //  description: 'Your learning progress has been saved.',
+      //  variant: 'default',
+      // });
     },
     onError: (error) => {
       toast({
