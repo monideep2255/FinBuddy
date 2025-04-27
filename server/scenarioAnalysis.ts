@@ -33,7 +33,46 @@ export async function generateScenarioImpacts(details: ScenarioDetails): Promise
     - Positive numbers indicate positive impacts (price increases, economic expansion)
     - The magnitude indicates severity (±1-3 = mild, ±4-7 = moderate, ±8-10 = severe)
     
-    Your analysis should reflect real-world economic relationships and be based on historical precedents and economic theory.`;
+    Your analysis should reflect real-world economic relationships and be based on historical precedents and economic theory.
+    
+    Format your response as a valid JSON object with this structure:
+    {
+      "markets": {
+        "stocks": {
+          "overall": number,
+          "description": string,
+          "sectors": {
+            "sectorName": {
+              "impact": number,
+              "reason": string
+            }
+          }
+        },
+        "bonds": {
+          "overall": number,
+          "description": string,
+          "types": {
+            "bondType": {
+              "impact": number,
+              "reason": string
+            }
+          }
+        },
+        "commodities": {
+          "gold": number,
+          "oil": number,
+          "description": string
+        },
+        "economy": {
+          "employment": number,
+          "inflation": number,
+          "gdp": number,
+          "description": string
+        }
+      },
+      "analysis": string,
+      "learningPoints": string[]
+    }`;
 
     const userPrompt = `Please analyze this economic scenario:
     
@@ -85,7 +124,19 @@ export async function analyzeCustomScenario(
   try {
     // First generate the detailed scenario
     const scenarioSystemPrompt = `You are an expert economist. Your task is to construct a realistic economic scenario based on user input.
-    Format the scenario with proper economic terminology and details.`;
+    Format the scenario with proper economic terminology and details.
+    
+    Return your response as a valid JSON object with this structure:
+    {
+      "change": {
+        "type": string,
+        "value": number,
+        "direction": string,
+        "magnitude": string,
+        "rationale": string
+      },
+      "timeframe": string
+    }`;
 
     const scenarioUserPrompt = `Create a detailed economic scenario for:
     Type: ${scenarioType}
