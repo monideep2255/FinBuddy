@@ -128,7 +128,7 @@ export function CustomScenarioForm({ onAnalyzeSuccess, onAnalyzeStart }: CustomS
                       defaultValue={[field.value]}
                       onValueChange={(vals) => field.onChange(vals[0])}
                       disabled={isLoading}
-                      className="bg-background [&_[role=slider]]:bg-primary [&_[role=slider]]:border-primary [&_[role=slider]]:shadow-md [&>[data-disabled]]:opacity-50"
+                      className="[&>[data-disabled]]:opacity-50"
                     />
                   </FormControl>
                   <FormDescription>
