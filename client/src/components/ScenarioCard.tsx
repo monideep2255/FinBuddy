@@ -62,7 +62,7 @@ export function ScenarioCard({ scenario, onClick }: ScenarioCardProps) {
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground font-medium">Timeframe:</span>
-            <span className="text-foreground font-semibold capitalize">{timeframe}</span>
+            <span className="text-foreground font-semibold capitalize">{timeframe.replace('_', ' ')}</span>
           </div>
         </div>
       </CardContent>
