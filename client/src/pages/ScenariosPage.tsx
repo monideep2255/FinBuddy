@@ -202,16 +202,16 @@ export default function ScenariosPage() {
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-8">
-              <TabsList className="grid w-full grid-cols-2 bg-muted/80 p-2 rounded-xl gap-4">
+              <TabsList className="inline-flex w-full justify-center bg-muted/50 p-1.5 rounded-xl">
                 <TabsTrigger 
                   value="explore" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
+                  className="flex-1 px-8 py-3 rounded-lg font-medium text-sm data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-muted/80 transition-all"
                 >
                   Explore Scenarios
                 </TabsTrigger>
                 <TabsTrigger 
                   value="custom" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
+                  className="flex-1 px-8 py-3 rounded-lg font-medium text-sm data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-muted/80 transition-all"
                 >
                   Custom Scenario
                 </TabsTrigger>
