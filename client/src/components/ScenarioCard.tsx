@@ -36,13 +36,13 @@ export function ScenarioCard({ scenario, onClick }: ScenarioCardProps) {
   const timeframe = details?.timeframe || 'unknown';
   
   return (
-    <Card className="h-full flex flex-col hover:shadow-md hover:bg-muted/20 transition-all duration-300 bg-card border-border">
+    <Card className="h-full flex flex-col hover:shadow-md hover:bg-background hover:brightness-105 dark:hover:brightness-125 transition-all duration-300 bg-background dark:bg-card border border-border">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg font-semibold line-clamp-2">{scenario.title}</CardTitle>
-          <Badge variant="outline" className="ml-2">{scenario.category}</Badge>
+          <CardTitle className="text-lg font-semibold line-clamp-2 text-foreground">{scenario.title}</CardTitle>
+          <Badge variant="outline" className="ml-2 text-foreground">{scenario.category}</Badge>
         </div>
-        <CardDescription className="line-clamp-3">{scenario.description}</CardDescription>
+        <CardDescription className="line-clamp-3 text-muted-foreground">{scenario.description}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">
         <div className="text-sm">
