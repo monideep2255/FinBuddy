@@ -201,8 +201,8 @@ export default function ScenariosPage() {
               )}
             </div>
 
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-8">
-              <TabsList className="grid w-full grid-cols-2 bg-muted/80 p-2 rounded-xl gap-4">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
+              <TabsList className="grid w-full grid-cols-2 bg-muted/80 p-2 rounded-xl gap-2">
                 <TabsTrigger 
                   value="explore" 
                   className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
@@ -218,18 +218,18 @@ export default function ScenariosPage() {
                 {currentAnalysis && (
                   <TabsTrigger 
                     value="analysis" 
-                    className="col-span-2 mt-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
+                    className="col-span-2 mt-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
                   >
                     Analysis Results
                   </TabsTrigger>
                 )}
               </TabsList>
 
-              <TabsContent value="explore" className="space-y-8">
+              <TabsContent value="explore" className="space-y-6">
                 {renderExploreContent()}
               </TabsContent>
 
-              <TabsContent value="custom" className="space-y-8">
+              <TabsContent value="custom" className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   <div className="lg:col-span-1">
                     <h3 className="text-xl font-semibold mb-4">Create Your Scenario</h3>
@@ -278,21 +278,9 @@ export default function ScenariosPage() {
               </TabsContent>
 
               {currentAnalysis && (
-                <TabsContent value="analysis" className="space-y-8">
-                  <div className="grid gap-8">
-                    <div className="space-y-6">
-                      <h2 className="text-2xl font-bold tracking-tight">Analysis Results</h2>
-                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        <div className="lg:col-span-5">
-                          <ScenarioImpactChart impacts={currentAnalysis.impacts} />
-                        </div>
-                        <div className="lg:col-span-7">
-                          <ScenarioImpactDetail impacts={currentAnalysis.impacts} />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-4">
+                <TabsContent value="analysis" className="space-y-6">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div className="w-full md:w-3/4 space-y-4">
                       <h3 className="text-xl font-semibold leading-tight break-words">
                         {selectedScenario
                           ? selectedScenario.title
@@ -306,8 +294,7 @@ export default function ScenariosPage() {
                           : currentAnalysis.details.change.rationale}
                       </p>
                     </div>
-
-                    <div className="pt-4 flex justify-end gap-2">
+                    <div className="flex gap-2">
                       {user && selectedScenario && (
                         <Button variant="outline" size="sm">
                           <BookmarkPlus className="h-4 w-4 mr-2" />
