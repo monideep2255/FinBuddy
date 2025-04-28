@@ -279,32 +279,10 @@ export default function ScenariosPage() {
 
               {currentAnalysis && (
                 <TabsContent value="analysis" className="space-y-4">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div className="w-full md:w-3/4">
-                      <h3 className="text-xl font-semibold leading-tight break-words mb-2">
-                        {selectedScenario
-                          ? selectedScenario.title
-                          : `Custom Scenario: ${currentAnalysis.details.change.type} ${
-                              currentAnalysis.details.change.direction
-                            } by ${currentAnalysis.details.change.value}`}
-                      </h3>
-                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed break-words">
-                        {selectedScenario
-                          ? selectedScenario.description
-                          : currentAnalysis.details.change.rationale}
-                      </p>
-                    </div>
-                    <div className="flex shrink-0 mt-4 md:mt-0">
-                      {user && selectedScenario && (
-                        <Button variant="outline" size="sm" className="mr-2">
-                          <BookmarkPlus className="h-4 w-4 mr-2" />
-                          Save Scenario
-                        </Button>
-                      )}
-                      <Button variant="default" size="sm" onClick={handleResetAnalysis}>
-                        View Other Scenarios
-                      </Button>
-                    </div>
+                  <div className="flex justify-end mb-2">
+                    <Button variant="default" size="sm" onClick={handleResetAnalysis}>
+                      View Other Scenarios
+                    </Button>
                   </div>
                   <Separator className="my-2" />
 
