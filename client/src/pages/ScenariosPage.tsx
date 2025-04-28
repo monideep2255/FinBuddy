@@ -236,7 +236,7 @@ export default function ScenariosPage() {
                 </div>
                 <div className="lg:col-span-2">
                   <h3 className="text-xl font-semibold mb-4">How It Works</h3>
-                  <Card className="border bg-card text-card-foreground">
+                  <Card className="border bg-background dark:bg-card text-foreground">
                     <CardHeader>
                       <CardTitle>Economic Scenario Analysis</CardTitle>
                       <CardDescription>
@@ -310,7 +310,7 @@ export default function ScenariosPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                   <div className="lg:col-span-5">
                     <ScenarioImpactChart impacts={currentAnalysis.impacts} />
-                    <Card className="mt-6 border bg-card text-card-foreground">
+                    <Card className="mt-6 border bg-background dark:bg-card text-foreground">
                       <CardHeader className="pb-2">
                         <CardTitle className="text-xl">Scenario Details</CardTitle>
                       </CardHeader>
