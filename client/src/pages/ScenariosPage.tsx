@@ -205,13 +205,13 @@ export default function ScenariosPage() {
               <TabsList className="inline-flex w-full justify-center bg-muted/50 p-1.5 rounded-xl">
                 <TabsTrigger 
                   value="explore" 
-                  className="flex-1 px-8 py-3 rounded-lg font-medium text-sm data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-muted/80 transition-all"
+                  className="flex-1 px-8 py-3 rounded-lg font-medium text-sm data-[state=active]:bg-blue-500 data-[state=active]:text-white hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
                 >
                   Explore Scenarios
                 </TabsTrigger>
                 <TabsTrigger 
                   value="custom" 
-                  className="flex-1 px-8 py-3 rounded-lg font-medium text-sm data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-muted/80 transition-all"
+                  className="flex-1 px-8 py-3 rounded-lg font-medium text-sm data-[state=active]:bg-blue-500 data-[state=active]:text-white hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
                 >
                   Custom Scenario
                 </TabsTrigger>
