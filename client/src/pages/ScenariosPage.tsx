@@ -215,14 +215,6 @@ export default function ScenariosPage() {
                 >
                   Custom Scenario
                 </TabsTrigger>
-                {currentAnalysis && (
-                  <TabsTrigger 
-                    value="analysis" 
-                    className="col-span-2 mt-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
-                  >
-                    Analysis Results
-                  </TabsTrigger>
-                )}
               </TabsList>
 
               <TabsContent value="explore" className="space-y-4">
