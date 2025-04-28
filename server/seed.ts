@@ -428,6 +428,237 @@ export async function seedDatabase(force = false) {
         },
         difficulty: 2,
         relatedTopicIds: [3, 5, 8]
+      },
+      {
+        title: "Corporate Tax Rate Cut by 10%",
+        description: "Government passes legislation reducing the corporate tax rate from 25% to 15%, significantly changing business tax obligations.",
+        category: "Fiscal Policy",
+        scenarioType: "predefined",
+        details: {
+          change: {
+            type: "tax_rate",
+            value: 10.0,
+            direction: "decrease",
+            magnitude: "significant",
+            rationale: "Government is implementing tax cuts to stimulate business investment and economic growth."
+          },
+          timeframe: "medium_term"
+        },
+        impacts: {
+          markets: {
+            stocks: {
+              overall: 7,
+              description: "Corporate tax cuts directly increase after-tax earnings, boosting stock valuations, especially for domestic companies with high effective tax rates.",
+              sectors: {
+                "Technology": {
+                  impact: 8,
+                  reason: "Tech companies with large domestic operations benefit substantially from lower corporate taxes."
+                },
+                "Financials": {
+                  impact: 9,
+                  reason: "Banks and financial institutions typically pay close to the full statutory rate and benefit significantly."
+                },
+                "Utilities": {
+                  impact: 4,
+                  reason: "Regulated utilities may be required to pass tax savings to consumers, limiting stock price gains."
+                }
+              }
+            },
+            bonds: {
+              overall: -3,
+              description: "Lower corporate taxes may boost economic growth and inflation expectations, potentially leading to higher interest rates.",
+              types: {
+                "Treasury Bonds": {
+                  impact: -4,
+                  reason: "Growth and inflation expectations may push yields higher and prices lower."
+                },
+                "Corporate Bonds": {
+                  impact: -1,
+                  reason: "Improved corporate fundamentals offset some of the negative impact from rising rates."
+                },
+                "Municipal Bonds": {
+                  impact: -5,
+                  reason: "Lower corporate rates reduce the relative tax advantage of municipal bonds."
+                }
+              }
+            },
+            commodities: {
+              gold: -2,
+              oil: 3,
+              description: "Stronger economic growth expectations support oil prices, while gold may suffer from rising interest rates and a stronger dollar."
+            },
+            economy: {
+              employment: 4,
+              inflation: 2,
+              gdp: 5,
+              description: "Corporate tax cuts tend to stimulate business investment, hiring, and overall economic activity, with moderate inflationary pressure."
+            }
+          },
+          analysis: "A substantial corporate tax rate reduction represents a major fiscal stimulus that typically boosts corporate earnings, business investment, and stock prices in the near term. The market impact is usually swift and positive for equities, while bonds may face pressure from higher growth and inflation expectations. The economic benefits include increased capital spending, job creation, and potentially higher wages, though the magnitude depends on how companies allocate the tax savings between shareholders, employees, and investments. Critics note that such cuts can increase budget deficits and may have limited long-term growth effects if not accompanied by other structural reforms.",
+          learningPoints: [
+            "Corporate tax cuts directly impact company earnings and valuations",
+            "Different sectors benefit unevenly from corporate tax reductions",
+            "Tax policy creates complex interactions between equity and fixed income markets",
+            "Fiscal stimulus through tax cuts can boost economic growth but may increase deficits",
+            "The effectiveness of tax cuts depends on how companies allocate the savings"
+          ]
+        },
+        difficulty: 2,
+        relatedTopicIds: [3, 6, 8]
+      },
+      {
+        title: "Oil Price Surges 40%",
+        description: "Global oil prices spike by 40% due to geopolitical tensions and supply disruptions in major oil-producing regions.",
+        category: "Commodities",
+        scenarioType: "predefined",
+        details: {
+          change: {
+            type: "commodity_price",
+            value: 40.0,
+            direction: "increase",
+            magnitude: "severe",
+            rationale: "Major supply disruptions combined with limited spare production capacity have created a supply shortage in global oil markets."
+          },
+          timeframe: "immediate"
+        },
+        impacts: {
+          markets: {
+            stocks: {
+              overall: -4,
+              description: "Higher energy costs act as a tax on consumers and businesses, pressuring overall market valuations except for energy producers.",
+              sectors: {
+                "Energy": {
+                  impact: 9,
+                  reason: "Oil producers and service companies benefit directly from higher oil prices."
+                },
+                "Transportation": {
+                  impact: -8,
+                  reason: "Airlines, shipping, and logistics companies face sharply higher fuel costs."
+                },
+                "Consumer Discretionary": {
+                  impact: -6,
+                  reason: "Higher gasoline prices reduce consumers' disposable income for other purchases."
+                }
+              }
+            },
+            bonds: {
+              overall: -3,
+              description: "Oil price shocks tend to be inflationary, potentially leading to higher interest rates and lower bond prices.",
+              types: {
+                "Treasury Bonds": {
+                  impact: -4,
+                  reason: "Inflation concerns may push yields higher despite potential flight to safety."
+                },
+                "Corporate Bonds": {
+                  impact: -5,
+                  reason: "Energy-intensive industries may face credit deterioration due to higher costs."
+                },
+                "TIPS": {
+                  impact: 2,
+                  reason: "Inflation-protected securities benefit from rising inflation expectations."
+                }
+              }
+            },
+            commodities: {
+              gold: 5,
+              oil: 40,
+              description: "Oil prices rise by definition in this scenario, while gold often benefits as an inflation hedge and safe haven."
+            },
+            economy: {
+              employment: -2,
+              inflation: 6,
+              gdp: -3,
+              description: "Oil price shocks tend to be stagflationary, increasing inflation while reducing economic growth and potentially employment."
+            }
+          },
+          analysis: "A sudden 40% surge in oil prices represents a significant economic shock with far-reaching implications across markets and the global economy. Higher energy costs act as a regressive tax, disproportionately affecting lower-income households and energy-intensive industries. While energy producers benefit, most sectors of the economy face margin pressures and reduced consumer spending. Central banks face a difficult policy dilemma as inflation rises while growth slows. Historically, major oil price shocks have preceded economic downturns, though the global economy has become somewhat less oil-intensive in recent decades, potentially reducing the impact compared to historical episodes.",
+          learningPoints: [
+            "Oil price shocks create winners and losers across different economic sectors",
+            "Energy price increases are inflationary and tend to slow economic growth",
+            "Commodity price volatility can significantly impact consumer spending patterns",
+            "Central banks face difficult policy choices when confronting supply-side inflation",
+            "Energy price changes affect countries differently based on whether they are net importers or exporters"
+          ]
+        },
+        difficulty: 3,
+        relatedTopicIds: [1, 4, 7]
+      },
+      {
+        title: "Housing Market Correction: 15% Price Drop",
+        description: "Residential real estate prices decline by 15% nationwide after a period of rapid appreciation, affecting homeowners and the broader economy.",
+        category: "Real Estate",
+        scenarioType: "predefined",
+        details: {
+          change: {
+            type: "housing_prices",
+            value: 15.0,
+            direction: "decrease",
+            magnitude: "significant",
+            rationale: "Rising mortgage rates, affordability concerns, and overbuilding in certain markets have triggered a correction in the housing market."
+          },
+          timeframe: "medium_term"
+        },
+        impacts: {
+          markets: {
+            stocks: {
+              overall: -4,
+              description: "Housing market corrections typically impact consumer wealth and spending, with broader effects across the economy.",
+              sectors: {
+                "Homebuilders": {
+                  impact: -9,
+                  reason: "Declining home prices directly impact homebuilder profitability and new construction demand."
+                },
+                "Financials": {
+                  impact: -6,
+                  reason: "Banks with mortgage exposure face increased default risk and reduced lending volume."
+                },
+                "Home Improvement": {
+                  impact: -7,
+                  reason: "Lower home values typically reduce home improvement spending and renovation activity."
+                }
+              }
+            },
+            bonds: {
+              overall: 3,
+              description: "Housing market weakness typically leads to lower interest rates as economic growth slows and inflation pressures ease.",
+              types: {
+                "Treasury Bonds": {
+                  impact: 5,
+                  reason: "Flight to safety and lower rate expectations benefit government bonds."
+                },
+                "Mortgage-Backed Securities": {
+                  impact: -2,
+                  reason: "Higher default risk and prepayment changes negatively impact MBS despite generally lower rates."
+                },
+                "Corporate Bonds": {
+                  impact: 1,
+                  reason: "Lower rates help, but credit concerns for housing-related industries create mixed impact."
+                }
+              }
+            },
+            commodities: {
+              gold: 3,
+              oil: -4,
+              description: "Economic slowdown reduces energy demand and prices, while gold may benefit from financial uncertainty and lower real interest rates."
+            },
+            economy: {
+              employment: -4,
+              inflation: -2,
+              gdp: -3,
+              description: "Housing market corrections typically reduce construction activity, home equity extraction, and consumer confidence, slowing overall economic growth."
+            }
+          },
+          analysis: "A 15% decline in housing prices represents a significant correction with widespread economic implications due to real estate's importance to household wealth and the financial system. The negative wealth effect reduces consumer spending, while construction activity and related industries contract. Financial institutions face increased mortgage delinquencies and tighter lending standards, potentially creating a credit crunch in severe cases. However, lower housing costs eventually improve affordability for new buyers, and lower interest rates (a typical central bank response) can eventually stabilize the market. The severity of broader economic impacts depends significantly on mortgage market structure, household leverage, and banking system exposure to real estate.",
+          learningPoints: [
+            "Housing wealth significantly influences consumer spending behavior",
+            "Real estate corrections impact multiple sectors beyond just homebuilders",
+            "Housing market health is closely tied to interest rate trends",
+            "Property market corrections can create financial system stress through mortgage defaults",
+            "Housing affordability improves during corrections, creating opportunities for new buyers"
+          ]
+        },
+        difficulty: 3,
+        relatedTopicIds: [2, 5, 8]
       }
     ];
     
