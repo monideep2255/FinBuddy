@@ -308,7 +308,7 @@ export default function ScenariosPage() {
                 </div>
                 <Separator />
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8"> {/* Changed gap here */}
                   <div className="lg:col-span-5">
                     <ScenarioImpactChart impacts={currentAnalysis.impacts} />
                     <Card className="mt-6 border bg-background dark:bg-card text-foreground">
