@@ -133,15 +133,13 @@ In a world where economic shifts impact our daily lives, most people remain conf
    - Time spent per topic tracking
    - Learning streak monitoring
 
-## In Progress
-
 ### 🚀 Phase 5: Scenario Playground
 - Interactive market simulations
 - Economic impact analysis
 - Real-world application testing
-- On smaller screen, fix dark and light mode error
-- Add custom scenarios for the playground
-- Introduce multiple simulations (refer chatGPT if needed!)
+
+## In Progress
+- Scenario pages: fix tab colors, remove unwanted text, ensure button consistencies
 
 ## Technical Stack
 
