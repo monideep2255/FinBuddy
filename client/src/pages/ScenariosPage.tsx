@@ -181,10 +181,10 @@ export default function ScenariosPage() {
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
 
-      <main className="flex-grow">
-        <div className="container mx-auto px-4 py-8">
-          <div className="space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+      <main className="flex-grow py-8">
+        <div className="container mx-auto px-4">
+          <div className="space-y-4 md:space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
               <div>
                 <h1 className="text-3xl font-bold tracking-tight">Scenario Playground</h1>
                 <p className="text-muted-foreground mt-1">
@@ -192,7 +192,7 @@ export default function ScenariosPage() {
                 </p>
               </div>
               {activeTab === 'explore' && (
-                <div className="mt-4 md:mt-0">
+                <div className="mt-4 md:mt-0 shrink-0">
                   <Button variant="outline" size="sm" onClick={() => refetch()}>
                     <RefreshCw className="h-4 w-4 mr-2" />
                     Refresh Scenarios
@@ -201,7 +201,7 @@ export default function ScenariosPage() {
               )}
             </div>
 
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-4">
               <TabsList className="grid w-full grid-cols-2 bg-muted/80 p-2 rounded-xl gap-2">
                 <TabsTrigger 
                   value="explore" 
@@ -225,11 +225,11 @@ export default function ScenariosPage() {
                 )}
               </TabsList>
 
-              <TabsContent value="explore" className="space-y-6">
+              <TabsContent value="explore" className="space-y-4">
                 {renderExploreContent()}
               </TabsContent>
 
-              <TabsContent value="custom" className="space-y-6">
+              <TabsContent value="custom" className="space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   <div className="lg:col-span-1">
                     <h3 className="text-xl font-semibold mb-4">Create Your Scenario</h3>
