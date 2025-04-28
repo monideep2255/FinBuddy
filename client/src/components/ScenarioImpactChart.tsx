@@ -60,14 +60,14 @@ export function ScenarioImpactChart({ impacts }: ScenarioImpactChartProps) {
   const chartData = prepareChartData();
 
   return (
-    <Card className="w-full">
-      <CardHeader className="pb-2">
+    <Card className="w-full bg-background dark:bg-card border">
+      <CardHeader className="pb-2 bg-background dark:bg-card">
         <CardTitle className="text-xl">Market Impact Overview</CardTitle>
         <CardDescription>
           Impact scale: -10 (severe negative) to +10 (severe positive)
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="bg-background dark:bg-card">
         <div className="h-72 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart

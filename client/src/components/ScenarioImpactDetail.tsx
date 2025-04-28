@@ -86,14 +86,14 @@ export function ScenarioImpactDetail({ impacts }: ScenarioImpactDetailProps) {
 
   return (
     <div className="w-full space-y-6">
-      <Card className="border bg-card text-card-foreground">
-        <CardHeader>
+      <Card className="border bg-background dark:bg-card text-foreground">
+        <CardHeader className="bg-background dark:bg-card">
           <CardTitle>Scenario Analysis</CardTitle>
           <CardDescription>
             Detailed breakdown of market and economic impacts
           </CardDescription>
         </CardHeader>
-        <CardContent className="text-base">
+        <CardContent className="text-base bg-background dark:bg-card">
           <p className="mb-4">{impacts.analysis}</p>
           <div className="mt-6">
             <h4 className="font-semibold mb-2">Key Learning Points:</h4>
