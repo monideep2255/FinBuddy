@@ -182,8 +182,9 @@ export default function ScenariosPage() {
       <Header />
 
       <main className="flex-grow">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div className="container mx-auto px-4 py-8">
+          <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Scenario Playground</h1>
               <p className="text-muted-foreground mt-1">
@@ -364,6 +365,7 @@ export default function ScenariosPage() {
               </TabsContent>
             )}
           </Tabs>
+          </div>
         </div>
       </main>
 
