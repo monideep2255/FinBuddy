@@ -280,15 +280,15 @@ export default function ScenariosPage() {
               {currentAnalysis && (
                 <TabsContent value="analysis" className="space-y-6">
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                    <div className="w-full md:w-3/4 space-y-2">
-                      <h3 className="text-xl font-semibold leading-tight">
+                    <div className="w-full md:w-3/4 space-y-4">
+                      <h3 className="text-xl font-semibold leading-tight break-words">
                         {selectedScenario
                           ? selectedScenario.title
                           : `Custom Scenario: ${currentAnalysis.details.change.type} ${
                               currentAnalysis.details.change.direction
                             } by ${currentAnalysis.details.change.value}`}
                       </h3>
-                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed break-words">
                         {selectedScenario
                           ? selectedScenario.description
                           : currentAnalysis.details.change.rationale}
