@@ -67,8 +67,8 @@ export function ScenarioImpactChart({ impacts }: ScenarioImpactChartProps) {
           Impact scale: -10 (severe negative) to +10 (severe positive)
         </CardDescription>
       </CardHeader>
-      <CardContent className="bg-background dark:bg-card">
-        <div className="h-72 w-full">
+      <CardContent className="bg-background dark:bg-card pt-4">
+        <div className="h-72 w-full px-2">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={chartData}

@@ -185,186 +185,186 @@ export default function ScenariosPage() {
         <div className="container mx-auto px-4 py-8">
           <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">Scenario Playground</h1>
-              <p className="text-muted-foreground mt-1">
-                Explore how different economic scenarios affect markets and investments
-              </p>
-            </div>
-            {activeTab === 'explore' && (
-              <div className="mt-4 md:mt-0">
-                <Button variant="outline" size="sm" onClick={() => refetch()}>
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Refresh Scenarios
-                </Button>
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight">Scenario Playground</h1>
+                <p className="text-muted-foreground mt-1">
+                  Explore how different economic scenarios affect markets and investments
+                </p>
               </div>
-            )}
-          </div>
-
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
-            <TabsList className="grid w-full grid-cols-2 bg-muted/80 p-2 rounded-xl gap-2">
-              <TabsTrigger 
-                value="explore" 
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
-              >
-                Explore Scenarios
-              </TabsTrigger>
-              <TabsTrigger 
-                value="custom" 
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
-              >
-                Custom Scenario
-              </TabsTrigger>
-              {currentAnalysis && (
-                <TabsTrigger 
-                  value="analysis" 
-                  className="col-span-2 mt-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
-                >
-                  Analysis Results
-                </TabsTrigger>
+              {activeTab === 'explore' && (
+                <div className="mt-4 md:mt-0">
+                  <Button variant="outline" size="sm" onClick={() => refetch()}>
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Refresh Scenarios
+                  </Button>
+                </div>
               )}
-            </TabsList>
+            </div>
 
-            <TabsContent value="explore" className="space-y-6">
-              {renderExploreContent()}
-            </TabsContent>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
+              <TabsList className="grid w-full grid-cols-2 bg-muted/80 p-2 rounded-xl gap-2">
+                <TabsTrigger 
+                  value="explore" 
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
+                >
+                  Explore Scenarios
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="custom" 
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
+                >
+                  Custom Scenario
+                </TabsTrigger>
+                {currentAnalysis && (
+                  <TabsTrigger 
+                    value="analysis" 
+                    className="col-span-2 mt-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg px-6 py-3 rounded-lg font-semibold hover:bg-background/90 hover:text-foreground transition-all duration-200 border border-transparent data-[state=active]:border-primary/20"
+                  >
+                    Analysis Results
+                  </TabsTrigger>
+                )}
+              </TabsList>
 
-            <TabsContent value="custom" className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-1">
-                  <h3 className="text-xl font-semibold mb-4">Create Your Scenario</h3>
-                  <CustomScenarioForm onAnalyzeSuccess={handleAnalysisResult} />
-                </div>
-                <div className="lg:col-span-2">
-                  <h3 className="text-xl font-semibold mb-4">How It Works</h3>
-                  <Card className="border bg-background dark:bg-card text-foreground">
-                    <CardHeader className="bg-background dark:bg-card">
-                      <CardTitle>Economic Scenario Analysis</CardTitle>
-                      <CardDescription>
-                        Understand how economic changes affect markets
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="bg-background dark:bg-card">
-                      <div className="space-y-4">
-                        <div>
-                          <h4 className="font-semibold">What is a scenario?</h4>
-                          <p className="text-muted-foreground">
-                            An economic scenario is a hypothetical economic change, such as an interest rate hike, inflation spike, or tax policy change.
-                          </p>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold">How does this work?</h4>
-                          <p className="text-muted-foreground">
-                            Our system analyzes scenarios based on historical data and economic principles to predict likely impacts across various markets and economic indicators.
-                          </p>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold">How to interpret results?</h4>
-                          <p className="text-muted-foreground">
-                            Impact scores range from -10 (severe negative) to +10 (severe positive). The analysis provides detailed explanations for each market and sector.
-                          </p>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold">Why use scenario analysis?</h4>
-                          <p className="text-muted-foreground">
-                            Scenario analysis helps investors prepare for potential market changes, understand economic relationships, and make more informed investment decisions.
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </TabsContent>
+              <TabsContent value="explore" className="space-y-6">
+                {renderExploreContent()}
+              </TabsContent>
 
-            {currentAnalysis && (
-              <TabsContent value="analysis" className="space-y-6">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <h3 className="text-xl font-semibold">
-                      {selectedScenario
-                        ? selectedScenario.title
-                        : `Custom Scenario: ${currentAnalysis.details.change.type} ${
-                            currentAnalysis.details.change.direction
-                          } by ${currentAnalysis.details.change.value}`}
-                    </h3>
-                    <p className="text-muted-foreground">
-                      {selectedScenario
-                        ? selectedScenario.description
-                        : currentAnalysis.details.change.rationale}
-                    </p>
+              <TabsContent value="custom" className="space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-1">
+                    <h3 className="text-xl font-semibold mb-4">Create Your Scenario</h3>
+                    <CustomScenarioForm onAnalyzeSuccess={handleAnalysisResult} />
                   </div>
-                  <div className="flex gap-2">
-                    {user && selectedScenario && (
-                      <Button variant="outline" size="sm">
-                        <BookmarkPlus className="h-4 w-4 mr-2" />
-                        Save Scenario
-                      </Button>
-                    )}
-                    <Button variant="default" size="sm" onClick={handleResetAnalysis}>
-                      View Other Scenarios
-                    </Button>
-                  </div>
-                </div>
-                <Separator />
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8"> {/* Changed gap here */}
-                  <div className="lg:col-span-5">
-                    <ScenarioImpactChart impacts={currentAnalysis.impacts} />
-                    <Card className="mt-6 border bg-background dark:bg-card text-foreground">
-                      <CardHeader className="pb-2 bg-background dark:bg-card">
-                        <CardTitle className="text-xl">Scenario Details</CardTitle>
+                  <div className="lg:col-span-2">
+                    <h3 className="text-xl font-semibold mb-4">How It Works</h3>
+                    <Card className="border bg-background dark:bg-card text-foreground">
+                      <CardHeader className="bg-background dark:bg-card">
+                        <CardTitle>Economic Scenario Analysis</CardTitle>
+                        <CardDescription>
+                          Understand how economic changes affect markets
+                        </CardDescription>
                       </CardHeader>
                       <CardContent className="bg-background dark:bg-card">
-                        <dl className="grid grid-cols-2 gap-4">
+                        <div className="space-y-4">
                           <div>
-                            <dt className="text-sm font-medium text-muted-foreground">Type</dt>
-                            <dd className="mt-1 text-sm font-semibold">
-                              {currentAnalysis.details.change.type.replace('_', ' ')}
-                            </dd>
-                          </div>
-                          <div>
-                            <dt className="text-sm font-medium text-muted-foreground">Value</dt>
-                            <dd className="mt-1 text-sm font-semibold">
-                              {currentAnalysis.details.change.value}
-                              {currentAnalysis.details.change.type === 'interest_rate' && '%'}
-                            </dd>
+                            <h4 className="font-semibold">What is a scenario?</h4>
+                            <p className="text-muted-foreground">
+                              An economic scenario is a hypothetical economic change, such as an interest rate hike, inflation spike, or tax policy change.
+                            </p>
                           </div>
                           <div>
-                            <dt className="text-sm font-medium text-muted-foreground">Direction</dt>
-                            <dd className="mt-1 text-sm font-semibold capitalize">
-                              {currentAnalysis.details.change.direction}
-                            </dd>
+                            <h4 className="font-semibold">How does this work?</h4>
+                            <p className="text-muted-foreground">
+                              Our system analyzes scenarios based on historical data and economic principles to predict likely impacts across various markets and economic indicators.
+                            </p>
                           </div>
                           <div>
-                            <dt className="text-sm font-medium text-muted-foreground">Magnitude</dt>
-                            <dd className="mt-1 text-sm font-semibold capitalize">
-                              {currentAnalysis.details.change.magnitude}
-                            </dd>
+                            <h4 className="font-semibold">How to interpret results?</h4>
+                            <p className="text-muted-foreground">
+                              Impact scores range from -10 (severe negative) to +10 (severe positive). The analysis provides detailed explanations for each market and sector.
+                            </p>
                           </div>
-                          <div className="col-span-2">
-                            <dt className="text-sm font-medium text-muted-foreground">Timeframe</dt>
-                            <dd className="mt-1 text-sm font-semibold capitalize">
-                              {currentAnalysis.details.timeframe}
-                            </dd>
+                          <div>
+                            <h4 className="font-semibold">Why use scenario analysis?</h4>
+                            <p className="text-muted-foreground">
+                              Scenario analysis helps investors prepare for potential market changes, understand economic relationships, and make more informed investment decisions.
+                            </p>
                           </div>
-                          <div className="col-span-2">
-                            <dt className="text-sm font-medium text-muted-foreground">Rationale</dt>
-                            <dd className="mt-1 text-sm">
-                              {currentAnalysis.details.change.rationale}
-                            </dd>
-                          </div>
-                        </dl>
+                        </div>
                       </CardContent>
                     </Card>
                   </div>
-                  <div className="lg:col-span-7">
-                    <ScenarioImpactDetail impacts={currentAnalysis.impacts} />
-                  </div>
                 </div>
               </TabsContent>
-            )}
-          </Tabs>
+
+              {currentAnalysis && (
+                <TabsContent value="analysis" className="space-y-6">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div className="w-full md:w-3/4 space-y-2">
+                      <h3 className="text-xl font-semibold leading-tight">
+                        {selectedScenario
+                          ? selectedScenario.title
+                          : `Custom Scenario: ${currentAnalysis.details.change.type} ${
+                              currentAnalysis.details.change.direction
+                            } by ${currentAnalysis.details.change.value}`}
+                      </h3>
+                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+                        {selectedScenario
+                          ? selectedScenario.description
+                          : currentAnalysis.details.change.rationale}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      {user && selectedScenario && (
+                        <Button variant="outline" size="sm">
+                          <BookmarkPlus className="h-4 w-4 mr-2" />
+                          Save Scenario
+                        </Button>
+                      )}
+                      <Button variant="default" size="sm" onClick={handleResetAnalysis}>
+                        View Other Scenarios
+                      </Button>
+                    </div>
+                  </div>
+                  <Separator />
+
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8"> 
+                    <div className="lg:col-span-5">
+                      <ScenarioImpactChart impacts={currentAnalysis.impacts} />
+                      <Card className="mt-6 border bg-background dark:bg-card text-foreground">
+                        <CardHeader className="pb-2 bg-background dark:bg-card">
+                          <CardTitle className="text-xl">Scenario Details</CardTitle>
+                        </CardHeader>
+                        <CardContent className="bg-background dark:bg-card">
+                          <dl className="grid grid-cols-1 md:grid-cols-2 gap-4"> {/* Changed to 1 column on smaller screens */}
+                            <div>
+                              <dt className="text-sm font-medium text-muted-foreground">Type</dt>
+                              <dd className="mt-1 text-sm font-semibold">
+                                {currentAnalysis.details.change.type.replace('_', ' ')}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-muted-foreground">Value</dt>
+                              <dd className="mt-1 text-sm font-semibold">
+                                {currentAnalysis.details.change.value}
+                                {currentAnalysis.details.change.type === 'interest_rate' && '%'}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-muted-foreground">Direction</dt>
+                              <dd className="mt-1 text-sm font-semibold capitalize">
+                                {currentAnalysis.details.change.direction}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-muted-foreground">Magnitude</dt>
+                              <dd className="mt-1 text-sm font-semibold capitalize">
+                                {currentAnalysis.details.change.magnitude}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-muted-foreground">Timeframe</dt>
+                              <dd className="mt-1 text-sm font-semibold capitalize">
+                                {currentAnalysis.details.timeframe}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt className="text-sm font-medium text-muted-foreground">Rationale</dt>
+                              <dd className="mt-1 text-sm">
+                                {currentAnalysis.details.change.rationale}
+                              </dd>
+                            </div>
+                          </dl>
+                        </CardContent>
+                      </Card>
+                    </div>
+                    <div className="lg:col-span-7">
+                      <ScenarioImpactDetail impacts={currentAnalysis.impacts} />
+                    </div>
+                  </div>
+                </TabsContent>
+              )}
+            </Tabs>
           </div>
         </div>
       </main>
