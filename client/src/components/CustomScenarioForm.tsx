@@ -46,14 +46,14 @@ export function CustomScenarioForm({ onAnalyzeSuccess, onAnalyzeStart }: CustomS
   const onSubmit = async (data: CustomScenarioFormValues) => {
     setIsLoading(true);
     if (onAnalyzeStart) onAnalyzeStart();
-    
+
     try {
       const response = await apiRequest(
         'POST',
         '/api/scenarios/analyze',
         data
       );
-      
+
       const responseData = await response.json();
       onAnalyzeSuccess(responseData);
     } catch (error) {

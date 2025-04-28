@@ -181,7 +181,7 @@ export default function ScenariosPage() {
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
 
-      <main className="flex-grow container mx-auto px-4 py-8 max-w-7xl">
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
         <div className="space-y-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
