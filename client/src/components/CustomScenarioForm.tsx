@@ -128,6 +128,7 @@ export function CustomScenarioForm({ onAnalyzeSuccess, onAnalyzeStart }: CustomS
                       defaultValue={[field.value]}
                       onValueChange={(vals) => field.onChange(vals[0])}
                       disabled={isLoading}
+                      className="bg-background"
                     />
                   </FormControl>
                   <FormDescription>
