@@ -278,10 +278,10 @@ export default function ScenariosPage() {
               </TabsContent>
 
               {currentAnalysis && (
-                <TabsContent value="analysis" className="space-y-6">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                    <div className="w-full md:w-3/4 space-y-4">
-                      <h3 className="text-xl font-semibold leading-tight break-words">
+                <TabsContent value="analysis" className="space-y-4">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div className="w-full md:w-3/4">
+                      <h3 className="text-xl font-semibold leading-tight break-words mb-2">
                         {selectedScenario
                           ? selectedScenario.title
                           : `Custom Scenario: ${currentAnalysis.details.change.type} ${
@@ -294,9 +294,9 @@ export default function ScenariosPage() {
                           : currentAnalysis.details.change.rationale}
                       </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex shrink-0 mt-4 md:mt-0">
                       {user && selectedScenario && (
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="mr-2">
                           <BookmarkPlus className="h-4 w-4 mr-2" />
                           Save Scenario
                         </Button>
@@ -306,12 +306,12 @@ export default function ScenariosPage() {
                       </Button>
                     </div>
                   </div>
-                  <Separator />
+                  <Separator className="my-2" />
 
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8"> 
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6"> 
                     <div className="lg:col-span-5">
                       <ScenarioImpactChart impacts={currentAnalysis.impacts} />
-                      <Card className="mt-6 border bg-background dark:bg-card text-foreground">
+                      <Card className="mt-4 border bg-background dark:bg-card text-foreground">
                         <CardHeader className="pb-2 bg-background dark:bg-card">
                           <CardTitle className="text-xl">Scenario Details</CardTitle>
                         </CardHeader>
