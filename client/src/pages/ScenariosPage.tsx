@@ -283,7 +283,9 @@ export default function ScenariosPage() {
                             <div>
                               <dt className="text-sm font-medium text-muted-foreground">Type</dt>
                               <dd className="mt-1 text-sm font-semibold">
-                                {currentAnalysis.details.change.type.replace('_', ' ')}
+                                {currentAnalysis.details.change.type.split('_').map(word => 
+                                  word.charAt(0).toUpperCase() + word.slice(1)
+                                ).join(' ')}
                               </dd>
                             </div>
                             <div>
@@ -308,7 +310,9 @@ export default function ScenariosPage() {
                             <div>
                               <dt className="text-sm font-medium text-muted-foreground">Timeframe</dt>
                               <dd className="mt-1 text-sm font-semibold capitalize">
-                                {currentAnalysis.details.timeframe}
+                                {currentAnalysis.details.timeframe.split('_').map(word => 
+                                  word.charAt(0).toUpperCase() + word.slice(1)
+                                ).join(' ')}
                               </dd>
                             </div>
                             <div>
