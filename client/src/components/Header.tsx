@@ -23,7 +23,7 @@ export default function Header() {
 
   return (
     <header className="bg-white dark:bg-neutral-900 shadow-sm relative z-50">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between">
         {/* App Logo and Brand */}
         <Link href="/">
           <div className="flex items-center cursor-pointer">
@@ -88,7 +88,7 @@ export default function Header() {
         </nav>
         
         {/* Right side controls - Auth buttons, Mobile menu, and Theme toggle */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 ml-auto md:ml-0">
           {/* Auth Buttons - Desktop */}
           {user ? (
             <div className="hidden md:flex items-center space-x-2">
