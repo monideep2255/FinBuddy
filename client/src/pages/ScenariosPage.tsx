@@ -191,14 +191,7 @@ export default function ScenariosPage() {
                   Explore how different economic scenarios affect markets and investments
                 </p>
               </div>
-              {activeTab === 'explore' && (
-                <div className="mt-4 md:mt-0 shrink-0">
-                  <Button variant="outline" size="sm" onClick={() => refetch()}>
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Refresh Scenarios
-                  </Button>
-                </div>
-              )}
+              
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-8">
