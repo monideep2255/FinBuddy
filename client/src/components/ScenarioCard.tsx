@@ -48,7 +48,11 @@ export function ScenarioCard({ scenario, onClick }: ScenarioCardProps) {
         <div className="text-sm">
           <div className="flex justify-between mb-1">
             <span className="text-muted-foreground font-medium">Type:</span>
-            <span className="text-foreground font-semibold">{change.type.replace('_', ' ')}</span>
+            <span className="text-foreground font-semibold">
+              {change.type.split('_').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+              ).join(' ')}
+            </span>
           </div>
           <div className="flex justify-between mb-1">
             <span className="text-muted-foreground font-medium">Value:</span>
