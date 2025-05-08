@@ -126,3 +126,24 @@ html, body, #root {
     @apply p-4 sm:p-6;
   }
 }
+
+/* Custom Select Item Styles */
+[role="option"] {
+  @apply hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-foreground focus:bg-blue-50 dark:focus:bg-blue-900/30 !important;
+}
+
+/* Fix for black hover background in light mode */
+[role="option"]:hover {
+  background-color: #EFF6FF !important; /* bg-blue-50 */
+  color: #000 !important;
+}
+
+.dark [role="option"]:hover {
+  background-color: rgba(29, 78, 216, 0.2) !important; /* dark:bg-blue-900/20 */
+  color: #fff !important;
+}
+
+/* Select Content Background */
+[role="listbox"] {
+  @apply bg-white dark:bg-neutral-900 !important;
+}
