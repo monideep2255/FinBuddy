@@ -1,5 +1,5 @@
 
-*Last Updated: April 27, 2025*
+*Last Updated: May 07, 2025*
 
 # FinBuddy - Your AI-Powered Finance Learning Companion
 
@@ -23,8 +23,6 @@ In a world where economic shifts impact our daily lives, most people remain conf
 - Users lack context for market events
 - Existing learning tools are either passive or too generic
 - No app links finance education to real-time events
-
-
 
 ## Implemented Features
 
@@ -137,9 +135,6 @@ In a world where economic shifts impact our daily lives, most people remain conf
 - Interactive market simulations
 - Economic impact analysis
 - Real-world application testing
-
-## In Progress
-- Scenario pages: fix tab colors, remove unwanted text, ensure button consistencies
 
 ## Technical Stack
 
