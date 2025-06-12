@@ -11,6 +11,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication
   setupAuth(app);
 
+  // Health check endpoint for Render
+  app.get("/api/health", (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.json({ 
+      status: "ok",
+      message: "API is healthy",
+      timestamp: new Date().toISOString()
+    });
+  });
+
   // Test endpoint
   app.get("/api/test", (req, res) => {
     res.setHeader('Content-Type', 'application/json');
