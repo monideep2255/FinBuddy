@@ -9,35 +9,9 @@
 
 ---
 
-## Method 1: Automatic Deployment (Using render.yaml)
+## Recommended Deployment Method
 
-### Step 1: Push Code to GitHub
-```bash
-git add .
-git commit -m "Prepare for Render deployment"
-git push origin main
-```
-
-### Step 2: Deploy to Render
-1. Go to [render.com](https://render.com) and sign up/login
-2. Click **"New +"** → **"Blueprint"**
-3. Connect your GitHub repository
-4. Render will detect the `render.yaml` file and create:
-   - PostgreSQL database (`finbuddy-db`)
-   - Web service (`finbuddy-web`)
-
-### Step 3: Configure Environment Variables
-After services are created, go to your web service:
-1. Click on **"finbuddy-web"** service
-2. Go to **"Environment"** tab
-3. Add these variables:
-   - `OPENAI_API_KEY` = `[paste your OpenAI API key]`
-   - `ALPHA_VANTAGE_API_KEY` = `[paste your Alpha Vantage key]` (optional)
-
-### Step 4: Wait for Deployment
-- Database creation: 2-3 minutes
-- Web service build: 5-10 minutes
-- Your app will be live at: `https://finbuddy-web.onrender.com`
+Since you encountered issues with the render.yaml configuration, I recommend the manual setup approach which is more reliable:
 
 ---
 

@@ -1,0 +1,18 @@
+# Alternative render.yaml for manual deployment
+# Use this if the main render.yaml causes issues
+
+services:
+  - type: web
+    name: finbuddy
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Add these manually in Render dashboard:
+      # OPENAI_API_KEY
+      # ALPHA_VANTAGE_API_KEY  
+      # DATABASE_URL (from your PostgreSQL service)
